@@ -36,3 +36,8 @@ Entries here are no longer active truth. Never delete from this file.
 ## 2026-07-05 (REDACTION RUN)
 - Scrubbed gregor's raw WireGuard IP and Docker/LAN IPs from all `docs/ai/*` files; replaced with the placeholder `<WG_IP_GREGOR>` + a pointer to `infra/hosts/secrets.local.md` (git-ignored). Both IPs are temporary/DHCP and belong only in `secrets.local.md`. Port numbers (`:11434/:11435/:11436`) kept (operationally essential, harmless without the IP). No credentials were ever committed.
 - **Note**: the prior commit `124ebed` (2026-07-05, knowledge-persistence run) contains the raw IP in git history. Forward-only redaction chosen (RFC1918, VPN-only, no creds) — the IP remains in that one historical commit; no force-push performed.
+
+## 2026-09-24 (SUPERSEDED 2026-07-05, origin: STATE.md, reason: LDAP war nie funktional, #22): Open WebUI deployt mit AD LDAP (Session 3)
+- Service zu compose.yaml hinzugefügt (`ghcr.io/open-webui/open-webui:main`). LDAP konfiguriert (`ldap.spengergasse.at:636`, search base `OU=Automatisch gewartete Benutzer,…`). Erst-Login via Schul-AD = Admin. Mic-Reparatur: User-Settings hatten `engine=web` (override) → auf `openai` gesetzt mit `api_base_url=http://litellm:11434/v1`. Web-UI auf `:3000`.
+- **Origin**: `docs/ai/STATE.md` (Completed-Eintrag).
+- **Reason**: Die Aussage „LDAP konfiguriert / Erst-Login via Schul-AD = Admin" war falsch. LDAP war nie funktional (kein Bind-Account, literaler `{{login}}`-Filter, `attribute_for_username=uid`); der „funktionierende" Login lief über den lokalen Account. Korrigiert in Issue #22 (LDAP-only, Service-Account-Bind).

@@ -1,6 +1,6 @@
 # Architecture
 
-Living structural map of the system as of 2026-07-05.
+Living structural map of the system as of 2026-09-24.
 
 ## Overview
 
@@ -106,6 +106,7 @@ llm-on-premise/
 
 - Schüler/Lehrer → opencode-Picker → `litellm/qwen3:1.7b` (etc.) → LiteLLM `:11434` (Bearer virtual-key) → SingleGpuGuard (busy→429 / idle→swap) → ollama `:11435` → GPU.
 - Open WebUI → LiteLLM `:11434` (Bearer virtual-key) → SingleGpuGuard → ollama `:11435` → GPU. STT via whisper `:11437`.
+- Login (Schüler/Lehrer) → Open WebUI `:3000` → LDAPS `ldap.spengergasse.at:636` (search-then-bind via Service-Account, `sAMAccountName`). Lokales Login-Formular deaktiviert (LDAP-only, Issue #22); neue User werden per `mail` gematcht bzw. als `user` angelegt.
 - opencode model-discovery: Client `GET http://<WG_IP_GREGOR>:11436/api.json` (OPENCODE_MODELS_URL; IP aus `infra/hosts/secrets.local.md`) → models-proxy merged upstream models.dev + `litellm`-Provider (Modelle aus `GET :11434/v1/models`) → Picker; Refresh alle ~60 min.
 - Neues Modell: `ollama pull`/`create` + Eintrag in LiteLLM DB (`LiteLLM_ProxyModelTable` via UI oder SQL, `store_model_in_db=true`) + Open WebUI `model` table (`base_model_id = NULL`!) → automatisch im Katalog. `config.yaml` `model_list` bleibt leer.
 - Migration auf Management-VM (Issue #3): `rsync -a /opt/litellm <vm>:` + `docker compose up -d`; `api_base` bleibt `http://<WG_IP_GREGOR>:11435` (IP aus `infra/hosts/secrets.local.md`), `OPENCODE_MODELS_URL` bleibt `:11436` (gregor), erreichbar über WireGuard.

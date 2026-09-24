@@ -1,20 +1,20 @@
-Issue #21 — Implemented (2026-09-17, commit follow-up pending). Working copy synchron mit Trunk.
+# HANDOFF — llm-on-premise
 
-## Done (Issue #21)
-- Open WebUI: direkte Ollama-Connection (10.8.0.16:11435) aktiviert; stale 10.8.0.18 in openai.api_base_urls + rag.ollama korrigiert.
-- Web-Search-Experiment `qwen3:8b-search` (Tag + Modelfile im Repo): FC=native, builtin_tools=true, `meta.builtinTools`-Gating (nur web_search), System-Prompt nennt search_web/fetch_url. e2e verifiziert (JWT + Socket.io): tool_calls → SearXNG gregor:80 → 2. Turn → Antwort. 6 Produktionsmodelle bleiben Lockdown.
-- `OLLAMA_MAX_LOADED_MODELS=1` verifiziert (2. Modell evicted residentes).
-- GROQ-Token-Rotation: Setup-Anleitung + SQL-Template in whisper/README.md.
-- Docs: TIPS (Native Tool-Call Mechanics + Admin-Workflow + searxng-URL-Fix), PITFALLS (3 neue), DECISIONS, STATE.
+Stand: 2026-09-24 · Branch `main` (trunk) · letzte Commits: `ee4ed72` (#22), `e0f2239` (#21).
 
-## Open (Issue #21 / nächste Session)
-1. [ ] GROQ-STT: Deployment-Row `groq-stt-georg` aktiv (2026-09-17, e2e via API verifiziert, Open WebUI `audio.stt.model=groq-whisper` gesetzt). Rest: Mic-e2e-Test im UI durch Georg; Schüler-Keys einsammeln → weitere Deployment-Rows (korrigiertes SQL-Template whisper/README.md — created_at ist TIMESTAMP, created_by NOT NULL); sobald ~2 Dutzend Schüler-Keys rotieren → `groq-stt-georg` löschen (Key teilt sich Free-Tier mit Telegram-Bot-STT).
-2. [ ] **UI-Verifikation Open WebUI Web Search durch Georg selbst machen** (qwen3:8b-search, Globe-Icon): API-e2e lief, echter UI-Durchlauf (Chat speichern, Zitaten-UI) noch nicht getestet — Session 2026-09-17 endete hier (Georg hatte keine Zeit mehr); Open WebUI URL: `http://10.8.0.16:3000`.
-3. [ ] `search_chats`/`view_chat` leakt durch `builtinTools`-Gating — ggf. Upstream-Check, ob Kategorie-Gate fehlt.
-4. [ ] Beim nächsten eigenen UI-Test prüfen, ob der `{}`-Bug (Stream-Drop mit builtin_tools=true) bei qwen3:8b-search im UI-Streaming auftritt (Stand 2026-09-17 abends: `think=true, reasoning_tags=false`, System-Prompt erlaubt Detail auf Nachfrage, API-e2e mit Thinking+Search verifiziert — kein `{}`-Bug, Antwort mit Citations; `reasoning_tags=true` dagegen killt die Tool-Injektion komplett, siehe PITFALLS).
-5. [ ] Admin-Promotion: Sobald neue Admins sich 1× per LDAP einloggen, im Admin Panel promoten (TIPS.md „Admin accounts").
+## Gerade abgeschlossen
+- **Issue #22 — Open WebUI LDAP-only** implementiert + committet (`ee4ed72`): Service-Account-Bind, `sAMAccountName`, `search_filter=(objectClass=user)`, `ui.enable_login_form=false` (kein Email-Formular/Toggle), lokales Admin-Passwort neutralisiert. Realer AD-Login verifiziert. Docs: `openwebui/README.md`, `litellm/compose.yaml`, `.env.example`, `infra/hosts/gregor.md`.
 
-## Offene Todos (älter)
-1. [ ] Cortecs-Vertrag anfragen: E-Mail-Entwurf in `docs/extern/cortecs-anfrage-email-draft.md` an `enterprise@cortecs.ai` senden.
-2. [ ] Hardware-Entscheidung (Issues #2, #5, #7) aktualisieren: Framework Desktop Strix Halo 128 GB (~€1.850) bestellen (Kalkulation in `docs/extern/on-premise-vs-api-kalkulation.md`).
-3. [ ] Issue #14 (Token- und Auth-Konzept) ergänzen: Cortecs-Volumen + Virtual-Keys mit Cap + Drei-Säulen-Modell.
+## Offen (nächste Session)
+1. [ ] **#21 GROQ-STT:** Row `groq-stt-georg` aktiv (e2e API ok, Open WebUI `audio.stt.model=groq-whisper`). Rest: Mic-e2e im UI (Georg); Schüler-Keys einsammeln → weitere Deployment-Rows (SQL-Template in `whisper/README.md`); nach ~2 Dutzend Keys `groq-stt-georg` löschen (Key teilt Free-Tier mit Bot-STT).
+2. [ ] **#21 UI-Verifikation Web Search** durch Georg (`qwen3:8b-search`, Globe-Icon) — inkl. Check, ob der `{}`-Stream-Drop auftritt.
+3. [ ] `search_chats`/`view_chat` leakt durch `builtinTools`-Gating — Upstream-Check (fehlendes Kategorie-Gate).
+4. [ ] **Admin-Promotion:** neue Admins nach ihrem 1. LDAP-Login im Admin-Panel promoten (`grafg@spengergasse.at` ist aktuell der einzige Admin).
+5. [ ] HTTPS für Open WebUI (Mic/STT braucht Secure Context) — Caddy/nginx vor `:3000` (Issue #14).
+
+## Offen (älter)
+- [ ] Cortecs-Vertrag anfragen (`docs/extern/cortecs-anfrage-email-draft.md` → `enterprise@cortecs.ai`).
+- [ ] Hardware-Entscheidung (Issues #2, #5, #7) — Framework Desktop Strix Halo 128 GB.
+- [ ] Issue #14 (Token-/Auth-Konzept) um Cortecs-Volumen + Drei-Säulen-Modell ergänzen.
+- [ ] `OPENCODE_MODELS_URL` für Schüler-Lab austollen (Shared-Launcher / `/etc/profile.d`) — aktuell nur georgs Shell.
+- [ ] Management-VM (Issue #3): LiteLLM dorthin migrieren (`rsync -a /opt/litellm <vm>:` + `docker compose up -d`).
