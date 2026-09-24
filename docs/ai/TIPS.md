@@ -151,11 +151,11 @@ db.commit()
 {"function_calling": "none", "tool_choice": "none", "reasoning_tags": false, "max_tokens": 58579, "think": false}
 ```
 
-**FC enabled, only web_search available:**
+**FC enabled, only web_search available (Thinking + Search, verifiziert 2026-09-17):**
 ```json
-{"function_calling": "native", "max_tokens": 58579}
+{"function_calling": "native", "think": true, "reasoning_tags": false, "max_tokens": 38912}
 ```
-(Also requires `capabilities.web_search=true`, `capabilities.builtin_tools=false`)
+(Also requires `capabilities.web_search=true`, `capabilities.builtin_tools=true` + `meta.builtinTools`-Gating. ACHTUNG: `reasoning_tags=true` killt die Tool-Injektion — siehe PITFALLS.)
 
 **Legacy FC mode (prompt injection instead of native template):**
 ```json

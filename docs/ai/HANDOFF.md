@@ -8,10 +8,10 @@ Issue #21 — Implemented (2026-09-17, commit follow-up pending). Working copy s
 - Docs: TIPS (Native Tool-Call Mechanics + Admin-Workflow + searxng-URL-Fix), PITFALLS (3 neue), DECISIONS, STATE.
 
 ## Open (Issue #21 / nächste Session)
-1. [ ] GROQ-Keys von Schülern einsammeln → LiteLLM-Deployment-Rows anlegen (SQL-Template whisper/README.md) → Open WebUI `audio.stt.model=groq-whisper` → Mic-e2e-Test.
+1. [ ] GROQ-STT: Deployment-Row `groq-stt-georg` aktiv (2026-09-17, e2e via API verifiziert, Open WebUI `audio.stt.model=groq-whisper` gesetzt). Rest: Mic-e2e-Test im UI durch Georg; Schüler-Keys einsammeln → weitere Deployment-Rows (korrigiertes SQL-Template whisper/README.md — created_at ist TIMESTAMP, created_by NOT NULL); sobald ~2 Dutzend Schüler-Keys rotieren → `groq-stt-georg` löschen (Key teilt sich Free-Tier mit Telegram-Bot-STT).
 2. [ ] **UI-Verifikation Open WebUI Web Search durch Georg selbst machen** (qwen3:8b-search, Globe-Icon): API-e2e lief, echter UI-Durchlauf (Chat speichern, Zitaten-UI) noch nicht getestet — Session 2026-09-17 endete hier (Georg hatte keine Zeit mehr); Open WebUI URL: `http://10.8.0.16:3000`.
 3. [ ] `search_chats`/`view_chat` leakt durch `builtinTools`-Gating — ggf. Upstream-Check, ob Kategorie-Gate fehlt.
-4. [ ] Beim nächsten eigenen UI-Test prüfen, ob der `{}`-Bug (Stream-Drop mit builtin_tools=true) bei qwen3:8b-search im UI-Streaming auftritt (reasoning_tags/think=false sind gesetzt — sollte OK sein).
+4. [ ] Beim nächsten eigenen UI-Test prüfen, ob der `{}`-Bug (Stream-Drop mit builtin_tools=true) bei qwen3:8b-search im UI-Streaming auftritt (Stand 2026-09-17 abends: `think=true, reasoning_tags=false`, System-Prompt erlaubt Detail auf Nachfrage, API-e2e mit Thinking+Search verifiziert — kein `{}`-Bug, Antwort mit Citations; `reasoning_tags=true` dagegen killt die Tool-Injektion komplett, siehe PITFALLS).
 5. [ ] Admin-Promotion: Sobald neue Admins sich 1× per LDAP einloggen, im Admin Panel promoten (TIPS.md „Admin accounts").
 
 ## Offene Todos (älter)

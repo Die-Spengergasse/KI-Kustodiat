@@ -59,22 +59,37 @@ einzeln ihre GROQ-API-Keys; der LiteLLM-Router rotiert/last-balanciert über
 alle Keys (Cooldown bei 429). Open WebUI sieht nur EINEN Key (den
 LiteLLM-Key) — Rotation ist für den Client unsichtbar.
 
-### Setup (sobald die ersten Keys von Schülern da sind)
+### Status
+
+- **2026-09-17: erster Key aktiv** — Deployment-Row `groq-stt-georg`
+  (Georgs GROQ-Key, gleicher Key wie STT im OpenCode-Telegram-Pod
+  `oc-tg-bot-gregor` — bewusst geteilt, solange Free-Tier-Ratelimit reicht).
+  Open WebUI `audio.stt.model=groq-whisper` gesetzt (Config-DB), e2e via
+  `POST /v1/audio/transcriptions` verifiziert.
+- **Georgs Key entfernen, sobald ~2 Dutzend Schüler-Keys rotieren** (Free-Tier
+  teilt sich sonst Telegram-Bot-STT + WebUI-STT): `DELETE FROM
+  "LiteLLM_ProxyModelTable" WHERE model_id='groq-stt-georg';` + `docker
+  compose restart litellm`.
+
+### Setup (ein Deployment pro Key)
 
 1. **LiteLLM-DB: ein Deployment pro Key** (`/opt/litellm`-Postgres, Tabelle
-   `LiteLLM_ProxyModelTable`; via LiteLLM-UI oder SQL):
+   `LiteLLM_ProxyModelTable`; via LiteLLM-UI oder SQL). Tabelle hat
+   `created_at/updated_at` als TIMESTAMP (Default CURRENT_TIMESTAMP) und
+   `created_by/updated_by` als NOT NULL — v1.101.0:
 
    ```sql
    INSERT INTO "LiteLLM_ProxyModelTable"
-     (model_id, model_name, litellm_params, model_info, created_at, updated_at)
+     (model_id, model_name, litellm_params, model_info, created_by, updated_by)
    VALUES
      ('groq-stt-<schueler-n>', 'groq-whisper',
       '{"model": "groq/whisper-large-v3", "api_key": "<GROQ_KEY_SCHUELER_N>"}',
-      '{}', EXTRACT(EPOCH FROM now()) * 1000, EXTRACT(EPOCH FROM now()) * 1000);
+      '{}', 'admin', 'admin');
    ```
 
    Der Router load-balanced automatisch über alle Deployments mit demselben
-   `model_name` und Cooldown'ed Keys mit 429s.
+   `model_name` und Cooldown'ed Keys mit 429s. Danach `docker compose restart
+   litellm` (DB-Mode: Restart füllt den Key-Cache).
 
 2. **Open WebUI umstellen** (Admin Panel → Settings → Audio oder direkt
    config-DB, ConfigVar-Präzedenz beachten):
