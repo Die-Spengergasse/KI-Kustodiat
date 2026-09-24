@@ -7,9 +7,9 @@ user-facing Chat-Interface für Schüler und Lehrer.
 
 | Eigenschaft | Wert |
 |-------------|------|
-| Container | `open-webui` (Docker, `ghcr.io/open-webui/open-webui:main` v0.10.2) |
+| Container | `open-webui` (Docker, `ghcr.io/open-webui/open-webui:v0.11.4`, digest-gepinnt) |
 | Port | `:3000` (→ Container `:8080`) |
-| Auth | LDAP gegen `ldap.spengergasse.at:636` (Schul-AD) |
+| Auth | **LDAP-only** gegen `ldap.spengergasse.at:636` (Schul-AD, Service-Account-Bind) |
 | Backend | LiteLLM `:11434` (OpenAI-compatible) |
 | STT | Aktuell lokal (whisper `:11437`); geplant: Groq Cloud |
 | DB | SQLite: `/opt/litellm/open-webui-data/webui.db` |
@@ -108,13 +108,45 @@ um 3.9 GB VRAM freizugeben für ein lokales 7B-Modell.
 
 ## LDAP-Auth
 
-```
-Server: ldap.spengergasse.at:636 (LDAPS)
-Search Filter: (sAMAccountName={{login}})
-Base DN: OU=Automatisch gewartete Benutzer,OU=Benutzer,OU=SPG,DC=htl-wien5,DC=schule
-```
+**LDAP ist die einzige Login-Methode** (`ui.enable_login_form=false`) — kein lokales
+E-Mail-Formular, kein "Continue with Email/LDAP"-Toggle mehr.
 
-Erst-Login via Schul-AD = Admin.
+| Einstellung (Open-WebUI-DB `config`) | Wert |
+|---|---|
+| `ldap.enable` | `true` |
+| `ldap.server.host` / `port` / `use_tls` | `ldap.spengergasse.at` / `636` / `true` (LDAPS) |
+| `ldap.server.attribute_for_username` | `sAMAccountName` (kurzer Loginname, z. B. `grafg`) |
+| `ldap.server.attribute_for_mail` | `mail` |
+| `ldap.server.users_dn` (search base) | `OU=Automatisch gewartete Benutzer,OU=Benutzer,OU=SPG,DC=htl-wien5,DC=schule` |
+| `ldap.server.search_filter` | `(objectClass=user)` |
+| `ldap.server.app_dn` | Service-Account DN (siehe unten) |
+| `ldap.server.app_password` | **Secret** — nur in der DB bzw. host-lokal; im Repo nur Platzhalter |
+| `ui.default_user_role` | `user` (neue AD-User werden automatisch als `user` angelegt) |
+
+**Bind-Account zwingend:** Open WebUI macht *search-then-bind* (App-Bind → Suche → User-Bind
+mit dem eingegebenen Passwort). Dieser AD erlaubt **keinen anonymen Read** (anonymer Bind ok,
+Suchen liefern 0 Einträge) — ohne Service-Account findet die Suche keinen User. Einen
+Direct-Bind-Modus gibt es nicht (verifiziert am Code).
+
+**Wichtig — `search_filter`:** Open WebUI baut den Filter als
+`(&(<attribute_for_username>=<login>)(<search_filter>))`. `search_filter` ist ein
+*Zusatzfilter* und darf **kein `{{login}}`** enthalten. Der frühere Wert
+`(sAMAccountName={{login}})` war literal und ergab nie einen Treffer.
+
+**Admin:** `grafg@spengergasse.at` ist der einzige Admin. Der bestehende lokale Account wird
+per `mail` gematcht (LDAP liefert `grafg@spengergasse.at`), die Rolle bleibt erhalten. Das
+lokale Passwort ist **neutralisiert** (zufälliger bcrypt-Hash), damit `POST /auths/signin`
+nicht mehr lokal authentifiziert. Kein SMTP/Passwort-Reset konfiguriert → Recovery nur durch
+einen Admin.
+
+**Kein Container-Restart für Config-Änderungen:** `Config.get`/`get_many` lesen die DB pro
+Request, und `/api/config` baut `features.enable_ldap`/`enable_login_form` daraus — DB-Direct-
+Edits wirken sofort.
+
+> **Korrektur (2026-09-24, Issue #22):** Der frühere Eintrag „Erst-Login via Schul-AD = Admin"
+> war falsch. LDAP war nie funktional (kein Bind-Account, literaler `{{login}}`-Filter,
+> `attribute_for_username=uid`). Der „funktionierende" Login war der **lokale** Account
+> (`/auths/signin`), dessen Passwort zufällig dem Schulpasswort entsprach.
 
 ## HTTPS
 
