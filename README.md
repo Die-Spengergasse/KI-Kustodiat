@@ -1,4 +1,4 @@
-# LLM On-Premise — Spengergasse
+# KI-Kustodiat — Spengergasse
 
 On-premise LLM-Infrastruktur für die Spengergasse. Datenschutzkonforme
 KI-Assistenten für Unterricht und Coding – betrieben auf schuleigenen
@@ -16,9 +16,9 @@ Das Projekt ist offen angelegt. Beiträge und Feedback sind willkommen.
 ## Status
 
 Aktuell in der Planungsphase. Hardware-Entscheidung noch offen.
-→ Details in [Issue #2](https://github.com/Die-Spengergasse/llm-on-premise/issues/2),
-[#5](https://github.com/Die-Spengergasse/llm-on-premise/issues/5) und
-[#7](https://github.com/Die-Spengergasse/llm-on-premise/issues/7).
+→ Details in [Issue #2](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/2),
+[#5](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/5) und
+[#7](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/7).
 
 ## Architektur (Überblick)
 
@@ -85,14 +85,14 @@ Zugriff über **OpenAI-kompatible API** von LiteLLM:
 
 ## Nächste Schritte
 
-- [#2](https://github.com/Die-Spengergasse/llm-on-premise/issues/2) DGX Spark mit vLLM konfigurieren
-- [#3](https://github.com/Die-Spengergasse/llm-on-premise/issues/3) Management-VM aufsetzen
-- [#4](https://github.com/Die-Spengergasse/llm-on-premise/issues/4) Network Hardening
-- [#6](https://github.com/Die-Spengergasse/llm-on-premise/issues/6) LiteLLM Access Control
-- [#7](https://github.com/Die-Spengergasse/llm-on-premise/issues/7) Gemma 4 Evaluation
+- [#2](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/2) DGX Spark mit vLLM konfigurieren
+- [#3](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/3) Management-VM aufsetzen
+- [#4](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/4) Network Hardening
+- [#6](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/6) LiteLLM Access Control
+- [#7](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/7) Gemma 4 Evaluation
 
 ## Links
 
-- 🌐 **[Präsentationen](https://die-spengergasse.github.io/llm-on-premise/)** — Eröffnungskonferenz & ZID-Pitch
-- [GitHub Issues](https://github.com/Die-Spengergasse/llm-on-premise/issues)
-- [Diskussionen](https://github.com/Die-Spengergasse/llm-on-premise/discussions)
+- 🌐 **[Präsentationen](https://die-spengergasse.github.io/KI-Kustodiat/)** — Eröffnungskonferenz & ZID-Pitch
+- [GitHub Issues](https://github.com/Die-Spengergasse/KI-Kustodiat/issues)
+- [Diskussionen](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions)

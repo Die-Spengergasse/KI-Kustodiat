@@ -1,4 +1,4 @@
-# llm-on-premise — Spengergasse
+# KI-Kustodiat — Spengergasse
 
 <!--
   Template for new opencode projects.
@@ -73,7 +73,7 @@ The following skills have NO slash commands. Invoke them by natural language:
 
 ## Repository
 
-- GitHub: Die-Spengergasse/llm-on-premise
+- GitHub: Die-Spengergasse/KI-Kustodiat
 - Issue tracker: GitHub Issues
 
 ## Key Contacts

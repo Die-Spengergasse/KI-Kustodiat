@@ -1,4 +1,4 @@
-# DECISIONS — llm-on-premise
+# DECISIONS — KI-Kustodiat
 
 ## Beschlossen
 

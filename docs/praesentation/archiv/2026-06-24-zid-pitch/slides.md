@@ -296,4 +296,4 @@ Modelle von 2028 auf Hardware von 2026.
 
 Georg Graf · grafg@spengergasse.at
 
-github.com/Die-Spengergasse/llm-on-premise
+github.com/Die-Spengergasse/KI-Kustodiat

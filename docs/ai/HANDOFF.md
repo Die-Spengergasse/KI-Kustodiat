@@ -1,4 +1,4 @@
-# HANDOFF — llm-on-premise
+# HANDOFF — KI-Kustodiat
 
 Stand: 2026-09-24 · Branch `main` (trunk) · letzte Commits: `ee4ed72` (#22), `e0f2239` (#21).
 

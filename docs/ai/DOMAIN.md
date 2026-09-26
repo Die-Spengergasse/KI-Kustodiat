@@ -1,4 +1,4 @@
-# DOMAIN — llm-on-premise
+# DOMAIN — KI-Kustodiat
 
 ## Schulkontext
 

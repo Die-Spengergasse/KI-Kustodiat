@@ -77,7 +77,7 @@ Mit LiteLLM: Ollama → LiteLLM → Open WebUI (3 Hops, aber Guard + Auth + Rout
 ## Directory-Struktur (Repository)
 
 ```
-llm-on-premise/
+KI-Kustodiat/
 ├── ollama/               # Ollama Handbuch + Modelfiles + systemd unit
 ├── litellm/              # LiteLLM Handbuch + compose.yaml + config.yaml + plugins
 ├── openwebui/            # Open WebUI Handbuch

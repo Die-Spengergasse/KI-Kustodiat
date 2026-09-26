@@ -1,4 +1,4 @@
-# TIPS — llm-on-premise
+# TIPS — KI-Kustodiat
 
 Tips & Tricks for Open WebUI administration, database operations, and
 known configuration patterns. Additive knowledge — read before digging

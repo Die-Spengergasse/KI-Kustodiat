@@ -1,6 +1,6 @@
 # Host Inventory
 
-This directory records concrete hosts for the llm-on-premise stack.
+This directory records concrete hosts for the KI-Kustodiat stack.
 
 | File | Purpose | Tracked? |
 |---|---|---|

@@ -1,4 +1,4 @@
-# CONVENTIONS — llm-on-premise
+# CONVENTIONS — KI-Kustodiat
 
 ## Sprache
 - README und README-sichtbare Dokumentation: Deutsch

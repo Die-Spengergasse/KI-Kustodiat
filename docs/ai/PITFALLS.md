@@ -1,4 +1,4 @@
-# PITFALLS — llm-on-premise
+# PITFALLS — KI-Kustodiat
 
 ## Bekannte Fallstricke
 

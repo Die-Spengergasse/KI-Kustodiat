@@ -29,9 +29,9 @@ Das Angebot übersetzt sich in vier fachliche Felder:
 Gemeinsamer Kern: SysML-v2-Modellierung + ChatGPT/Cameo, KI-gestützte
 Requirements-/Architektur-/Code-Generierung (Embedded C, DB, UI).
 
-## Bezug zum llm-on-premise-Projekt
+## Bezug zum KI-Kustodiat-Projekt
 
-Der Aspekt **Souveränität/Unabhängigkeit** wird durch das llm-on-premise-Projekt
+Der Aspekt **Souveränität/Unabhängigkeit** wird durch das KI-Kustodiat-Projekt
 bereits abgedeckt (Open-Source-Modelle GLM-5.2/DeepSeek V4/Qwen 3.6,
 DSGVO-konformer On-Premise-Betrieb, hybrider Ansatz). Ein potenzieller Mehrwert
 eines externen Moduls läge daher primär in den Feldern **MBSE** und
