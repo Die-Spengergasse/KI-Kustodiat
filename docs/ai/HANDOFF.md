@@ -3,8 +3,27 @@
 Stand: 2026-09-28 · Branch `main` (trunk) · letzte Commits: `f27e248` (#23), `ee4ed72` (#22), `e0f2239` (#21).
 
 ## Gerade abgeschlossen
+- **Issue #24 — Kollegiums-Ideenaufruf, rev. 2 (Meta-first):** E-Mail-Entwurf und Anker-Discussion #27 um die Grundsatzfrage erweitert: Wofür soll das Kustodiat da sein / was erwarten / was erhoffen Sie sich — Ich-Stimme („eigentlich wollte ich nur spielen") als Aufhänger. #25/#26 als nachgelagerte Ausgestaltung. Issue #3 als time-critical markiert (blockiert #24-Versand, 2–3-Wochen-Budgetfenster).
 - **Issue #24 — Kollegiums-Ideenaufruf** (docs-only): Entwurf `docs/extern/kollegium-ideen-email-draft.md` (Ideen + Wünsche + Anforderungen, Infrastruktur-Verweis, Zeitschiene ~2–3 Wochen → Budgetforderung → Stimmungsbild); GitHub Discussions angelegt — Anker #27 (Announcements), Ideen-Threads #25/#26; Archiv-Konvention `docs/extern/mail-archiv/README.md`. Issue #3 um internetfähige ZID-VM (DMZ, 80/443, Let's Encrypt) erweitert.
 - **Issue #22 — Open WebUI LDAP-only** implementiert + committet (`ee4ed72`): Service-Account-Bind, `sAMAccountName`, `search_filter=(objectClass=user)`, `ui.enable_login_form=false` (kein Email-Formular/Toggle), lokales Admin-Passwort neutralisiert. Realer AD-Login verifiziert. Docs: `openwebui/README.md`, `litellm/compose.yaml`, `.env.example`, `infra/hosts/gregor.md`.
+
+## Politischer Rahmen (bewusst dokumentiert)
+
+- Die **Direktion** will das KI-Kustodiat; das **Budget** wird nicht von der
+  Direktion, sondern vom **Ministerium** genehmigt. Die Direktion fordert
+  laufend Gelder beim Ministerium an.
+- Deshalb: Die **Sinnfrage des Kustodiats nie explizit stellen** — eine offene
+  „Brauchen wir das überhaupt?"-Frage wäre gegenüber der Direktion nicht
+  angemessen. Sie wird **subtil über Wofür/Erwartung/Hofflung** formuliert und
+  schwingt zwischen den Zeilen mit (Tonalitäts-Regel im E-Mail-Entwurf).
+- Die Grundsatzfrage selbst bleibt legitim: Wenn die Rückmeldungen dünn
+  ausfallen, ist das die stillschweigende Antwort — sie muss niemand aussprechen.
+- **Transparenz-Grundsatz (bewusste Entscheidung von Georg):** Diese
+  politische Kette steht absichtlich öffentlich im Repo. Maximale Transparenz
+  wird vorgelebt; die tiefe Ordnerstruktur (`docs/ai/`) wirkt als Filter —
+  wer hier liest, hat sich bewusst und gründlich mit der Materie
+  auseinandergesetzt. Diese Offenlegung **nicht rückgängig machen** und
+  sensible Punkte nicht stärker verschleiern, als die Regel es verlangt.
 
 ## Offen (nächste Session)
 1. [ ] **#24 Ideenaufruf:** Anker-Discussion [#27](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions/27) **manuell anpinnen** (GitHub-GraphQL bietet kein `pinDiscussion` in dieser Schema-Version). E-Mail erst nach ZID-VM + HTTPS versenden (Open-WebUI-URL-Platzhalter ersetzen); danach gesendete Fassung nach `docs/extern/mail-archiv/`.
