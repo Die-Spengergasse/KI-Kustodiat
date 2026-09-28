@@ -54,7 +54,6 @@ gregor-Stack live: LiteLLM **1.101.0** (DB-mode, `store_model_in_db=true`, Image
 
 ## Pending
 - [ ] Issue #24: Anker-Discussion #27 manuell anpinnen; E-Mail nach HTTPS-Freigabe versenden (URL-Platzhalter); gesendete Fassung archivieren.
-- [ ] Issue #28: ZID-Klärung Org-Rollen (36 Admins sehen private Repos) — Analyse in internem Repo `docs/intern/zugriff-org-rollen.md`.
 - [ ] Issue #3 erweitert (**time-critical**, blockiert #24-Versand + Budgetfenster): ZID-VM (DMZ, `80/443`, DNS, Let's Encrypt) anfragen; falls ZID nicht in ~1–2 Wochen liefert → Fallback prüfen (E-Mail nur mit Pages-Link, Entscheidung: Georg).
 - [x] opencode `OPENCODE_MODELS_URL`-Problem gelöst (2026-07-05): daemonized `opencode serve` erbt nun die Env-Var; Picker zeigt die 2 LiteLLM-Modelle.
 - [ ] Katalog-Änderungen in Zukunft: `models`-Restriction der Virtual Keys bleibt leer (`{}`) — sie erben den Proxy-Katalog automatisch. Beim Hinzufügen eines Modells: ollama-Tag pullen → `config.yaml` `model_list`-Eintrag → `docker compose restart litellm` (Config wird nur am Startup gelesen). Kein Key-Edit nötig solange `models={}`.
