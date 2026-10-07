@@ -100,9 +100,10 @@ services:
   whisper:
     image: hwdsl2/whisper-server:cuda
     container_name: whisper
-    # Deaktiviert 2026-09-17 (#17): STT kommt künftig via GROQ. Nie Autostart (VRAM-Konkurrenz mit 8B-Modellen).
-    # Manueller Start bei Bedarf: docker compose up -d whisper
-    restart: "no"
+    # Aktiv 2026-10-07: STT läuft lokal auf der GPU (large-v3, dauerhaft).
+    # Ollama ist deaktiviert, daher keine VRAM-Konkurrenz. LiteLLM/GROQ nur
+    # noch als dokumentierte Reserve (siehe whisper/README.md).
+    restart: unless-stopped
     ports:
       - "11437:9000"
     environment:

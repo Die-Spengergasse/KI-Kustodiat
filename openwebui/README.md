@@ -10,8 +10,8 @@ user-facing Chat-Interface für Schüler und Lehrer.
 | Container | `open-webui` (Docker, `ghcr.io/open-webui/open-webui:v0.11.4`, digest-gepinnt) |
 | Port | `:3000` (→ Container `:8080`) |
 | Auth | **LDAP-only** gegen `ldap.spengergasse.at:636` (Schul-AD, Service-Account-Bind) |
-| Backend | LiteLLM `:11434` (OpenAI-compatible) |
-| STT | Aktuell lokal (whisper `:11437`); geplant: Groq Cloud |
+| Backend | Whisper direkt (`http://whisper:9000/v1`); Chat-Modelle per BYOK (Direct Connections, z. B. DeepSeek-Token) — kein lokales LLM (Ollama deaktiviert 2026-10-07) |
+| STT | Lokal (whisper `:11437`, `large-v3`, direkt angebunden); GROQ-Rotation als dokumentierte Reserve via LiteLLM (derzeit gestoppt) |
 | DB | SQLite: `/opt/litellm/open-webui-data/webui.db` |
 
 ## Modellauswahl
@@ -98,13 +98,17 @@ bereit für Nutzung sobald ein größeres Modell (7B+) läuft.
 
 ## Audio / STT
 
-Aktuelle Konfiguration (Admin Panel → Settings → Audio):
+Aktuelle Konfiguration (Stand 2026-10-07, Direkt-Modus ohne LiteLLM):
 - STT Engine: `openai`
-- API Base: `http://litellm:11434/v1` (via LiteLLM zu lokalem whisper)
+- API Base: `http://whisper:9000/v1` (direkt auf den Whisper-Container)
 - Model: `whisper-1`
+- Key: `WHISPER_API_KEY` aus `/opt/litellm/.env`
 
-**Geplant:** Migration zu Groq Cloud (`https://api.groq.com/openai/v1`)
-um 3.9 GB VRAM freizugeben für ein lokales 7B-Modell.
+**Reserve (dokumentiert, derzeit gestoppt):** LiteLLM-Router
+(`http://litellm:11434/v1`) mit `whisper-1` + `groq-whisper`-Deployments
+(Rotation über Schüler-Keys) — siehe `whisper/README.md`
+(LiteLLM-Reaktivierung). Vor 2026-10-07 lief STT über LiteLLM mit
+GROQ-Fallback; Details in `docs/ai/HISTORY.md`-würdigen HANDOFF-Einträgen.
 
 ## LDAP-Auth
 

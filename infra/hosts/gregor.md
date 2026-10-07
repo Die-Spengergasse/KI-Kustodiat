@@ -1,6 +1,6 @@
 # Host: gregor
 
-> Status: **active** — interim inference + gateway host (2026-07-05).
+> Status: **active** — STT + gateway host (2026-10-07: GPU nur Whisper, Ollama deaktiviert).
 > Predecessor name: `dev-rig-01` (inventoried 2026-07-02, hostname `TODO`).
 > See `docs/ai/HISTORY.md` for the original `dev-rig-01` inventory text.
 
@@ -8,7 +8,7 @@
 
 | Field | Value |
 |---|---|
-| Role | Interim inference + gateway host (ollama + LiteLLM); **not** a vLLM backend (8 GB VRAM too small for target models) |
+| Role | STT host (Whisper `large-v3` exklusiv auf der GPU) + Open WebUI/SearXNG-Träger; **Ollama deaktiviert, LiteLLM-Stack gestoppt (Reserve)** — kein lokales LLM, Chat per BYOK (Direct Connections) |
 | Hostname | gregor |
 | CPU | Intel Xeon E3-1230 v6 @ 3.50 GHz (4 cores / 8 threads, Kaby Lake) |
 | Motherboard | Gigabyte GR-X150-PRO ECC *(model unverified — TODO confirm)* |

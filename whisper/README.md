@@ -3,6 +3,13 @@
 Whisper läuft als Docker-Container auf gregor und transkribiert
 Sprachnachrichten für Open WebUI.
 
+> **Stand 2026-10-07: Whisper ist der einzige GPU-Dienst auf gregor**
+> (`large-v3`, dauerhaft, `restart: unless-stopped`). Ollama ist
+> deaktiviert (`systemctl disable ollama`), LiteLLM + Postgres +
+> models-proxy sind gestoppt (Reserve, siehe unten). Open WebUI spricht
+> Whisper **direkt** an (`http://whisper:9000/v1`), ohne LiteLLM-Hop.
+> GROQ-Rotation bleibt als dokumentierte Reserve erhalten.
+
 ## Service
 
 | Eigenschaft | Wert |
@@ -109,6 +116,32 @@ LiteLLM-Key) — Rotation ist für den Client unsichtbar.
 - **Rückweg zu lokalem Whisper** (DSGVO-Fallback): `docker compose up -d
   whisper` + DB-INSERT laut PITFALLS.md (Whisper-Restore-Anleitung) +
   `audio.stt.model` = `whisper-1`.
+
+### Direkt-Modus ohne LiteLLM (Stand 2026-10-07, aktiv)
+
+Open WebUI spricht Whisper direkt an — kein LiteLLM-Hop:
+
+- `audio.stt.openai.api_base_url` = `http://whisper:9000/v1` (Container-DNS)
+- `audio.stt.model` = `whisper-1`
+- Key: `WHISPER_API_KEY` aus `/opt/litellm/.env`
+- Nach DB-Edit `docker compose restart open-webui`
+  (`audio.stt.*` wird beim Start in Memory geladen).
+
+### LiteLLM-Reaktivierung (Reserve, gestoppt 2026-10-07)
+
+`litellm`, `db`, `models-proxy` sind nur gestoppt (`stop`, nicht `down`):
+
+```bash
+cd /opt/litellm
+sudo docker compose up -d litellm db models-proxy
+# whisper-1-Row + groq-stt-*-Rows laut PITFALLS.md prüfen/neu anlegen
+sudo docker compose restart litellm
+```
+
+Danach Open-WebUI-Base zurück auf `http://litellm:11434/v1` mit
+`LITELLM_PROXY_KEY` + `restart open-webui`. Dieser Pfad ist nötig, sobald
+GROQ-Fallback oder Key-Rotation wieder gebraucht werden (direkt angebundenes
+Whisper kennt nur einen Key und kein Failover).
 
 ### DSGVO
 
