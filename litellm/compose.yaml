@@ -110,7 +110,9 @@ services:
       WHISPER_MODEL: large-v3
       WHISPER_DEVICE: cuda
       WHISPER_COMPUTE_TYPE: float16
-      WHISPER_LANGUAGE: de
+      # auto = faster-whisper autodetect pro Request (verbose_json liefert
+      # language + language_probability). Per-Request-`language` gewinnt immer.
+      WHISPER_LANGUAGE: auto
       WHISPER_PORT: 9000
       WHISPER_BEAM: 5
       WHISPER_LOG_LEVEL: INFO

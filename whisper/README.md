@@ -19,7 +19,7 @@ Sprachnachrichten für Open WebUI.
 | Model | `large-v3` |
 | Device | CUDA (GPU) |
 | Compute Type | `float16` |
-| Language | `de` (Deutsch als Default) |
+| Language | `auto` (Autodetect pro Request; `verbose_json` liefert `language` + `language_probability`; per-Request-`language` gewinnt immer) |
 | VRAM | ~3.9 GB |
 
 ## Konfiguration (compose.yaml)
