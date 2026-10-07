@@ -1,18 +1,20 @@
 # Architecture
 
-Living structural map of the system as of 2026-09-24.
+Living structural map of the system as of 2026-10-07.
 
 ## Overview
 
-On-premise LLM-Infrastruktur für die Spengergasse. Aktuell (Übergang)
-auf einem Single-GPU-Host **gregor** (RTX 2070 SUPER, 8 GB VRAM):
-ollama als Inference-Backend, LiteLLM (Docker) als auth+Rate-Limit+Routing-Gateway,
-ein Custom-LiteLLM-Plugin (**SingleGpuGuard**) erzwingt Single-Model-
-Residency auf der einen GPU, und ein models.dev-Merging-Proxy speist
-die Modellliste dynamisch in opencode ein. Langfristig zieht LiteLLM auf
-die Management-VM (Issue #3) um; das gesamte Stack-Verzeichnis `/opt/litellm`
-ist portabel (`rsync` + `docker compose up`), `api_base` zeigt immer auf
-gregors WireGuard-IP `<WG_IP_GREGOR>` (siehe `infra/hosts/secrets.local.md`; temporär/DHCP — migriert ohne Config-Edit, da kompose/LiteLLM bei gleichem Hostnamen bleibt).
+On-premise Infrastruktur für die Spengergasse. Single-GPU-Host **gregor**
+(RTX 2070 SUPER, 8 GB VRAM) — Stand 2026-10-07: **GPU exklusiv für Whisper**
+(`large-v3`, ~3,9 GB VRAM, dauerhaft). **Ollama deaktiviert** (`systemctl
+disable ollama`, kein lokales LLM); **LiteLLM + Postgres + models-proxy
+gestoppt** (Reserve, Reaktivierung in `whisper/README.md` dokumentiert).
+Open WebUI (`:3000`, Klartext hinter ZID-SSL-nginx) spricht Whisper **direkt**
+an (`http://whisper:9000/v1`); Chat-LLM kommt per BYOK vom User
+(`direct.enable=true`, z. B. DeepSeek-Token). SearXNG (`:80`) bleibt
+Search-Backend für Tool-Calls FC-fähiger BYOK-Modelle. SingleGpuGuard ist mit
+gestopptem LiteLLM inaktiv (ohnehin STT-inkompatibel — gated nur
+completion/embeddings, keine Transkription).
 
 ## Why LiteLLM?
 
@@ -104,14 +106,13 @@ KI-Kustodiat/
 
 ## Data Flows
 
-- Schüler/Lehrer → opencode-Picker → `litellm/qwen3:1.7b` (etc.) → LiteLLM `:11434` (Bearer virtual-key) → SingleGpuGuard (busy→429 / idle→swap) → ollama `:11435` → GPU.
-- Open WebUI → LiteLLM `:11434` (Bearer virtual-key) → SingleGpuGuard → ollama `:11435` → GPU. STT via whisper `:11437`.
-- Login (Schüler/Lehrer) → Open WebUI `:3000` → LDAPS `ldap.spengergasse.at:636` (search-then-bind via Service-Account, `sAMAccountName`). Lokales Login-Formular deaktiviert (LDAP-only, Issue #22); neue User werden per `mail` gematcht bzw. als `user` angelegt.
-- opencode model-discovery: Client `GET http://<WG_IP_GREGOR>:11436/api.json` (OPENCODE_MODELS_URL; IP aus `infra/hosts/secrets.local.md`) → models-proxy merged upstream models.dev + `litellm`-Provider (Modelle aus `GET :11434/v1/models`) → Picker; Refresh alle ~60 min.
-- Neues Modell: `ollama pull`/`create` + Eintrag in LiteLLM DB (`LiteLLM_ProxyModelTable` via UI oder SQL, `store_model_in_db=true`) + Open WebUI `model` table (`base_model_id = NULL`!) → automatisch im Katalog. `config.yaml` `model_list` bleibt leer.
-- Migration auf Management-VM (Issue #3): `rsync -a /opt/litellm <vm>:` + `docker compose up -d`; `api_base` bleibt `http://<WG_IP_GREGOR>:11435` (IP aus `infra/hosts/secrets.local.md`), `OPENCODE_MODELS_URL` bleibt `:11436` (gregor), erreichbar über WireGuard.
+- STT: Browser (via ZID-HTTPS-Front) → Open WebUI `:3000` → Whisper `whisper:9000` direkt (`WHISPER_API_KEY`) → GPU. Kein LiteLLM-Hop. Reserve-Pfad via LiteLLM (`:11434` → `whisper-1`/`groq-whisper`) dokumentiert, derzeit gestoppt.
+- Chat: Browser → Open WebUI `:3000` → BYOK-Modell-API direkt (User-Key, `direct.enable=true`) — kein lokaler Hop. Tool-Calls (`search_web`) → SearXNG (`gregor:80`) → Antwort.
+- Login: Open WebUI `:3000` → LDAPS `ldap.spengergasse.at:636` (LDAP-only, Issue #22).
+- Reaktivierung LiteLLM: `up -d litellm db models-proxy` + Deployment-Rows prüfen + Open-WebUI-Base zurück auf `http://litellm:11434/v1` (siehe `whisper/README.md`).
 
 ## Known Gaps (siehe PITFALLS.md / DECISIONS.md)
 
-- Kein ufw: `:11435` (ollama) direkt erreichbar → Bypass um LiteLLM-Auth möglich (Issue #4).
-- `OPENCODE_MODELS_URL` aktuell nur in georgs `~/.bash_aliases` — Schüler noch nicht versorgt.
+- BYOK-Keys liegen am Server (Backend macht die Requests) — kein Client-only-BYOK; DeepSeek-direkt = Tier-4-DSGVO (China), Eigenverantwortung des Key-Inhabers.
+- LiteLLM-Chat-Rows + Open-WebUI-`model`-Rows lokaler LLMs sind Karteileichen (Ollama aus) — ausblenden oder als tot dokumentieren.
+- Mic braucht externen Secure Context (ZID-TLS) — intern bleibt `:3000` Klartext (by design).

@@ -41,3 +41,8 @@ Entries here are no longer active truth. Never delete from this file.
 - Service zu compose.yaml hinzugefügt (`ghcr.io/open-webui/open-webui:main`). LDAP konfiguriert (`ldap.spengergasse.at:636`, search base `OU=Automatisch gewartete Benutzer,…`). Erst-Login via Schul-AD = Admin. Mic-Reparatur: User-Settings hatten `engine=web` (override) → auf `openai` gesetzt mit `api_base_url=http://litellm:11434/v1`. Web-UI auf `:3000`.
 - **Origin**: `docs/ai/STATE.md` (Completed-Eintrag).
 - **Reason**: Die Aussage „LDAP konfiguriert / Erst-Login via Schul-AD = Admin" war falsch. LDAP war nie funktional (kein Bind-Account, literaler `{{login}}`-Filter, `attribute_for_username=uid`); der „funktionierende" Login lief über den lokalen Account. Korrigiert in Issue #22 (LDAP-only, Service-Account-Bind).
+## 2026-10-07 (SUPERSEDED 2026-10-07, origin: PITFALLS.md, reason: Whisper reaktiviert exklusiv, Ollama deaktiviert #21)
+- **Whisper (3,8 GB VRAM, resident) verdrängt große LLM von der GPU (verifiziert 2026-09-17, Issue #17)**: Whisper hielt ~3,8 GB VRAM dauerhaft → qwen3:8b nur 39 % GPU-Layer, Rest CPU. Fix damals: `docker compose stop whisper` + Reload → 100 % GPU, 58 tok/s. Faustregel: Whisper + max. ein 8B-Modell schließen sich aus.
+- **Whisper dauerhaft deaktiviert (2026-09-17, Issue #17 — STT via GROQ)**: `restart: "no"` + `DELETE whisper-1` aus LiteLLM-DB; STT lief über `groq-stt-georg`. Restore-Pfad dokumentiert.
+- **Origin**: docs/ai/PITFALLS.md
+- **Reason**: 2026-10-07 GPU exklusiv für Whisper (`large-v3`, dauerhaft), Ollama deaktiviert, Open WebUI direkt angebunden; LiteLLM/GROQ nur noch Reserve. VRAM-Konflikt entfällt (kein LLM mehr auf der GPU).
