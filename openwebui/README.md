@@ -154,5 +154,7 @@ Edits wirken sofort.
 
 ## HTTPS
 
-**Offen (Issue #14):** Mic-Zugriff benötigt Secure Context (HTTPS).
-Caddy oder nginx als Reverse Proxy vor `:3000` geplant.
+**Live seit 2026-10-08 (Issue #3):** nginx-TLS-Front auf Host `kik`
+(`openwebui.kik.spengergasse.at` → `proxy_pass http://10.50.11.10:3000`,
+Let's Encrypt, 80→443-Redirect, kein HSTS). Offen: Mic-e2e via Front
+(Secure Context) verifizieren, danach HSTS-Header setzen.

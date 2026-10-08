@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>kik.spengergasse.at — KI-Kustodiat</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+  <header class="container">
+    <nav>
+      <ul>
+        <li><strong>KI-Kustodiat</strong></li>
+      </ul>
+      <ul>
+        <li>
+          <button id="theme-toggle" class="outline secondary" aria-label="Farbschema wechseln">Farbschema: Auto</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="container">
+    <h1>KI-Kustodiat der Spengergasse</h1>
+    <p>
+      <a href="https://openwebui.kik.spengergasse.at" role="button">Open WebUI öffnen (HTTPS)</a>
+    </p>
+    <p>Diese Seite befindet sich im Aufbau. Der Chat-Zugang läuft bereits verschlüsselt über HTTPS.</p>
+  </main>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var btn = document.getElementById('theme-toggle');
+      var modes = ['auto', 'light', 'dark'];
+      var labels = { auto: 'Auto', light: 'Hell', dark: 'Dunkel' };
+      var mode = localStorage.getItem('kik-theme') || 'auto';
+      function apply(m) {
+        mode = m;
+        root.setAttribute('data-theme', m);
+        btn.textContent = 'Farbschema: ' + labels[m];
+        try { localStorage.setItem('kik-theme', m); } catch (e) {}
+      }
+      btn.addEventListener('click', function () {
+        apply(modes[(modes.indexOf(mode) + 1) % modes.length]);
+      });
+      apply(mode);
+    })();
+  </script>
+</body>
+</html>

@@ -59,12 +59,13 @@ gregor 2026-10-07: GPU exklusiv Whisper `large-v3` (dauerhaft, direkt an Open We
 - [x] opencode `OPENCODE_MODELS_URL`-Problem gelöst (2026-07-05): daemonized `opencode serve` erbt nun die Env-Var; Picker zeigt die 2 LiteLLM-Modelle.
 - [ ] Katalog-Änderungen in Zukunft: `models`-Restriction der Virtual Keys bleibt leer (`{}`) — sie erben den Proxy-Katalog automatisch. Beim Hinzufügen eines Modells: ollama-Tag pullen → `config.yaml` `model_list`-Eintrag → `docker compose restart litellm` (Config wird nur am Startup gelesen). Kein Key-Edit nötig solange `models={}`.
 - [ ] OPENCODE_MODELS_URL für Schüler-Lab austollen (Shared-Launcher / /etc/profile.d) — aktuell nur georgs Shell
+- [x] **kik nginx-TLS-Front live (2026-10-08, Issue #3):** nginx 1.26.3 auf Management-VM `kik` (`:80`/`:443` öffentlich), zwei VHosts (`kik.spengergasse.at` statisch aus `/var/www/kik` via rsync aus `website/`; `openwebui.kik.spengergasse.at` → `proxy_pass 10.50.11.10:3000`, WebSocket, 100M, 300s), zwei separate Let's-Encrypt-Certs, 80→443-Redirect, Renewal via `certbot.timer` + Dry-Run, kein HSTS (erst nach e2e). Hostakte `infra/hosts/kik.md`, VHost-Referenzen `infra/nginx/`. Offen: Mic-e2e via Front, LiteLLM-Migration auf kik.
 - [ ] Management-VM aufsetzen (Issue #3) — LiteLLM migriert dann dorthin (rsync /opt/litellm + compose up, api_base bleibt <WG_IP_GREGOR>; IP siehe `infra/hosts/secrets.local.md`)
 - [ ] Network Hardening / ufw für :11435 (Issue #4) — aktuell Bypass möglich (Known Gap)
 - [ ] Hardware-Entscheidung (Issues #2, #5, #7)
 - [ ] LiteLLM Access Control / Virtual-Keys für User-Groups (Issue #6) — kombiniert mit Open WebUI-Rollen (LDAP-Gruppen → LiteLLM-Budgets)
 - [ ] dev-rig-01: Adapter einbauen, PCIe-Stränge prüfen, Specs nachtragen (Issue #12)
-- [ ] HTTPS für Open WebUI (Mic/STT benötigt sicheren Kontext) — Caddy oder nginx als Reverse Proxy vor :3000
+- [ ] HTTPS-Front live (2026-10-08, Issue #3: nginx auf kik) — offen nur noch Mic-e2e via Front (Secure Context) + HSTS danach
 - [ ] Kein Function-Calling mit Qwen3 1.7B (builtin_tools + tool_choice=none blockieren auch Web-Search). Benötigt größeres Modell oder Upgrade von LiteLLM/Ollama für stabilen Tool-Call-Streaming via Open WebUI.
 - [ ] Cortecs-Vertrag anfragen (`docs/extern/cortecs-anfrage-email-draft.md` an `enterprise@cortecs.ai`) — Bildungs-Rabatt, DPA, Modellpreise, 30-Tage-Pilot klären (Issue #14)
 - [ ] Framework Desktop Strix Halo 128 GB bestellen (Issues #2/#5/#7) — On-Prem-Backend für DSGVO-kritische Last + Q3-Modelle

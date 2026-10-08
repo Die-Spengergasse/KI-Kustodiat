@@ -1,0 +1,36 @@
+server {
+    server_name kik.spengergasse.at;
+
+    root /var/www/kik;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    error_page 404 /404.html;
+
+    access_log /var/log/nginx/kik.spengergasse.at.access.log;
+    error_log /var/log/nginx/kik.spengergasse.at.error.log;
+
+    listen 443 ssl; # managed by Certbot
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/kik.spengergasse.at/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/kik.spengergasse.at/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = kik.spengergasse.at) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    listen [::]:80;
+    server_name kik.spengergasse.at;
+    return 404; # managed by Certbot
+
+
+}
