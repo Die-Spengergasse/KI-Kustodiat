@@ -30,8 +30,8 @@ Stand: 2026-10-07 · Whisper exklusiv auf GPU (Ollama aus, LiteLLM gestoppt/Rese
 ## Offen (nächste Session)
 1. [ ] **#24 Ideenaufruf:** Anker-Discussion [#27](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions/27) **manuell anpinnen** (GitHub-GraphQL bietet kein `pinDiscussion` in dieser Schema-Version). E-Mail mit ZID-HTTPS-URL versenden (VM da, nginx redet Klartext auf `:3000`); danach gesendete Fassung nach `docs/extern/mail-archiv/`.
 2. [ ] **STT-e2e über ZID-Front:** Upload + Mic im UI via HTTPS (Secure Context kommt von außen). Bei Whisper-Ausfall: Reserve-Pfad `whisper/README.md` (LiteLLM-Reaktivierung).
-3. [ ] **BYOK-Search-e2e:** FC-fähiges BYOK-Modell (`FC=native`, `builtin_tools=true`) → `search_web` → SearXNG `:80` verifizieren. (Altes `qwen3:8b-search`-Rezept obsolet solange Ollama aus.)
-4. [ ] Tote lokale LLM-Rows aus Open-WebUI-`model`-Tabelle ausblenden (Ollama aus — sonst chatten User ins Leere).
+3. [x] **BYOK-Search-e2e (verifiziert 2026-10-08):** `deepseek-v4.1-flash` via Zen-Direct-Connection → `search_web` → SearXNG-Hits + Scrapes → Antwort mit Citations. Caveat: Zen-Free-Modelle flattern (`big-pickle`, `muse-spark` derzeit 404) — pro Modell verifizieren, Details in PITFALLS.md.
+4. [x] Tote lokale LLM-Rows sind bereits `is_active=0` (alle 5 `model`-Rows, verifiziert 2026-10-08) — Picker zeigt nur Direct-Connection-Modelle; frische LDAP-User ohne Direct Connection sehen **kein Modell**.
 5. [ ] `search_chats`/`view_chat` leakt durch `builtinTools`-Gating — Upstream-Check (fehlendes Kategorie-Gate).
 6. [ ] **Admin-Promotion:** neue Admins nach ihrem 1. LDAP-Login im Admin-Panel promoten (`grafg@spengergasse.at` ist aktuell der einzige Admin).
 
