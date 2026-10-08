@@ -6,6 +6,11 @@
   <meta name="color-scheme" content="light dark">
   <title>kik.spengergasse.at — KI-Kustodiat</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <style>
+    /* Pico-Skala auf Normalgröße: 87,5 % statt 100–131,25 % (alles rem → Zoom wirkt weiter). */
+    :root { --pico-font-size: 87.5%; }
+    .table-scroll { overflow-x: auto; }
+  </style>
 </head>
 <body>
   <header class="container">
@@ -63,6 +68,18 @@
         als eigenes Modell nutzen. Dein Key bleibt dabei dein Key —
         die Abrechnung läuft über dein Abo.
       </p>
+      <p>
+        Es genügt ein <strong>kostenloser Console-Account</strong> (z.&nbsp;B.
+        <em>Login with GitHub</em>) — <strong>Geld einzahlen muss man
+        nicht</strong>; Zahlungsmittel sind erst nötig, wenn man
+        kostenpflichtige Modelle nutzt. Über die Zen-Schnittstelle stehen
+        bereits <strong>Gratismodelle</strong> bereit (z.&nbsp;B.
+        <code>big-pickle</code>, <code>space-bunny-free</code>,
+        <code>longcat-2.5-preview-free</code>, <code>exo-free</code>).
+        Beachte: Die Gratisphase ist zeitlich begrenzt, und bei
+        Free-Modellen dürfen die Anbieter die Daten zum Verbessern nutzen.
+      </p>
+      <div class="table-scroll">
       <table>
         <thead>
           <tr>
@@ -80,6 +97,12 @@
             <td><code>openai/gpt-…</code>, <code>anthropic/claude-…</code> (siehe <a href="https://openrouter.ai/models">Modellliste</a>)</td>
           </tr>
           <tr>
+            <td>OpenCode Console (Gratismodelle, ohne Abo)</td>
+            <td><code>https://opencode.ai/zen/v1/chat/completions</code></td>
+            <td><a href="https://opencode.ai/auth">OpenCode Console</a> (Account genügt, keine Einzahlung)</td>
+            <td><code>big-pickle</code>, <code>space-bunny-free</code>, <code>longcat-2.5-preview-free</code>, <code>exo-free</code> (siehe <a href="https://opencode.ai/v2/docs/console/models/">Modellliste</a>)</td>
+          </tr>
+          <tr>
             <td>OpenCode&nbsp;Go ($10/Monat)</td>
             <td><code>https://opencode.ai/zen/go/v1/chat/completions</code></td>
             <td><a href="https://opencode.ai/auth">OpenCode Console</a> (Abo → API-Key kopieren)</td>
@@ -87,6 +110,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
       <ol>
         <li><strong>Key besorgen:</strong> Beim Anbieter anmelden, ggf. Abo abschließen, API-Key kopieren.</li>
         <li><strong>Verbindung anlegen:</strong> In Open WebUI zu <em>Einstellungen → Verbindungen</em> gehen, eine <em>OpenAI-kompatible Verbindung</em> hinzufügen und Basis-URL plus Key eintragen.</li>
