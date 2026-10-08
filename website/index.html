@@ -22,10 +22,86 @@
   </header>
   <main class="container">
     <h1>KI-Kustodiat der Spengergasse</h1>
-    <p>
-      <a href="https://openwebui.kik.spengergasse.at" role="button">Open WebUI öffnen (HTTPS)</a>
-    </p>
-    <p>Diese Seite befindet sich im Aufbau. Der Chat-Zugang läuft bereits verschlüsselt über HTTPS.</p>
+
+    <section>
+      <h2>Chat starten</h2>
+      <p>
+        <a href="https://openwebui.kik.spengergasse.at" role="button">Open WebUI öffnen (HTTPS)</a>
+      </p>
+      <p>
+        Für den Chat ist ein <strong>Spengergassen-Login</strong> erforderlich.
+        Als Benutzername dient der Teil deiner Schul-Mailadresse <strong>vor dem
+        <code>@</code>-Zeichen</strong> — also z.&nbsp;B. <code>vorname.nachname</code>
+        aus <code>vorname.nachname@spengergasse.at</code>. Dazu gehört dein
+        normales Schulpasswort.
+      </p>
+    </section>
+
+    <section>
+      <h2>Infrastruktur &amp; Modelle</h2>
+      <p>
+        Die <strong>Audio-Transkription</strong> (Sprache&nbsp;→ Text) läuft zu
+        <strong>100&nbsp;% im Haus</strong> auf einer gespendeten Grafikkarte —
+        keine Audiodaten verlassen dafür die Schule.
+      </p>
+      <p>
+        Wir sind gerade erst am Starten: Aktuell gibt es in Open WebUI
+        <strong>noch keine allgemein konfigurierten KI-Modelle</strong>.
+        Bis die zentrale Modellversorgung steht, kannst du dein
+        <strong>eigenes Abo-Modell</strong> als Custom Model einbinden —
+        Anleitung siehe unten.
+      </p>
+    </section>
+
+    <section>
+      <h2>Eigenes Abo-Modell einbinden (Custom Models)</h2>
+      <p>
+        Open WebUI versteht <strong>OpenAI-kompatible Schnittstellen</strong>.
+        Damit lassen sich z.&nbsp;B. ein
+        <a href="https://openrouter.ai">OpenRouter</a>- oder ein
+        <a href="https://opencode.ai/docs/go/">OpenCode-Go</a>-Abonnement
+        als eigenes Modell nutzen. Dein Key bleibt dabei dein Key —
+        die Abrechnung läuft über dein Abo.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Anbieter</th>
+            <th>Basis-URL</th>
+            <th>Key herbekommen</th>
+            <th>Modell-ID (Beispiele)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OpenRouter</td>
+            <td><code>https://openrouter.ai/api/v1</code></td>
+            <td><a href="https://openrouter.ai/keys">openrouter.ai/keys</a></td>
+            <td><code>openai/gpt-…</code>, <code>anthropic/claude-…</code> (siehe <a href="https://openrouter.ai/models">Modellliste</a>)</td>
+          </tr>
+          <tr>
+            <td>OpenCode&nbsp;Go ($10/Monat)</td>
+            <td><code>https://opencode.ai/zen/go/v1/chat/completions</code></td>
+            <td><a href="https://opencode.ai/auth">OpenCode Console</a> (Abo → API-Key kopieren)</td>
+            <td><code>glm-5.2</code>, <code>kimi-k3</code>, <code>deepseek-v4-flash</code> (nur Modelle des <code>chat/completions</code>-Endpoints)</td>
+          </tr>
+        </tbody>
+      </table>
+      <ol>
+        <li><strong>Key besorgen:</strong> Beim Anbieter anmelden, ggf. Abo abschließen, API-Key kopieren.</li>
+        <li><strong>Verbindung anlegen:</strong> In Open WebUI zu <em>Einstellungen → Verbindungen</em> gehen, eine <em>OpenAI-kompatible Verbindung</em> hinzufügen und Basis-URL plus Key eintragen.</li>
+        <li><strong>Modell wählen:</strong> Die gewünschte Modell-ID aus der Tabelle (bzw. der Anbieter-Modellliste) eintragen und speichern.</li>
+        <li><strong>Loschatten:</strong> Im Modell-Picker das neue Modell auswählen.</li>
+      </ol>
+      <p>
+        <small>
+          Hinweis: Eigene Keys liegen technisch am Server (die Anfragen stellt
+          unser Backend) — bitte keine sensiblen Daten an US-/China-Anbieter
+          schicken, solange kein EU-Datenschutzvertrag besteht. Details klärt
+          das Kustodiat mit der zentralen Modellversorgung.
+        </small>
+      </p>
+    </section>
   </main>
   <script>
     (function () {
