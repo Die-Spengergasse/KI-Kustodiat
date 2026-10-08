@@ -93,7 +93,7 @@ Zugriff über **OpenAI-kompatible API** von LiteLLM:
 
 ## Links
 
-- 🌐 **[Präsentationen](https://die-spengergasse.github.io/KI-Kustodiat/)** — Eröffnungskonferenz & ZID-Pitch
+- 🌐 **[Homepage](https://kik.spengergasse.at)** — Webauftritt des Kustodiats (schuleigener Server); [GitHub Pages](https://die-spengergasse.github.io/KI-Kustodiat/) zeigt nur noch einen Einstiegs-Index. Präsentationen liegen im Repo unter `docs/praesentation/`.
 - [GitHub Issues](https://github.com/Die-Spengergasse/KI-Kustodiat/issues)
 - [Diskussionen](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions)
 - 🔒 **[KI-Kustodiat-intern](https://github.com/Die-Spengergasse/KI-Kustodiat-intern)** — internes Schwester-Repo (privat): Gesprächsnotizen, Verwaltungsinterna; Zugang nur für eingeladene Collaborators (#28)

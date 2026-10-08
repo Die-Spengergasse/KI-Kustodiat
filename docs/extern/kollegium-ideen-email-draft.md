@@ -51,9 +51,9 @@ anlegen. Wenn GitHub für Sie ungewohnt ist, helfe ich Ihnen gerne beim Einstieg
 Eine kleine, schuleigene Infrastruktur läuft bereits: Auf dem Host `gregor`
 laufen ein Chat-Frontend (Open WebUI, Anmeldung mit den Schul-Accounts), ein
 API-Gateway (LiteLLM) und eine lokale Suchinstanz (SearXNG). Einen Überblick
-über das Projekt finden Sie in der Präsentation:
+über das Projekt finden Sie auf der Projekt-Homepage:
 
-  https://die-spengergasse.github.io/KI-Kustodiat/
+  https://kik.spengergasse.at
 
 Sobald der sichere Zugang über HTTPS eingerichtet ist, stelle ich Ihnen hier
 den direkten Link zur Verfügung:
