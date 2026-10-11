@@ -107,6 +107,9 @@ Browser gerendert (`app.js`, Hash-Routen `#/status`, `#/milestones`, …).
   <https://www.spengergasse.at> freigestellt) und das Favicon.
 - Die Übersichtsseiten werden vom Skill `update-homepage` (`.opencode/skills/`) aus
   `docs/ai/`, den Git-Milestones/Issues und den Discussions neu erzeugt.
+- Die Seite **Angebote** (`#/angebote`) erzeugt ein wöchentlicher systemd-Timer auf kik
+  (`infra/systemd/update-offers.timer` → `scripts/run-offers-job.sh`, Skill `update-offers`):
+  Websuche → `website/content/angebote.md` → Commit/Push → Deploy.
 
 ## Links
 

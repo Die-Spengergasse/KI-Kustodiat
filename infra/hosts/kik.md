@@ -28,6 +28,23 @@ Referenzkopien der VHosts: `infra/nginx/sites-available/`. Live-Files unter
 `/etc/nginx/sites-available/` werden von Certbot verwaltet (`# managed by Certbot`) —
 bei manuellem Edit am Live-File die Referenzkopie synchron halten.
 
+## Angebots-Job (2026-10-11, Issue #32)
+
+`update-offers.timer` (systemd, montags 06:00, `Persistent=true`) startet
+`update-offers.service` → `scripts/run-offers-job.sh`: opencode-Websuche (Skill
+`update-offers`) → `website/content/angebote.md` → Commit/Push → rsync auf
+`/var/www/kik`. Läuft als User `grafg`; Deploy nutzt das passwortlose `sudo`.
+Referenzkopien der Units: `infra/systemd/`. Installiert per
+`systemctl enable --now update-offers.timer`.
+
+- **opencode headless** braucht `HOME=/home/grafg` (Credentials in
+  `~/.local/share/opencode/opencode.db`, Provider `opencode-go`/`opencode`).
+- `opencode run` endet mit Exitcode 1, sobald im Lauf Tool-Fehler auftraten —
+  das Skript fängt das ab und entscheidet am Artefakt.
+
 ## History
 
+- **2026-10-11**: Wöchentlicher Angebots-Job (`update-offers.timer`), Skill
+  `update-offers`, Route `#/angebote`; `.md` wird nun als `text/markdown` ausgeliefert;
+  Startseite markdown-getrieben (Issue #31/#32).
 - **2026-10-08**: nginx + Certbot installiert, beide VHosts + separate Certs, Renewal verifiziert (Issue #3).

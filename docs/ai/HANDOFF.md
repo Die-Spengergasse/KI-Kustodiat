@@ -32,7 +32,7 @@ Stand: 2026-10-07 · Whisper exklusiv auf GPU (Ollama aus, LiteLLM gestoppt/Rese
 
 ## Offen (nächste Session)
 1. [ ] **#31 Feinschliff nach Sichtprüfung:** Abstände/Logo/Nav auf der Live-Seite (`kik.spengergasse.at`) eyeballen; Homepage-CTA-Umfang (Diskussions-Aufruf) final bewerten.
-2. [ ] **#32 Angebots-Job:** Skill `update-offers` + systemd-Timer auf kik (Websuche → `content/angebote.md` → Route `#/angebote`); Beschaffungs-/BBG-Details bleiben intern.
+2. [x] **#32 Angebots-Job (2026-10-11):** Skill `update-offers` + Runner `scripts/run-offers-job.sh` + systemd-Timer `update-offers.timer` auf kik (Mo 06:00) → Route `#/angebote`, erster Lauf deployt. Details in `infra/systemd/README.md` und `infra/hosts/kik.md`.
 3. [ ] **#24 Ideenaufruf:** Anker-Discussion [#27](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions/27) **manuell anpinnen** (GitHub-GraphQL bietet kein `pinDiscussion` in dieser Schema-Version). E-Mail mit ZID-HTTPS-URL versenden (VM da, nginx redet Klartext auf `:3000`); danach gesendete Fassung nach `docs/extern/mail-archiv/`.
 2. [ ] **STT-e2e über ZID-Front:** Upload + Mic im UI via HTTPS (Secure Context kommt von außen). Bei Whisper-Ausfall: Reserve-Pfad `whisper/README.md` (LiteLLM-Reaktivierung).
 3. [x] **BYOK-Search-e2e (verifiziert 2026-10-08):** `deepseek-v4.1-flash` via Zen-Direct-Connection → `search_web` → SearXNG-Hits + Scrapes → Antwort mit Citations. Caveat: Zen-Free-Modelle flattern (`big-pickle`, `muse-spark` derzeit 404) — pro Modell verifizieren, Details in PITFALLS.md.
