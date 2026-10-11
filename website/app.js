@@ -1,8 +1,11 @@
 /* KI-Kustodiat — Startseite: Farbschema-Umschaltung + kleiner Markdown-Router.
  *
- * Die Unterseiten liegen als Markdown unter content/<slug>.md und werden zur
- * Laufzeit geladen und gerendert (marked, lokal vendored). Markdown-zu-Markdown-
- * Links (z. B. [Status](status.md)) werden auf Hash-Routen (#/status) umgeschrieben.
+ * Die Startseite UND die Unterseiten liegen als Markdown (content/index.md
+ * bzw. content/<slug>.md) und werden zur Laufzeit geladen und gerendert
+ * (marked, lokal vendored). Markdown-zu-Markdown-Links (z. B.
+ * [Status](status.md)) werden auf Hash-Routen (#/status) umgeschrieben.
+ * Auf der Startseite werden reine Link-Absätze zu Pico-Buttons umgebaut
+ * (1 Link → primär, mehrere Links → Karten-Raster, Outline).
  */
 (function () {
   'use strict';
@@ -73,6 +76,61 @@
     }
   }
 
+  // Startseiten-Zutat: Absätze, die nur aus Links bestehen, werden zu
+  // Pico-Buttons — genau ein Link → primärer Button, mehrere Links →
+  // Karten-Raster mit Outline-Buttons. Damit reicht reines Markdown in
+  // content/index.md für die komplette Startseite.
+  function isLinksOnly(p) {
+    for (var i = 0; i < p.childNodes.length; i++) {
+      var n = p.childNodes[i];
+      if (n.nodeType === Node.ELEMENT_NODE && n.tagName !== 'A') return false;
+      if (n.nodeType === Node.TEXT_NODE && n.textContent.trim()) return false;
+    }
+    return p.querySelector('a') !== null;
+  }
+
+  function buttonify(scope) {
+    var paras = scope.querySelectorAll('p');
+    for (var i = 0; i < paras.length; i++) {
+      var p = paras[i];
+      if (!isLinksOnly(p)) continue;
+      var links = p.querySelectorAll('a');
+      if (links.length === 1) {
+        links[0].setAttribute('role', 'button');
+      } else {
+        var grid = document.createElement('div');
+        grid.className = 'cards';
+        p.parentNode.insertBefore(grid, p);
+        while (p.firstChild) grid.appendChild(p.firstChild);
+        p.remove();
+        for (var k = 0; k < links.length; k++) {
+          links[k].setAttribute('role', 'button');
+          links[k].classList.add('outline');
+        }
+      }
+    }
+  }
+
+  function loadHome() {
+    fetch('content/index.md', { cache: 'no-cache' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      })
+      .then(function (md) {
+        home.innerHTML = window.marked.parse(md);
+        rewriteLinks(home);
+        buttonify(home);
+      })
+      .catch(function () {
+        home.innerHTML =
+          '<h1>KI-Kustodiat der Spengergasse</h1>' +
+          '<p class="muted">Startseiteninhalt konnte nicht geladen werden. ' +
+          'Direktlinks: <a href="https://openwebui.kik.spengergasse.at">Open WebUI Chat</a> · ' +
+          '<a href="https://github.com/Die-Spengergasse/KI-Kustodiat/discussions">Diskussion</a>.</p>';
+      });
+  }
+
   function showHome() {
     page.hidden = true;
     home.hidden = false;
@@ -117,5 +175,6 @@
   }
 
   window.addEventListener('hashchange', route);
+  loadHome();
   route();
 })();

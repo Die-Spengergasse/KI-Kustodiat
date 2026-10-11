@@ -13,8 +13,11 @@
     /* Pico-Skala auf Normalgröße: 87,5 % statt 100–131,25 % (alles rem → Zoom wirkt weiter). */
     :root { --pico-font-size: 87.5%; }
     .table-scroll { overflow-x: auto; }
-    .lead { font-size: 1.05em; }
-    .cta { border-left: 5px solid var(--pico-primary); padding-left: 1rem; }
+    /* Lead-Absatz: erster Absatz der Startseite (aus content/index.md gerendert). */ 
+    .home > p:first-of-type { font-size: 1.05em; }
+    /* Blockquote-Callout (CTA am Ende der Startseite). */
+    .home blockquote { border-left: 5px solid var(--pico-primary); padding-left: 1rem; }
+    .home blockquote h3 { margin-top: 0; }
 
     /* Logo rechts in der Navigation, neben dem Farbschema-Button. */
     .logo img { height: 38px; width: auto; display: block; }
@@ -59,60 +62,17 @@
   </header>
 
   <main class="container">
-    <!-- Startseite -->
+    <!-- Startseite (Inhalt kommt aus content/index.md — siehe app.js) -->
     <div id="home" class="home">
-      <h1>KI-Kustodiat der Spengergasse</h1>
-
-      <p class="lead">
-        Ein <em>Kustodiat</em> (von lateinisch <em>custos</em>, „der Wächter") ist eine
-        Einrichtung, die etwas bewahrt und pflegt — hier: die KI-Infrastruktur der
-        Spengergasse. Das Ziel: KI als Werkzeug für Unterricht, Coding und Recherche —
-        datenschutzkonform, betrieben auf schuleigenen Servern, ohne dass Daten das
-        Schulnetz verlassen.
-      </p>
-
-      <section>
-        <h2>OpenWebUI Chat</h2>
+      <p class="muted">Lade …</p>
+      <noscript>
+        <p>Dieser Inhalt braucht JavaScript. Direktlinks:</p>
         <p>
-          <a href="https://openwebui.kik.spengergasse.at" role="button">Open WebUI Chat öffnen</a>
-          <a href="#/openwebui-anleitung" role="button" class="outline">Anleitung</a>
+          <a href="https://openwebui.kik.spengergasse.at">Open WebUI Chat</a> ·
+          <a href="https://github.com/Die-Spengergasse/KI-Kustodiat/discussions">Diskussion</a> ·
+          <a href="https://github.com/Die-Spengergasse/KI-Kustodiat">Git-Repository</a>
         </p>
-        <p>
-          Für den Chat ist ein <strong>Spengergassen-Login</strong> erforderlich: Benutzername
-          = Teil deiner Schul-Mailadresse <strong>vor dem <code>@</code></strong>
-          (z.&nbsp;B. <code>vorname.nachname</code>), dazu dein normales Schulpasswort.
-        </p>
-      </section>
-
-      <section>
-        <h2>Überblick</h2>
-        <div class="cards">
-          <a href="#/status" role="button" class="outline">Status</a>
-          <a href="#/milestones" role="button" class="outline">Milestones</a>
-          <a href="#/plan" role="button" class="outline">Plan</a>
-          <a href="#/angebote" role="button" class="outline">Angebote</a>
-          <a href="https://github.com/Die-Spengergasse/KI-Kustodiat/discussions" role="button" class="outline">Diskussion</a>
-          <a href="#/faq" role="button" class="outline">FAQ</a>
-        </div>
-        <p class="muted">
-          Status und Milestones werden aus dem Projekt-Repository erzeugt; „Diskussion"
-          führt zu den Diskussionen auf GitHub.
-        </p>
-      </section>
-
-      <section class="cta">
-        <h2>Bring dich ein — die Ziele werden gerade definiert</h2>
-        <p>
-          Wofür soll das Kustodiat da sein? Was erwartest du dir — für dich, deine
-          Fächer, die Schülerinnen und Schüler? Die Definition der Projektziele läuft
-          gerade, und <strong>deine Beteiligung ist dringend erwünscht</strong>: deine
-          Rückmeldungen — auch die kritischen — bestimmen, in welche Richtung und in
-          welcher Größenordnung das Kustodiat wächst.
-        </p>
-        <p>
-          <a href="https://github.com/Die-Spengergasse/KI-Kustodiat/discussions" role="button">Zur Diskussion auf GitHub</a>
-        </p>
-      </section>
+      </noscript>
     </div>
 
     <!-- Markdown-Unterseite (per Hash-Router gefüllt) -->
