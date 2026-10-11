@@ -19,11 +19,16 @@ echo "[offers] $(date -Is) Start"
 git pull --ff-only origin "${BRANCH}"
 
 # 2. Recherche + Seite schreiben.
+#    Modell EXPLIZIT pinnen: ohne --model fällt opencode auf das "neueste
+#    verfügbare Katalogmodell" zurück (V2-Doku) — der Job würde bei jedem
+#    Release still das Modell wechseln (Kosten-/Qualitätsrisiko). Die Variant
+#    (#high) lässt sich nur hier setzen, nicht über den Root-`model`-Key.
 #    Hinweis: `opencode run` endet mit Exitcode 1, sobald im Lauf Tool-Fehler
 #    auftraten (z. B. abgebrochene Websuchen), auch wenn das Ergebnis gut ist.
 #    Deshalb hier den Code auffangen und am Artefakt entscheiden.
 set +e
-opencode run --standalone "Aktualisiere die Angebots-Übersicht (Skill update-offers)."
+opencode run --standalone --model opencode-go/deepseek-v4.1-flash#high \
+  "Aktualisiere die Angebots-Übersicht (Skill update-offers)."
 OPENCODE_RC=$?
 set -e
 echo "[offers] opencode rc=${OPENCODE_RC}"

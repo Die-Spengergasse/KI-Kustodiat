@@ -18,6 +18,11 @@ Wöchentlicher Job (`scripts/run-offers-job.sh`): opencode-Websuche (Skill
 passwortlose `sudo` für `rsync`/`chown`.
 
 - **Intervall:** montags 06:00 (`OnCalendar=Mon 06:00`), `Persistent=true`.
+- **Modell:** im Runner explizit gepinnt (`--model
+  opencode-go/deepseek-v4.1-flash#high`, Issue #33). Ohne `--model` fällt
+  opencode V2 auf das *neueste Katalogmodell* zurück → stiller Drift bei jedem
+  Modell-Release. Die `#variant` lässt sich nur per CLI setzen, nicht über den
+  Root-`model`-Key.
 - **Testlauf manuell:** `sudo systemctl start update-offers.service` ·
   Logs: `journalctl -u update-offers -n 100 --no-pager`.
 - **Voraussetzung:** `opencode`-Login unter `HOME=/home/grafg`

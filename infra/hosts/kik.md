@@ -40,11 +40,16 @@ Referenzkopien der Units: `infra/systemd/`. Installiert per
 
 - **opencode headless** braucht `HOME=/home/grafg` (Credentials in
   `~/.local/share/opencode/opencode.db`, Provider `opencode-go`/`opencode`).
+- **Modell gepinnt:** `--model opencode-go/deepseek-v4.1-flash#high` im Runner
+  (Issue #33). Ohne Pin nutzt opencode das *neueste Katalogmodell* — der Job
+  lief zuvor still auf `claude-haiku-5-5`. Der globale Default `model` in
+  `~/.config/opencode/opencode.json` ist zusätzliches Sicherheitsnetz.
 - `opencode run` endet mit Exitcode 1, sobald im Lauf Tool-Fehler auftraten —
   das Skript fängt das ab und entscheidet am Artefakt.
 
 ## History
 
+- **2026-10-11**: Angebots-Job-Modell gepinnt (`deepseek-v4.1-flash#high`, Issue #33) — zuvor stiller Fallback auf das neueste Katalogmodell (`claude-haiku-5-5`).
 - **2026-10-11**: Wöchentlicher Angebots-Job (`update-offers.timer`), Skill
   `update-offers`, Route `#/angebote`; `.md` wird nun als `text/markdown` ausgeliefert;
   Startseite markdown-getrieben (Issue #31/#32).
