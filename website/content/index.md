@@ -16,5 +16,5 @@ Für den Chat ist ein **Spengergassen-Login** erforderlich: Benutzername = Teil 
 - [Status](status.md)
 - [Milestones](milestones.md)
 - [Angebote](angebote.md)
-- [Diskussion](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions)-
+- [Diskussion](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions)
 - [FAQ](faq.md)
