@@ -26,7 +26,6 @@ Auftragsverarbeitungsvertrag (DPA) an; laut Anbieter DSGVO-konform.
 | Anbieter | Angebot | Preis | Stand | Quelle |
 |---|---|---|---|---|
 | Mistral | Pro Education Plan für verifizierte Studierende (max. 12 Monate, fair usage) | 14,99 $ / Monat (zzgl. Steuern) | 2026-10-11 | [Preisseite](https://mistral.ai/pricing) |
-| OpenAI | ChatGPT for Teachers (nur verifizierte US-K-12-Lehrkräfte, bis Juni 2027) | 0 € | 2026-10-11 | [OpenAI](https://openai.com/api/pricing/) |
 | Google AI Studio / Gemini | Kostenloser Zugang mit Limits. Achtung Datenschutz: Inhalte im Free Tier werden laut Anbieter zur Produktverbesserung genutzt | 0 € (Rate-Limits) | 2026-10-11 | [Preisseite](https://ai.google.dev/gemini-api/docs/pricing) |
 | OpenRouter | Kostenlose Modelle (20+ laut Anbieter), ohne Kreditkarte | 0 € (Rate-Limits) | 2026-06-15 | [Vergleich](https://openrouter.ai/blog/tutorials/free-llm-apis-compared/) |
 | Groq | Kostenloser Zugang mit Tages- und Minuten-Limits | 0 € (Rate-Limits) | Stand unklar (Anbieterseite nicht auslesbar) | [Preisseite](https://groq.com/pricing) |

@@ -38,7 +38,12 @@ anderen Seiten anfassen.
 
    **Quellen:** offizielle Anbieter-/Hersteller-Seiten oder etablierte Händler. Als **alleinige**
    Quelle keine SEO-Blogs/Aggregatoren. Wenn Zahlen aus zweiter Hand kommen, das dazuschreiben;
-   ist der Stand unklar, „Stand unklar" statt eines geratenen Datums.
+   ist der Stand unklar, „Stand unklar" statt eines geratenen Datums. Die verlinkte Quelle muss
+   die genannte Zahl **tatsächlich belegen** (nicht irgendeine Preis-Seite desselben Anbieters).
+
+   **Relevanzfilter:** Zielgruppe ist eine **österreichische HTL**. Nur Angebote aufnehmen, die
+   für AT/EU nutzbar sind; US-spezifische Bildungsprogramme weglassen (oder ausdrücklich als
+   „nicht für AT" kennzeichnen). EU-Anbieter mit DPA sind besonders relevant.
 
 2. **Datei schreiben.** Schreibe `website/content/angebote.md` mit:
    - H1 `# Angebote` und eine Zeile **`_Aktualisiert: <ISO-Datum>._`**
