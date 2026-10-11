@@ -43,7 +43,6 @@
     'openwebui-anleitung': 'Open WebUI — Anleitung',
     'status': 'Status',
     'milestones': 'Milestones',
-    'plan': 'Plan',
     'angebote': 'Angebote',
     'faq': 'FAQ'
   };

@@ -39,4 +39,4 @@ Bausteine laufen produktiv, die zentrale Modellversorgung ist aber noch nicht ei
 
 ---
 
-Zurück zur [Startseite](#/) · [Milestones](milestones.md) · [Plan](plan.md) · [Anleitung](openwebui-anleitung.md)
+Zurück zur [Startseite](#/) · [Milestones](milestones.md) · [Anleitung](openwebui-anleitung.md)

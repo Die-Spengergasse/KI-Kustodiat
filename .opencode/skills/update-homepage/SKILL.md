@@ -1,10 +1,10 @@
 ---
 name: update-homepage
 description: >-
-  Baut die Übersichtsseiten der Kustodiat-Homepage (Status, Milestones, Plan) aus
+  Baut die Übersichtsseiten der Kustodiat-Homepage (Status, Milestones) aus
   dem Repository, den Git-Milestones/Issues und den GitHub-Discussions neu.
   Nutze diesen Skill, wenn es heißt „update homepage", „Homepage aktualisieren",
-  „Status/Milestones/Plan neu bauen", „Übersichtsseiten aktualisieren",
+  „Status/Milestones neu bauen", „Übersichtsseiten aktualisieren",
   "Seiten der Website aus dem Repo erzeugen".
 license: MIT
 compatibility: opencode
@@ -25,7 +25,6 @@ Projektquellen. Der Skill schreibt **nur generierte Seiten** — die handgeschri
 |---|---|
 | `website/content/status.md` | `docs/ai/STATE.md`, `docs/ai/HANDOFF.md` |
 | `website/content/milestones.md` | `gh api repos/$R/milestones` + zugeordnete Issues |
-| `website/content/plan.md` | `docs/ai/STATE.md` (Phasen-Strategie), `docs/ai/DECISIONS.md` |
 | `website/content/faq.md` | **nur anlegen, wenn fehlend** — nie füllen (bleibt leer, bis echte Fragen kommen) |
 
 Nicht anfassen: `website/content/openwebui-anleitung.md`, `website/index.html`,
@@ -56,7 +55,6 @@ Nicht anfassen: `website/content/openwebui-anleitung.md`, `website/index.html`,
      *Was noch fehlt/eingeschränkt ist*, *Nächste Schritte*.
    - **Milestones:** je Milestone Kurztext + Links auf die beteiligten Issues
      (`https://github.com/$R/issues/<n>`); erreichte Milestones mit ✅.
-   - **Plan:** Phasen-Strategie und konkrete nächste Schritte.
    - Alle Seiten mit Querlinks (`[Status](status.md)`, `[Milestones](milestones.md)` …)
      und dem „Zurück zur Startseite"-Fußzeilenblock abschließen.
 

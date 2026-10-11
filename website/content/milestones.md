@@ -42,4 +42,4 @@ Tickets: [#2](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/2),
 
 ---
 
-Zurück zur [Startseite](#/) · [Status](status.md) · [Plan](plan.md)
+Zurück zur [Startseite](#/) · [Status](status.md)

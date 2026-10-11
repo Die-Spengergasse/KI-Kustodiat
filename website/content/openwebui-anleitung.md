@@ -74,4 +74,4 @@ Open WebUI gilt die Empfehlung oben.
 
 ---
 
-Zurück zur [Startseite](#/) · [Status](status.md) · [Plan](plan.md)
+Zurück zur [Startseite](#/) · [Status](status.md)

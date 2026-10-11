@@ -49,4 +49,4 @@ prüfen — die Angaben hier sind Momentaufnahmen mit Datum.
 
 ---
 
-Zurück zur [Startseite](#/) · [Plan](plan.md) · [Milestones](milestones.md)
+Zurück zur [Startseite](#/) · [Milestones](milestones.md)
