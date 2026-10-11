@@ -1,20 +1,42 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="auto">
+<html lang="de" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="KI-Kustodiat der Spengergasse — datenschutzkonforme KI-Infrastruktur für Unterricht, Coding und Recherche, betrieben auf schuleigenen Servern.">
   <title>kik.spengergasse.at — KI-Kustodiat</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="icon" href="assets/favicon.ico">
+  <!-- Pico + marked sind lokal vendored (keine externen Ladevorgänge). Versionen im README. -->
+  <link rel="stylesheet" href="vendor/pico.min.css">
   <style>
     /* Pico-Skala auf Normalgröße: 87,5 % statt 100–131,25 % (alles rem → Zoom wirkt weiter). */
     :root { --pico-font-size: 87.5%; }
     .table-scroll { overflow-x: auto; }
     .lead { font-size: 1.05em; }
-    .cta {
-      border-left: 5px solid var(--pico-primary);
-      padding-left: 1rem;
+    .cta { border-left: 5px solid var(--pico-primary); padding-left: 1rem; }
+
+    /* Logo rechts in der Navigation, neben dem Farbschema-Button. */
+    .logo img { height: 38px; width: auto; display: block; }
+    .logo-dark { display: none; }
+    [data-theme="dark"] .logo-light { display: none; }
+    [data-theme="dark"] .logo-dark { display: block; }
+
+    /* Größerer Abstand unter der H1 auf der Startseite. */
+    .home h1 { margin-bottom: 2.5rem; }
+
+    /* Linksammlung als Karten-Raster. */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    .cards a[role="button"] { display: block; text-align: center; margin: 0; }
+
+    /* Markdown-Unterseiten. */
+    #page article { padding: 0; margin: 0; background: none; box-shadow: none; }
+    #page img { max-width: 100%; height: auto; }
+    .back { display: inline-block; margin-bottom: 1rem; }
+    .muted { color: var(--pico-muted-color); font-size: 0.9em; }
+
+    @media (max-width: 640px) {
+      .logo img { height: 28px; }
     }
   </style>
 </head>
@@ -22,206 +44,91 @@
   <header class="container">
     <nav>
       <ul>
-        <li><strong>KI-Kustodiat</strong></li>
+        <li><a href="#/" class="brand"><strong>KI-Kustodiat</strong></a></li>
       </ul>
       <ul>
+        <li><button id="theme-toggle" class="outline secondary" aria-label="Farbschema wechseln">Farbschema: Auto</button></li>
         <li>
-          <button id="theme-toggle" class="outline secondary" aria-label="Farbschema wechseln">Farbschema: Auto</button>
+          <a href="#/" class="logo" aria-label="HTL Spengergasse — Startseite">
+            <img class="logo-light" src="assets/spengergasse-logo.png" alt="HTL Spengergasse">
+            <img class="logo-dark" src="assets/spengergasse-logo-dark.png" alt="" aria-hidden="true">
+          </a>
         </li>
       </ul>
     </nav>
   </header>
-  <main class="container">
-    <h1>KI-Kustodiat der Spengergasse</h1>
 
-    <section>
+  <main class="container">
+    <!-- Startseite -->
+    <div id="home" class="home">
+      <h1>KI-Kustodiat der Spengergasse</h1>
+
       <p class="lead">
         Ein <em>Kustodiat</em> (von lateinisch <em>custos</em>, „der Wächter") ist eine
         Einrichtung, die etwas bewahrt und pflegt — hier: die KI-Infrastruktur der
         Spengergasse. Das Ziel: KI als Werkzeug für Unterricht, Coding und Recherche —
         datenschutzkonform, betrieben auf schuleigenen Servern, ohne dass Daten das
-        Schulnetz verlassen. Details dazu finden Sie in der Projekt-Doku
-        (siehe <a href="https://github.com/Die-Spengergasse/KI-Kustodiat">Projekt-Repository</a>).
+        Schulnetz verlassen.
       </p>
-    </section>
 
-    <section class="cta">
-      <h2>Bringen Sie sich ein — die Ziele werden gerade definiert</h2>
-      <p>
-        Wofür soll das Kustodiat da sein? Was erwarten Sie sich — für sich, Ihre
-        Fächer, die Schülerinnen und Schüler? Die Definition der Projektziele läuft
-        gerade, und <strong>Ihre Beteiligung ist dringend erwünscht</strong>: Ihre
-        Rückmeldungen — auch die kritischen — bestimmen, in welche Richtung und in
-        welcher Größenordnung das Kustodiat wächst.
-      </p>
-      <p>
-        <a href="https://github.com/Die-Spengergasse/KI-Kustodiat/discussions" role="button">Zur Diskussion auf GitHub</a>
-        <small>
-          Eigene Themen gern als neuer Thread in der Kategorie <em>Ideas</em>.
-          Wenn GitHub ungewohnt ist, wird gerne beim Einstieg geholfen.
-        </small>
-      </p>
-    </section>
+      <section>
+        <h2>OpenWebUI Chat</h2>
+        <p>
+          <a href="https://openwebui.kik.spengergasse.at" role="button">Open WebUI Chat öffnen</a>
+          <a href="#/openwebui-anleitung" role="button" class="outline">Anleitung</a>
+        </p>
+        <p>
+          Für den Chat ist ein <strong>Spengergassen-Login</strong> erforderlich: Benutzername
+          = Teil deiner Schul-Mailadresse <strong>vor dem <code>@</code></strong>
+          (z.&nbsp;B. <code>vorname.nachname</code>), dazu das normale Schulpasswort.
+        </p>
+      </section>
 
-    <section>
-      <h2>Chat starten</h2>
-      <p>
-        <a href="https://openwebui.kik.spengergasse.at" role="button">Open WebUI öffnen (HTTPS)</a>
-      </p>
-      <p>
-        Für den Chat ist ein <strong>Spengergassen-Login</strong> erforderlich.
-        Als Benutzername dient der Teil deiner Schul-Mailadresse <strong>vor dem
-        <code>@</code>-Zeichen</strong> — also z.&nbsp;B. <code>vorname.nachname</code>
-        aus <code>vorname.nachname@spengergasse.at</code>. Dazu gehört dein
-        normales Schulpasswort.
-      </p>
-    </section>
+      <section>
+        <h2>Überblick</h2>
+        <div class="cards">
+          <a href="#/status" role="button" class="outline">Status</a>
+          <a href="#/milestones" role="button" class="outline">Milestones</a>
+          <a href="#/plan" role="button" class="outline">Plan</a>
+          <a href="https://github.com/Die-Spengergasse/KI-Kustodiat/discussions" role="button" class="outline">Offene Fragen</a>
+          <a href="#/faq" role="button" class="outline">FAQ</a>
+        </div>
+        <p class="muted">
+          Status und Milestones werden aus dem Projekt-Repository erzeugt; „Offene Fragen"
+          führt zu den Diskussionen auf GitHub.
+        </p>
+      </section>
 
-    <section>
-      <h2>Status: Explorationsphase</h2>
-      <p>
-        Wir sind gerade erst am Starten. Open WebUI läuft bereits — mit bekannten
-        Einschränkungen: <strong>Zentrale KI-Modelle sind noch keine
-        konfiguriert</strong>. Bis die zentrale Modellversorgung steht, bindest du
-        ein eigenes Modell ein — Anleitung siehe unten.
-      </p>
-      <p>
-        Was bereits funktioniert: Die <strong>Audio-Transkription</strong>
-        (Sprache&nbsp;→&nbsp;Text) läuft zu <strong>100&nbsp;% im Haus</strong> auf
-        einer gespendeten Grafikkarte — keine Audiodaten verlassen dafür die Schule.
-      </p>
-    </section>
+      <section class="cta">
+        <h2>Bringen Sie sich ein — die Ziele werden gerade definiert</h2>
+        <p>
+          Wofür soll das Kustodiat da sein? Was erwarten Sie sich — für sich, Ihre
+          Fächer, die Schülerinnen und Schüler? Die Definition der Projektziele läuft
+          gerade, und <strong>Ihre Beteiligung ist dringend erwünscht</strong>: Ihre
+          Rückmeldungen — auch die kritischen — bestimmen, in welche Richtung und in
+          welcher Größenordnung das Kustodiat wächst.
+        </p>
+        <p>
+          <a href="https://github.com/Die-Spengergasse/KI-Kustodiat/discussions" role="button">Zur Diskussion auf GitHub</a>
+        </p>
+      </section>
+    </div>
 
-    <section>
-      <h2>Warum Open WebUI?</h2>
-      <p>
-        Open WebUI ist ein <strong>bewährtes Werkzeug</strong> mit großer Community
-        und besonders geeignet für <strong>Retrieval Augmented Generation
-        (RAG)</strong> und Recherche — Dokumente einwerfen, Fragen stellen, mit
-        Quellen arbeiten. Es ist als Selbst-Hosting-Lösung genau für einen
-        datenschutzkonformen Betrieb wie unseren gemacht.
-      </p>
-      <p>
-        <a href="https://openwebui.com">openwebui.com</a> — Projekt-Homepage von Open WebUI
-      </p>
-    </section>
-
-    <section>
-      <h2>KI-Modelle einbinden (Personal Connections)</h2>
-      <p>
-        Open WebUI bringt fertige Presets für die großen Provider mit: In
-        <em>Einstellungen → Verbindungen</em> (Personal Connections) kannst du deine
-        eigenen Provider-Accounts mit deinem <strong>eigenen API-Token</strong>
-        anbinden. Vorintegriert sind: <strong>OpenAI, Anthropic, Google, Mistral,
-        Groq, OpenRouter und xAI</strong>.
-      </p>
-      <p>
-        <strong>Hinweis:</strong> Open WebUI ist <em>nicht</em> mit OpenCode
-        kompatibel — die OpenCode-/Zen-Angebote funktionieren hier nicht.
-        Kostenlose Modelle sind im Coding-Bereich übrigens sehr gut nutzbar: mit
-        <a href="https://opencode.ai">OpenCode</a> wurden damit sehr gute
-        Erfahrungen gemacht. Für den Chat hier in Open WebUI gilt aber die
-        Empfehlung unten.
-      </p>
-      <div class="table-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>Anbieter (Preset)</th>
-            <th>Basis-URL</th>
-            <th>Key herbekommen</th>
-            <th>Modell-ID (Beispiele)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>OpenAI</td>
-            <td><code>https://api.openai.com/v1</code></td>
-            <td><a href="https://platform.openai.com/api-keys">platform.openai.com/api-keys</a></td>
-            <td><code>gpt-…</code></td>
-          </tr>
-          <tr>
-            <td>Anthropic</td>
-            <td><code>https://api.anthropic.com/v1</code></td>
-            <td><a href="https://console.anthropic.com">console.anthropic.com</a></td>
-            <td><code>claude-…</code></td>
-          </tr>
-          <tr>
-            <td>Google</td>
-            <td><code>https://generativelanguage.googleapis.com/v1beta</code></td>
-            <td><a href="https://aistudio.google.com/apikey">aistudio.google.com/apikey</a></td>
-            <td><code>gemini-…</code></td>
-          </tr>
-          <tr>
-            <td>Mistral</td>
-            <td><code>https://api.mistral.ai/v1</code></td>
-            <td><a href="https://console.mistral.ai">console.mistral.ai</a></td>
-            <td><code>mistral-…</code></td>
-          </tr>
-          <tr>
-            <td>Groq</td>
-            <td><code>https://api.groq.com/openai/v1</code></td>
-            <td><a href="https://console.groq.com/keys">console.groq.com/keys</a></td>
-            <td><code>llama-…</code>, <code>gpt-oss-120b</code> (offenes Modell, sehr schnell)</td>
-          </tr>
-          <tr>
-            <td>OpenRouter</td>
-            <td><code>https://openrouter.ai/api/v1</code></td>
-            <td><a href="https://openrouter.ai/keys">openrouter.ai/keys</a></td>
-            <td><code>openai/gpt-…</code>, <code>anthropic/claude-…</code> u.&nbsp;v.&nbsp;m. (siehe <a href="https://openrouter.ai/models">Modellliste</a>)</td>
-          </tr>
-          <tr>
-            <td>xAI</td>
-            <td><code>https://api.x.ai/v1</code></td>
-            <td><a href="https://console.x.ai">console.x.ai</a></td>
-            <td><code>grok-…</code></td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-      <ol>
-        <li><strong>Key besorgen:</strong> Beim Anbieter anmelden (Abo bzw. Gratis-Account), API-Key kopieren.</li>
-        <li><strong>Verbindung anlegen:</strong> In Open WebUI zu <em>Einstellungen → Verbindungen</em> gehen, eine <em>OpenAI-kompatible Verbindung</em> hinzufügen und Basis-URL plus Key eintragen.</li>
-        <li><strong>Modell wählen:</strong> Die gewünschte Modell-ID aus der Tabelle (bzw. der Anbieter-Modellliste) eintragen und speichern.</li>
-        <li><strong>Loschatten:</strong> Im Modell-Picker das neue Modell auswählen.</li>
-      </ol>
-      <p>
-        <strong>Empfehlung (vorläufig):</strong> Konfiguriere eine
-        <strong>bestehende Provider-Subscription</strong> — das ist aktuell der
-        zuverlässigste Weg. Dies gilt so lange, bis entweder <strong>eigene
-        Hardware</strong> angeschafft ist oder <strong>Token-Kontingente über das
-        Schulbudget</strong> erworben werden können. Diese Kontingente werden
-        insbesondere beim <strong>agentischen Coding</strong> relevant — und dann,
-        wenn die Gratis-Angebote am Internet wieder zurückgehen.
-      </p>
-      <p>
-        <small>
-          Hinweis: Eigene Keys liegen technisch am Server (die Anfragen stellt
-          unser Backend) — bitte keine sensiblen Daten an US-/China-Anbieter
-          schicken, solange kein EU-Datenschutzvertrag besteht. Details klärt
-          das Kustodiat mit der zentralen Modellversorgung.
-        </small>
-      </p>
-    </section>
+    <!-- Markdown-Unterseite (per Hash-Router gefüllt) -->
+    <div id="page" hidden>
+      <a href="#/" class="back">← Zur Startseite</a>
+      <article id="page-content"></article>
+    </div>
   </main>
-  <script>
-    (function () {
-      var root = document.documentElement;
-      var btn = document.getElementById('theme-toggle');
-      var modes = ['auto', 'light', 'dark'];
-      var labels = { auto: 'Auto', light: 'Hell', dark: 'Dunkel' };
-      var mode = localStorage.getItem('kik-theme') || 'auto';
-      function apply(m) {
-        mode = m;
-        root.setAttribute('data-theme', m);
-        btn.textContent = 'Farbschema: ' + labels[m];
-        try { localStorage.setItem('kik-theme', m); } catch (e) {}
-      }
-      btn.addEventListener('click', function () {
-        apply(modes[(modes.indexOf(mode) + 1) % modes.length]);
-      });
-      apply(mode);
-    })();
-  </script>
+
+  <footer class="container">
+    <small>
+      Georg Graf · grafg@spengergasse.at ·
+      <a href="https://github.com/Die-Spengergasse/KI-Kustodiat">github.com/Die-Spengergasse/KI-Kustodiat</a>
+    </small>
+  </footer>
+
+  <script src="vendor/marked.umd.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

@@ -91,6 +91,23 @@ Zugriff über **OpenAI-kompatible API** von LiteLLM:
 - [#6](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/6) LiteLLM Access Control
 - [#7](https://github.com/Die-Spengergasse/KI-Kustodiat/issues/7) Gemma 4 Evaluation
 
+## Website
+
+Der Webauftritt liegt unter `website/` und wird per `rsync` auf die Management-VM
+ausgeliefert (Docroot `/var/www/kik`). Die Startseite ist eine Shell mit Logo,
+Farbschema-Umschaltung und Linksammlung; die Unterseiten (Status, Milestones, Plan,
+FAQ, Open-WebUI-Anleitung) liegen als Markdown unter `website/content/` und werden im
+Browser gerendert (`app.js`, Hash-Routen `#/status`, `#/milestones`, …).
+
+- **Keine externen Ladevorgänge:** Pico CSS und marked sind lokal unter `website/vendor/`
+  vendored.
+- **Gepinnte Versionen:** Pico `2.1.1` (MIT), marked `18.1.0` (MIT). Zum Aktualisieren die
+  Datei ersetzen, hier die Version nachziehen und die LICENSE-Dateien mitnehmen.
+- **Kopier-Assets:** `website/assets/` enthält das Schul-Logo (hell/dunkel, aus
+  <https://www.spengergasse.at> freigestellt) und das Favicon.
+- Die Übersichtsseiten werden vom Skill `update-homepage` (`.opencode/skills/`) aus
+  `docs/ai/`, den Git-Milestones/Issues und den Discussions neu erzeugt.
+
 ## Links
 
 - 🌐 **[Homepage](https://kik.spengergasse.at)** — Webauftritt des Kustodiats (schuleigener Server); [GitHub Pages](https://die-spengergasse.github.io/KI-Kustodiat/) zeigt nur noch einen Einstiegs-Index. Präsentationen liegen im Repo unter `docs/praesentation/`.
