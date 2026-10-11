@@ -41,6 +41,7 @@
     'status': 'Status',
     'milestones': 'Milestones',
     'plan': 'Plan',
+    'angebote': 'Angebote',
     'faq': 'FAQ'
   };
   var HOME_TITLE = document.title;

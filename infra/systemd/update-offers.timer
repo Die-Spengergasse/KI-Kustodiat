@@ -1,0 +1,11 @@
+[Unit]
+Description=KI-Kustodiat: wöchentlicher Angebots-Job (Issue #32)
+
+[Timer]
+OnCalendar=Mon 06:00
+Persistent=true
+RandomizedDelaySec=30min
+Unit=update-offers.service
+
+[Install]
+WantedBy=timers.target

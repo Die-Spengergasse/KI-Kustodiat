@@ -1,0 +1,14 @@
+[Unit]
+Description=KI-Kustodiat: Angebots-Übersicht per Websuche aktualisieren (Issue #32)
+Documentation=https://github.com/Die-Spengergasse/KI-Kustodiat/issues/32
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=grafg
+Environment=HOME=/home/grafg
+WorkingDirectory=/home/grafg/repos/Die-Spengergasse/KI-Kustodiat
+ExecStart=/home/grafg/repos/Die-Spengergasse/KI-Kustodiat/scripts/run-offers-job.sh
+# Dem Agenten (Websuche + Seitengenerierung) etwas Luft lassen:
+TimeoutStartSec=30min
