@@ -54,7 +54,6 @@ Danke fürs Mitmachen!
 Liebe Grüße
 Georg Graf
 HTL Spengergasse
-grafg@spengergasse.at
 
 ---
 

@@ -77,7 +77,7 @@ via SQL is not feasible (internal ids mismatch). So:
 2. Admin Panel → Users → search by that username → set role `admin`.
    (Or SQL: `UPDATE user SET role='admin' WHERE username='<sname>';`)
 
-Baseline (2026-09-17): exactly one admin — `grafg@spengergasse.at` (Georg Graf).
+Baseline (2026-09-17): exactly one admin — `grafg` (Georg Graf).
 
 ### Key Tables
 

@@ -15,7 +15,8 @@
 ## Runtime role (2026-10-08)
 
 nginx `1.26.3` lauscht öffentlich auf `:80`/`:443`. Zwei separate Let's-Encrypt-Certs
-(je ein Cert pro VHost, Account `grafg@spengergasse.at`), Renewal über `certbot.timer`
+(je ein Cert pro VHost, Account = Owner-Mail, siehe `secrets.local.md`), Renewal über
+`certbot.timer`
 (zweimal täglich) + `/etc/cron.d/certbot`. **Kein HSTS** (Header erst nach bestandenem
 HTTPS-e2e — Mic, BYOK-Search).
 

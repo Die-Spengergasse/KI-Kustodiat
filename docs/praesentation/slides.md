@@ -65,7 +65,7 @@ paginate: true
 
 Eröffnungskonferenz
 
-Georg Graf · grafg@spengergasse.at
+Georg Graf
 
 ---
 

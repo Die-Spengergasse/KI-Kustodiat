@@ -294,6 +294,6 @@ Modelle von 2028 auf Hardware von 2026.
 <!-- 15 -->
 ## Danke
 
-Georg Graf · grafg@spengergasse.at
+Georg Graf
 
 github.com/Die-Spengergasse/KI-Kustodiat

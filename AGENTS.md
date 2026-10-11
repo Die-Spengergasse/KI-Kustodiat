@@ -78,7 +78,7 @@ The following skills have NO slash commands. Invoke them by natural language:
 
 ## Key Contacts
 
-- Owner: Georg Graf <grafg@spengergasse.at>
+- Owner: Georg Graf (@georgernstgraf) — Mail: see `infra/hosts/secrets.local.md`
 
 ## Development Environment
 

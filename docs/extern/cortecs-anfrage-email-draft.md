@@ -66,7 +66,7 @@ Mögliche Rechnungsstellung auf österreichische öffentliche Schule?
 (UID-pflichtig, Rechnungsadresse: HTL Spengergasse, 1050 Wien)
 
 Kontakt:
-Georg Graf, graf@spengergasse.at
+Georg Graf
 HTL Spengergasse, Spengergasse 20, 1050 Wien
 
 Mit freundlichen Grüßen,

@@ -137,8 +137,9 @@ Direct-Bind-Modus gibt es nicht (verifiziert am Code).
 *Zusatzfilter* und darf **kein `{{login}}`** enthalten. Der frühere Wert
 `(sAMAccountName={{login}})` war literal und ergab nie einen Treffer.
 
-**Admin:** `grafg@spengergasse.at` ist der einzige Admin. Der bestehende lokale Account wird
-per `mail` gematcht (LDAP liefert `grafg@spengergasse.at`), die Rolle bleibt erhalten. Das
+**Admin:** der Owner-Account (Mail: siehe `infra/hosts/secrets.local.md`) ist der einzige
+Admin. Der bestehende lokale Account wird per `mail` gematcht (LDAP liefert die Owner-Mail),
+die Rolle bleibt erhalten. Das
 lokale Passwort ist **neutralisiert** (zufälliger bcrypt-Hash), damit `POST /auths/signin`
 nicht mehr lokal authentifiziert. Kein SMTP/Passwort-Reset konfiguriert → Recovery nur durch
 einen Admin.

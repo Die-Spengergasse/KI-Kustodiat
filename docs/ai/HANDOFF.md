@@ -38,7 +38,7 @@ Stand: 2026-10-07 · Whisper exklusiv auf GPU (Ollama aus, LiteLLM gestoppt/Rese
 3. [x] **BYOK-Search-e2e (verifiziert 2026-10-08):** `deepseek-v4.1-flash` via Zen-Direct-Connection → `search_web` → SearXNG-Hits + Scrapes → Antwort mit Citations. Caveat: Zen-Free-Modelle flattern (`big-pickle`, `muse-spark` derzeit 404) — pro Modell verifizieren, Details in PITFALLS.md.
 4. [x] Tote lokale LLM-Rows sind bereits `is_active=0` (alle 5 `model`-Rows, verifiziert 2026-10-08) — Picker zeigt nur Direct-Connection-Modelle; frische LDAP-User ohne Direct Connection sehen **kein Modell**.
 5. [ ] `search_chats`/`view_chat` leakt durch `builtinTools`-Gating — Upstream-Check (fehlendes Kategorie-Gate).
-6. [ ] **Admin-Promotion:** neue Admins nach ihrem 1. LDAP-Login im Admin-Panel promoten (`grafg@spengergasse.at` ist aktuell der einzige Admin).
+6. [ ] **Admin-Promotion:** neue Admins nach ihrem 1. LDAP-Login im Admin-Panel promoten (`grafg` ist aktuell der einzige Admin).
 
 ## Offen (älter)
 - [ ] ZID-VM da (2026-10-07): URL in #24-Mail eingesetzt (rev. 3, 2026-10-11); noch offen: STT-e2e via Front (siehe Offen Nr. 2).
