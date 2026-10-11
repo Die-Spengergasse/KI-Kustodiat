@@ -10,6 +10,12 @@ server {
 
     error_page 404 /404.html;
 
+    # Markdown-Inhalte der Unterseiten korrekt ausliefern (Pico/marked sind lokal vendored).
+    location ~ \.md$ {
+        default_type text/markdown;
+        charset utf-8;
+    }
+
     access_log /var/log/nginx/kik.spengergasse.at.access.log;
     error_log /var/log/nginx/kik.spengergasse.at.error.log;
 
