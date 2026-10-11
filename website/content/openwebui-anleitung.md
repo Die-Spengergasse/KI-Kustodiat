@@ -49,6 +49,8 @@ Provider-Accounts mit deinem **eigenen API-Token** anbinden. Vorintegriert sind:
 | OpenRouter | `https://openrouter.ai/api/v1` | [openrouter.ai/keys](https://openrouter.ai/keys) | `openai/gpt-…`, `anthropic/claude-…` u.&nbsp;v.&nbsp;m. ([Modellliste](https://openrouter.ai/models)) |
 | xAI | `https://api.x.ai/v1` | [console.x.ai](https://console.x.ai) | `grok-…` |
 
+Wer gerne mit komplett freien Modellen spielt, hier ist eine gute Zusammenfassung: [https://openrouter.ai/blog/tutorials/free-llm-apis-compared/](https://openrouter.ai/blog/tutorials/free-llm-apis-compared/)
+
 1. **Key besorgen:** Beim Anbieter anmelden (Abo bzw. Gratis-Account), API-Key kopieren.
 2. **Verbindung anlegen:** In Open WebUI zu *Einstellungen → Verbindungen* gehen, eine
    *OpenAI-kompatible Verbindung* hinzufügen und Basis-URL plus Key eintragen.
@@ -61,10 +63,6 @@ aktuell der zuverlässigste Weg. Dies gilt so lange, bis entweder **eigene Hardw
 angeschafft ist oder **Token-Kontingente über das Schulbudget** erworben werden können.
 Diese Kontingente werden insbesondere beim **agentischen Coding** relevant — und dann, wenn
 die Gratis-Angebote am Internet wieder zurückgehen.
-
-> **Hinweis:** Eigene Keys liegen technisch am Server (die Anfragen stellt unser Backend) —
-> bitte keine sensiblen Daten an US-/China-Anbieter schicken, solange kein EU-Datenschutzvertrag
-> besteht. Details klärt das Kustodiat mit der zentralen Modellversorgung.
 
 ## Hinweis: nicht OpenCode-kompatibel
 
