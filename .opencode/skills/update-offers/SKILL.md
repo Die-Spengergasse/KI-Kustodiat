@@ -30,6 +30,16 @@ anderen Seiten anfassen.
 
    Ziel sind **Angebote und Preise**, nicht technische Details der Anbieter.
 
+   **Anspruch an die Zahlen:** Für jeden gelisteten Anbieter soll **mindestens eine konkrete
+   Zahl** stehen (Preis pro 1 Mio. Input-/Output-Token für das Flaggschiff-Modell). Dafür auch
+   offizielle Preisseiten direkt abrufen und die Preise aus dem HTML ziehen; ist eine Seite
+   nicht maschinell auslesbar, die in den Suchergebnissen zitierten Preise übernehmen und mit
+   „laut Suchergebnis" kennzeichnen. „k. A." ist der Notnagel, nicht der Normalfall.
+
+   **Quellen:** offizielle Anbieter-/Hersteller-Seiten oder etablierte Händler. Als **alleinige**
+   Quelle keine SEO-Blogs/Aggregatoren. Wenn Zahlen aus zweiter Hand kommen, das dazuschreiben;
+   ist der Stand unklar, „Stand unklar" statt eines geratenen Datums.
+
 2. **Datei schreiben.** Schreibe `website/content/angebote.md` mit:
    - H1 `# Angebote` und eine Zeile **`_Aktualisiert: <ISO-Datum>._`**
    - je Abschnitt eine Markdown-**Tabelle**: `Anbieter | Angebot | Preis | Stand | Quelle`
