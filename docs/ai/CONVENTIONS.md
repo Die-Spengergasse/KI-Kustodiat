@@ -5,6 +5,15 @@
 - Code, Konfiguration, Issues, AGENTS.md: Englisch
 - docs/ai/ knowledge files: Deutsch
 
+## Website (`website/`)
+- **Ansprache: durchgehend informell (Du)** — auf der Startseite *und* allen Unterseiten
+  (`website/content/*.md`). Kein „Sie/Ihre/Ihnen".
+- Unterseiten sind Markdown und werden im Browser gerendert; **keine externen Ladevorgänge**
+  (Pico/marked lokal unter `website/vendor/`, Logo unter `website/assets/`).
+- Die Seiten `status.md`, `milestones.md`, `plan.md` (Skill `update-homepage`) und
+  `angebote.md` (Skill `update-offers`) sind **generiert** — die Du-Anrede gehört in die
+  Skills, sonst geht sie beim nächsten Lauf verloren.
+
 ## Kommunikation
 - Issues in Englisch (für GitHub-Community)
 - Schulintern Deutsch

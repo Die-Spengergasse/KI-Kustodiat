@@ -11,7 +11,7 @@ Bausteine laufen produktiv, die zentrale Modellversorgung ist aber noch nicht ei
   <https://openwebui.kik.spengergasse.at> — im Schulnetz über HTTPS.
 - **Anmeldung über das Schul-Verzeichnis (LDAP)** — ein Spengergassen-Login, kein separates
   Konto und kein E-Mail-Formular.
-- **Bring Your Own Token (BYOK):** Wer ein eigenes Modell nutzen will, bindet seinen
+- **Bring Your Own Token (BYOK):** Willst du ein eigenes Modell nutzen, bindest du deinen
   Provider-Account selbst ein. Siehe [Anleitung](openwebui-anleitung.md).
 - **Spracherkennung (Whisper) im Haus:** Die Audio-Transkription läuft zu **100 % lokal** auf
   einer gespendeten Grafikkarte. Es verlassen keine Audiodaten die Schule.
@@ -22,8 +22,8 @@ Bausteine laufen produktiv, die zentrale Modellversorgung ist aber noch nicht ei
 
 ## Was noch fehlt oder eingeschränkt ist
 
-- **Noch keine zentralen KI-Modelle.** Bis die zentrale Modellversorgung steht, muss ein
-  eigenes Modell eingebunden werden (BYOK).
+- **Noch keine zentralen KI-Modelle.** Bis die zentrale Modellversorgung steht, musst du ein
+  eigenes Modell einbinden (BYOK).
 - **Hardware-Entscheidung offen.** Der Vorschlag ist eine dauerhafte Inferenzquelle in der
   Schule (128/256 GB VRAM) im Zusammenspiel mit zugekauften Tokens.
 - **Tool-Aufrufe (Tool-Calling) über LiteLLM** sind im Streaming noch fehlerhaft — betrifft

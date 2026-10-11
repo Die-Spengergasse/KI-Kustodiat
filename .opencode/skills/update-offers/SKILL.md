@@ -54,6 +54,7 @@ anderen Seiten anfassen.
    - Abschlusszeile mit Querlinks: `Zurück zur [Startseite](#/) · [Plan](plan.md) · [Milestones](milestones.md)`.
    - **Nur belegte Zahlen.** Findest du etwas nicht, lasse die Zelle leer bzw. „k. A." —
      erfinde keine Preise.
+   - **Ansprache: durchgehend informell (Du)** — kein „Sie/Ihre/Ihnen".
 
 3. **Verifizieren.** Die Datei muss rendern und ihre `*.md`-Links müssen auflösbar sein
    (Prüfung wie im Skill `update-homepage`, Abschnitt Verifizieren).

@@ -51,6 +51,7 @@ Nicht anfassen: `website/content/openwebui-anleitung.md`, `website/index.html`,
 
 3. **Seiten schreiben.** In den bestehenden Ton und die Struktur der Dateien
    hineinschreiben (Zusammenfassungen auf Deutsch, angenehm lesbar, kurz).
+   **Ansprache: durchgehend informell (Du)** — kein „Sie/Ihre/Ihnen".
    - **Status:** „Stand: <heutiges Datum>", Kurzfassung, *Was schon läuft*,
      *Was noch fehlt/eingeschränkt ist*, *Nächste Schritte*.
    - **Milestones:** je Milestone Kurztext + Links auf die beteiligten Issues
