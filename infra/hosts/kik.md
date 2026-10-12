@@ -15,10 +15,9 @@
 ## Runtime role (2026-10-08)
 
 nginx `1.26.3` lauscht öffentlich auf `:80`/`:443`. Drei separate Let's-Encrypt-Certs
-(je ein Cert pro VHost, Account = Owner-Mail, siehe `secrets.local.md`), Renewal über
-`certbot.timer`
-(zweimal täglich) + `/etc/cron.d/certbot`. **Kein HSTS** (Header erst nach bestandenem
-HTTPS-e2e — Mic, BYOK-Search).
+(je ein Cert pro VHost, Account = Owner-Mail, siehe `secrets.local.md`) — Renewal
+zentral über `certbot.timer`, Details/Check siehe „Zertifikate & Renewal". **Kein
+HSTS** (Header erst nach bestandenem HTTPS-e2e — Mic, BYOK-Search).
 
 | VHost | Ziel |
 |---|---|
@@ -29,6 +28,29 @@ HTTPS-e2e — Mic, BYOK-Search).
 Referenzkopien der VHosts: `infra/nginx/sites-available/`. Live-Files unter
 `/etc/nginx/sites-available/` werden von Certbot verwaltet (`# managed by Certbot`) —
 bei manuellem Edit am Live-File die Referenzkopie synchron halten.
+
+## Zertifikate & Renewal
+
+Drei separate Let's-Encrypt-Certs (je eins pro VHost). **Ein** zentraler
+Mechanismus deckt alle drei ab: `certbot.timer` (systemd, zweimal täglich) →
+`certbot.service` → globales `certbot renew`, das alle Lineages in
+`/etc/letsencrypt/renewal/` durchgeht. `/etc/cron.d/certbot` existiert zwar, ist
+unter systemd aber **inaktiv** (`! -d /run/systemd/system` → No-Op); der Timer
+hat Vorrang. Renewal greift erst bei < 30 Tagen Restlaufzeit.
+
+Ein reines Renew ändert die nginx-Config **nicht**: es legt neue Versionen in
+`/etc/letsencrypt/archive/<name>/` an (`certN.pem` → `certN+1.pem`) und hängt
+nur die Symlinks in `live/<name>/` um — die stabilen Pfade im VHost bleiben
+gleich. Nur **config-ändernde** Certbot-Läufe (Erst-Ausstellung, Domains ändern,
+Redirect an/aus) schreiben die VHost-Datei um → dann Referenzkopie synchron
+halten.
+
+Check über alle drei Certs (verifiziert 2026-10-12, alle grün):
+
+```bash
+sudo certbot renew --dry-run --no-random-sleep-on-renew
+# erwartet: "all simulated renewals succeeded" für kik., openwebui., whisper.
+```
 
 ## DNS-Suchdomänen (`/etc/resolv.conf`)
 
@@ -69,6 +91,9 @@ Referenzkopien der Units: `infra/systemd/`. Installiert per
 
 ## History
 
+- **2026-10-12**: Renewal dokumentiert — **ein** `certbot.timer` (zweimal
+  täglich) für alle drei Certs, `/etc/cron.d/certbot` unter systemd inaktiv;
+  reines Renew ändert die VHost-Config nicht. Dry-Run über alle drei Certs grün.
 - **2026-10-12**: VHost `htl.graf.priv.at` → **`whisper.kik.spengergasse.at`**
   umbenannt (Proxy-Ziel bleibt `http://gregor.kik:11437`; DNS = CNAME auf
   `kik.spengergasse.at`). Neues Let's-Encrypt-Cert, altes Cert/VHost/Logs
