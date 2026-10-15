@@ -19,13 +19,102 @@
 - **ACOnet — OCRE-2024 für österreichische Teilnehmerorganisationen**:
   <https://www.aco.net/ocre-2024.html>
 
-## Adressaten (Kurzliste)
+## Recherche-Ergebnisse (2026-10-15)
 
-- OCRE-Provider aus dem Katalog (konkrete Selektion — aus OCRE-Katalog ermitteln)
-- **BBG** (Bundesbeschaffung GmbH) — bestehende Katalogpositionen / Aufnahme
-- **Exoscale** (Concrete AI / Dedicated Inference)
-- **Cortecs** — bestehender Kontakt, `enterprise@cortecs.ai` (separater kurzer Nachtrag)
-- Ergebnis erweiterter Websuche — offen
+> Quellen: aco.net (OCRE-2024-Seiten, Grundsätze, Teilnehmerliste), clouds.geant.org
+> (Framework-FAQ, Catalogue, Institution Guide), acomarket.at/at (Academic AI),
+> Academic-AI-Benutzerhandbuch 3.0 (Kunstuni Linz, Juli 2026), bbg.gv.at, BMBWF
+> (MS-ACH, Parlamentsanfrage-Beantwortungen KI), BRZ (LLMaaS), GEANT Compendium
+> (NREN AI services matrix, SIG-EDU/SIG-AI), IAedu (FCCN/PT), EduGenAI (SURF/NL).
+
+### Kernbefunde
+
+1. **HTL Spengergasse ist bereits ACOnet-Teilnehmerorganisation** — auf der
+   offiziellen Teilnehmerliste (`aco.net/teilnehmer.html`, „HTBLVA Textil Wien V")
+   und in der **ACOnet Identity Federation** (StudID-Liste). Damit sind OCRE-2024
+   und Academic AI ohne Antragsstrecke für uns abrufbar.
+2. **Academic AI (ACOmarket) ist der realistischste LLM-Weg über den Wissenschaftsnetz-Kanal:**
+   - Secure Azure Landing Zone (EU-Rechenzentrum), DSGVO-Österreich-Konzept mit
+     fertigen Vertragstexten, keine Trainingsnutzung, SSO via ACONET-Federation.
+   - Version 3.0 (Juli 2026): Modelle von **OpenAI, Google, Mistral, Anthropic**;
+     Tailored-AI-RAG (eigene Chatbots mit Wissensbasis), Internetsuche,
+     Bildgenerierung; **API-Zugang seit v2.0** (Chat Completions + KB-Management,
+     `X-Client-ID`/`X-Client-Secret`) → mit LiteLLM routbar.
+   - Verrechnung: nutzungsabhängig monatlich nach tatsächlichen Tokens
+     (Azure-Preisliste); Tokenkostenlimits pro User (univie-Referenz: €20/User/Monat)
+     und pro Institution; Institutionen-Admins steuern Limits + Kostenreport (CSV).
+   - Bereits 32 österreichische Institutionen (Hochschulen) an Bord; Beschaffung der
+     Azure-Landing-Zone läuft über **OCRE** → kein eigenes Vergabeverfahren nötig.
+   - Ungeklärt (→ Anfrage): nimmt ACOmarket **Schulen** (nicht nur Hochschulen)?
+     Handbuch sagt „jede Institution mit aufrechtem Nutzungsvertrag" — Teilnehmerkreis
+     formal offen; konkrete Token-Preise; API-Access-Scope für Schüler-Tools.
+   - Limitation: nur Azure-Ökosystem-Modelle, **keine Open-Weight-Modelle**
+     (DeepSeek/GLM/Qwen) → unser Hybrid-Plan (on-prem + Cortecs/Partner) bleibt
+     bestehen; Academic AI wäre die EU-gedeckte Copilot-Ebene fürs Breitband-Deploys.
+3. **OCRE 2024 (GÉANT, Laufzeit 2/2025–1/2030):** Rahmenvertrag für IaaS/PaaS/SaaS.
+   Group-B-Definition schließt **„primary and secondary (or further) education
+   institutions"** explizit ein → wir sind formal eligible; in AT erfolgt der Zugang
+   über ACOnet (passiver Referrer, keine Cost-Recovery-Fee, Verträge direkt mit dem
+   Provider; Support durch ACOmarket). **Aber: der Katalog enthält keine LLM-API-Position**
+   (416 Offerings, 17 Plattformen) — OCRE liefert Rechenleistung, keine Tokens.
+   - Österreich (13 Offerings, 8 Plattformen): AWS (Sparkle/SoftwareOne/PCG),
+     Google (PCG/Sparkle/SoftwareOne), **Azure (Bechtle #1/SoftwareOne)**,
+     IONOS (Bechtle), **Exoscale via A1 (#1, Rank)**, Open Telekom Cloud,
+     CloudFerro, Setcor. Bei Direktvergabe gilt das **Wasserfallprinzip** (#1 zuerst).
+   - Konkreter KI-Treffer: **Exoscale „Concrete AI / Dedicated Inference"**
+     (GPU-Inferenz, EU-Datacenter Wien) — als GPU-IaaS-Overflow/Absicherung für
+     unser on-prem-Setup über OCRE abrufbar.
+4. **BBG:** Bundesschulen sind laut BBG-Gesetz verpflichtet, über BBG zu beschaffen
+   (unsere Schule ist vermutlich bereits e-Shop-Kunde — MS-ACH läuft über BBG).
+   - **MS-ACH (verlängert bis 31.5.2027)** enthält bereits **Microsoft Copilot Chat**
+     für alle Bundesbediensteten + Schüler:innen → potenziell **sofort ohne
+     Beschaffung nutzbar**; Lizenzfragen: `edu.at@softwareone.com` (SoftwareOne ist
+     gleichzeitig OCRE-Provider #2 für AWS/Azure in AT).
+   - **kloudease (AOE/Consileon)** über BBG-IT-Dienstleistungen: souveräne
+     Cloud-Native-Plattform auf STACKIT in österreichischen Rechenzentren, inkl.
+     „eigenes Unternehmens-GPT" und Agentic-Workflows — als BBG-Position abrufbar.
+   - BRZ **LLMaaS** (on-prem, mandantenfähig, Basis für GovGPT/Public-AI-Initiative)
+     richtet sich an BRZ-Kunden der Verwaltung — Schulen aktuell nicht im Fokus.
+   - BMBWF-eigene KI: hausinternes Azure-OpenAI-KI-Portal nur für die Zentralstelle;
+     „sicher nutzbare KI-Umgebung für Schulen" laut Ministerratsvortrag 16/10 (6/2025)
+     **in Planung**; 100 KI-Pilotschulen-Programm (eEducation Austria) existiert.
+     → Politischer Hebel: uns als Pionier-Schule mit lauffähiger Infrastruktur positionieren.
+5. **GÉANT/Europa-Trend:** NREN-AI-Matrix (Compendium) zeigt ~15 NRENs mit
+   AI-Services; Federated-LLM-Plattformen für Bildung existieren (IAedu/Portugal:
+   GPT-4o/Mistral/AMALIA + API, 25k User; EduGenAI/NL via SURF+Npuls, Rollout
+   Ende 2026). ACOnet bietet selbst **noch keinen** eigenen AI-Service — Academic AI
+   via ACOmarket ist der österreichische Vorreiter. Unsere Anfrage kann genau hier
+   Pionierarbeit für Schulen einleiten.
+
+### Adressaten (final, mit geernteten Adressen)
+
+| Adressat | Kontakt | Betrifft |
+|---|---|---|
+| **ACOmarket GmbH** | `office@acomarket.ac.at` (Ansprechpartner Academic AI: Mag. Michael Pisecki, +43 670 354 8193) | **Academic AI für Schulen** (Prio 1) — SSO, API, Preis |
+| **Academic AI Support** | `support@academic-ai.at` | Test-Accounts, Support, Benutzerhandbuch |
+| **ACOnet (OCRE-Team)** | `cloud@aco.net` | OCRE-2024-Zugang für Schulen, Teilnahme-Fragen |
+| **ACOnet allgemein** | `admin@aco.net` (+43-1-4277-14030) | Teilnahme/Anbindung (wir sind bereits Teilnehmer) |
+| **ACONET Community** | `community@aconet.at` (David Urbaner) | Community/Infoshare-AI-Format, Mailingliste AI |
+| **cloud-discuss Mailingliste** | `noc.aco.net/mailman/listinfo/cloud-discuss` | Niederschwelliger Erstkontakt in der OCRE-Community |
+| **BBG Helpcenter** | `office@bbg.gv.at`, +43 1 245 70-0 | Katalogpositionen KI/Cloud für Bundesschulen |
+| **BBG Kundenmanagement** | `kundenmanagement@bbg.gv.at` | e-Shop-Zugang/Grundsatzvereinbarung |
+| **Exoscale via A1 (OCRE AT #1)** | `sales.austria@exoscale.com` | Concrete AI / Dedicated Inference (GPU), OCRE-Abruf |
+| **SoftwareOne (OCRE AT #2, MS-ACH EDU)** | `OCRE.EMEA@softwareone.com`, EDU: `edu.at@softwareone.com` | Azure/AWS OCRE-Konditionen + Copilot-Chat-Fragen |
+| **Cortecs** | `enterprise@cortecs.ai` | separater kurzer Nachtrag (Bestandskunde) |
+
+### Realistische Einschätzung für die HTL Spengergasse
+
+- **Realistisch und schnell:** Academic AI-Teilnahme anfragen (wir sind ACOnet-Teilnehmer
+  + Federation-Mitglied — kürzester Weg zu datenschutzkonformen LLMs mit SSO und API),
+  parallel Copilot-Chat-Bestand aus MS-ACH aktivieren.
+- **Realistisch, aber für Infrastruktur statt Tokens:** GPU-IaaS via OCRE (Exoscale
+  Concrete AI via A1) als Backup/Overflow für das on-prem-Backend.
+- **Nicht über OCRE/BBG:** LLM-API-Tokens mit Open-Weight-Modellen (DeepSeek/GLM/Qwen)
+  — hier bleiben Direktverträge (Cortecs u. a.) der einzige Weg; BBG-Katalogposition
+  „LLM-API" gibt es derzeit nicht → Anfrage an BBG als Signal setzen (Nachfrage erzeugen).
+- **Politisch wertvoll:** BMBWF plant eine schulische KI-Umgebung erst — unsere
+  lauffähige Infrastruktur + Academic-AI-Pionierstellung ist ein starkes Argument
+  für die Budgetforderung (M2).
 
 ---
 
@@ -82,6 +171,29 @@ HTL Spengergasse, Spengergasse 20, 1050 Wien
   oder läuft der Zugang über Teilnehmerorganisationen (z. B. ACOnet/Universitäten)?
 - Welche LLM-/Inference-Dienste sind konkret im OCRE-2024-Katalog gelistet,
   und zu welchen Konditionen (Preisbänder, Kombinationen mit Education-Rabatten)?
+
+> **Update 2026-10-15:** Antwort auf Frage 1 steht faktisch fest — wir sind
+> bereits ACOnet-Teilnehmer, Zugang läuft über ACOnet/ACOmarket. Die Mail an
+> `cloud@aco.net` kann daher kompakter ausfallen (Bestätigung einholen statt
+> Grundlagen klären).
+
+### Academic AI — Anfrage-Punkte (an `office@acomarket.ac.at`)
+
+> Kompakter Zweit-Draft für den realistischsten Weg (Prio 1):
+
+- Wir sind ACOnet-Teilnehmerorganisation (HTBLVA Spengergasse, ~2.600 Schüler:innen,
+  ~280 Lehrkräfte, 97 Klassen) und Mitglied der ACOnet Identity Federation —
+  SSO wäre damit gegeben.
+- Nimmt ACOmarket auch **Schulen** als Abonnenten an (bisher 32 Hochschulen)?
+  Ggf. als Pionier-/Pilotschule mit reduzierter Skala (1–2 Klassen, 30 Tage).
+- Verfügbare Modelle in v3.0 (OpenAI/Google/Mistral/Anthropic) und geltende
+  Token-Preise; Per-User-Limit-Empfehlung für Sekundarstufe-II-Nutzung.
+- **API-Zugang**: Umfang (Chat Completions, KB/RAG-Management), Auth-Mechanik
+  (`X-Client-ID`/`X-Client-Secret`), Limits — wir würden über LiteLLM routen.
+- Verrechnung: monatliche Token-Abrechnung, Institutions-Limit-Steuerung durch
+  uns als Admins — bestätigen.
+- Kein eigenes Vergabeverfahren nötig (Beschaffung via OCRE durch ACOmarket) —
+  bestätigen und Nutzungsvertrag-Muster übersenden.
 
 ---
 
