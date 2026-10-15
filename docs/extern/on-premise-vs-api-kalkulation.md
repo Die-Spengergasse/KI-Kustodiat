@@ -32,7 +32,7 @@ Siehe auch: `cortecs-provider-evaluation.md` (DSGVO-Tier-Klassifikation)
 | OpenRouter (Tier 3) | $0,0679 | $0,168 | openrouter.ai (nicht empfohlen) |
 
 > Preise vor Vertrag mit Cortecs verifizieren — siehe
-> `cortecs-anfrage-email-draft.md`. EU-Aufschlag realistisch +30–50 %.
+> `provider-anfragen.md`. EU-Aufschlag realistisch +30–50 %.
 
 ## Kostenkalkulation Cortecs-API (DeepSeek V4 Flash, mittleres Szenario)
 

@@ -77,7 +77,7 @@ gregor 2026-10-07: GPU exklusiv Whisper `large-v3` (dauerhaft, direkt an Open We
 - [ ] dev-rig-01: Adapter einbauen, PCIe-Stränge prüfen, Specs nachtragen (Issue #12)
 - [ ] HTTPS-Front live (2026-10-08, Issue #3: nginx auf kik) — offen nur noch Mic-e2e via Front (Secure Context) + HSTS danach
 - [ ] Kein Function-Calling mit Qwen3 1.7B (builtin_tools + tool_choice=none blockieren auch Web-Search). Benötigt größeres Modell oder Upgrade von LiteLLM/Ollama für stabilen Tool-Call-Streaming via Open WebUI.
-- [ ] Cortecs-Vertrag anfragen (`docs/extern/cortecs-anfrage-email-draft.md` an `enterprise@cortecs.ai`) — Bildungs-Rabatt, DPA, Modellpreise, 30-Tage-Pilot klären (→ gebündelt in **#34**)
+- [ ] Provider-Anfragen versenden (`docs/extern/provider-anfragen.md` — Priorität: Sammel-Mail an OCRE/BBG-Adressaten; Cortecs als kurzer Nachtrag an `enterprise@cortecs.ai`) — Bildungs-Rabatt, DPA, Modellpreise, Pilot klären (**#34**)
 - [ ] Framework Desktop Strix Halo 128 GB bestellen (Issues #2/#5/#7) — On-Prem-Backend für DSGVO-kritische Last + Q3-Modelle
 - [ ] Issue #14 (Token- und Auth-Konzept) mit Cortecs-Volumen + Drei-Säulen-Modell ergänzen
 

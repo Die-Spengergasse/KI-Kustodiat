@@ -45,7 +45,7 @@ Stand: 2026-10-07 · Whisper exklusiv auf GPU (Ollama aus, LiteLLM gestoppt/Rese
 
 ## Offen (älter)
 - [ ] ZID-VM da (2026-10-07): URL in #24-Mail eingesetzt (rev. 3, 2026-10-11); noch offen: STT-e2e via Front (siehe Offen Nr. 2).
-- [ ] Cortecs-Vertrag anfragen (`docs/extern/cortecs-anfrage-email-draft.md` → `enterprise@cortecs.ai`).
+- [ ] Provider-Anfragen versenden (`docs/extern/provider-anfragen.md` → OCRE/BBG-Adressaten + `enterprise@cortecs.ai` als kurzer Nachtrag).
 - [ ] Hardware-Entscheidung (Issues #2, #5, #7) — Framework Desktop Strix Halo 128 GB.
 - [ ] Issue #14 (Token-/Auth-Konzept) um BYOK-Realität ergänzen (Keys liegen am Server; DeepSeek-direkt = Tier 4, Eigenverantwortung).
 - [ ] LiteLLM-Reserve (gestoppt 2026-10-07): Reaktivierung in `whisper/README.md`; `models={}`-Regel + `OPENCODE_MODELS_URL`-Rollout erst wieder relevant, wenn LiteLLM zurückkommt.

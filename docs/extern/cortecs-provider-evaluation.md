@@ -51,7 +51,7 @@ Richtwerte pro Mio Tokens (geschätzt, inkl. EU-Aufschlag von +30–50 %):
 | DeepSeek V4 Flash (OpenRouter) | $0,0679 | $0,168 | openrouter.ai (Tier 3, nicht empfohlen) |
 
 > Preise vor Vertrag mit Cortecs verifizieren — siehe
-> `cortecs-anfrage-email-draft.md`.
+> `provider-anfragen.md`.
 
 ## DSGVO-Tier-Vergleich (vollständige Klassifikation, Stand Aug 2026)
 
