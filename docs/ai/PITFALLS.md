@@ -2,6 +2,8 @@
 
 ## Bekannte Fallstricke
 
+- **GitHub Discussions: Kategorien via GraphQL nicht verwaltbar** — das Schema kennt keine `create/update/deleteDiscussionCategory`-Mutationen (nur Discussion-/Kommentar-Operationen). Umbenennen/Anlegen/Sortieren nur über die Web-UI (`discussions/categories`, Admin-Rechte nötig).
+- **Cisco-`secure-web`-Proxy-URLs in Dokumenten verrotten**: Links, die per Mail/E2 aus Proxy-Redirects kopiert werden (`secure-web.cisco.com/<token>/https%3A//...`), sind an das eigene Konto gebunden und funktionieren für niemanden sonst — immer die echte Ziel-URL dekodieren und eintragen.
 - **Hardware-Entscheidung blockiert Setup**: Ohne finale Hardware kann vLLM-Konfiguration nicht abgeschlossen werden
 - **ROCm vs. CUDA**: AMD-Optionen sind günstiger, aber ROCm-Ökosystem ist weniger ausgereift als CUDA
 - **Gemma 4 Lizenz**: Apache 2.0, aber SuperGemma 4 Uncensored ist ein Community-Derivat – Policy für Schulumgebung klären
