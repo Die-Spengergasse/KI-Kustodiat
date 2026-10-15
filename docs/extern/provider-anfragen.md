@@ -118,82 +118,182 @@
 
 ---
 
-## Priorität: Sammel-Mail an die vielen Adressaten
+## Einzel-Drafts (2026-10-15) — eine Mail je Adressat
 
-> Ein Draft für alle Anbieter/Rahmenvertragsstellen, die kein bestehendes
-> Kundenverhältnis mit uns haben. Vor Versand: Adressaten selektieren,
-> Personalisierung (Anrede + 1 Satz je Firma), Georg überarbeitet gründlich.
+> Die frühere Sammel-Mail ist obsolet: Die Adressaten sind zu unterschiedlich
+> (Kooperations-Pilot, Fachverständigungs-Fragen, Preisangebot, Beschaffungs-Signal,
+> Bestandskundenauftrag). Fragensets wurden passend verteilt. Georg überarbeitet
+> vor Versand gründlich. URLs text-only (Outlook rendert kein Markdown).
 
-**Betreff:** Anfrage Bildungseinrichtung — LLM-API-Kostenvoranschlag & Kooperation (HTL Spengergasse)
+### Draft 1 — ACOmarket: Academic AI für eine ACOnet-Teilnehmerschule (Prio 1)
 
-Sehr geehrtes Team,
+**An:** `office@acomarket.ac.at` (Ansprechpartner Academic AI: Mag. Michael Pisecki)
+**Betreff:** Academic AI für eine ACOnet-Teilnehmerschule — Pionieranfrage HTL Spengergasse
 
-die HTL Spengergasse (Wien, ~2.600 Schüler:innen, ~280 Lehrkräfte, 97 Klassen)
-baut eine schuleigene, hybride LLM-Infrastruktur auf: on-premise Backend plus
-API-Zukauf bei EU-souveränen Providern. Wir suchen Anbieter, die öffentliche
-Bildungseinrichtungen mit LLM-API-Dienstleistungen versorgen können —
-bevorzugt im Rahmen bestehender öffentlicher Beschaffungswege (OCRE/GEANT
-Call-Off via ACOnet, BBG-Katalog, oder direkt).
+Sehr geehrter Herr Mag. Pisecki, sehr geehrtes ACOmarket-Team,
 
-Uns interessieren folgende Punkte:
+die HTL Spengergasse (HTBLVA Wien V, ~2.600 Schüler:innen, ~280 Lehrkräfte,
+97 Klassen) ist ACOnet-Teilnehmerorganisation und Mitglied der ACOnet Identity
+Federation. Wir betreiben eine schuleigene KI-Infrastruktur (eigener Whisper-STT-,
+LLM- und Open-WebUI-Stack, Anmeldung über das Schul-AD, siehe
+https://kik.spengergasse.at) und suchen für den Breitband-Einsatz im Unterricht
+eine datenschutzkonforme, EU-gehostete LLM-Plattform — Academic AI erscheint uns
+dafür als der offenkundige Weg.
 
-1. **Bildungs-/Schul-Rabatt** — gibt es gesondertes Pricing für öffentliche,
-   nicht-kommerzielle Bildungseinrichtungen (HTL, Bundesschule)?
-2. **Modellangebot & Preise** — LLM-API pro Mio. Tokens (Input/Output),
-   idealerweise inkl. europäischer und Open-Weight-Modelle.
-3. **Datenschutz** — DPA/Auftragsverarbeitung, Serverstandort EU, keine
-   Trainingsnutzung der Kunden Daten, Aufbewahrungsfristen / Zero-Retention.
-4. **Beschaffungsweg** — ist Ihre Dienstleistung über OCRE-2024 (GEANT,
-   Call-Off via ACOnet) bzw. BBG-Katalog beziehbar? Falls nicht: wegweisender
-   Standard-Vertragsweg für eine öffentliche Schule?
-5. **Volumen** — grobe Schätzung mittleres Szenario: ~325 Mio. Output-Tokens/
-   Monat bei 30 % aktiven Schüler:innen; Worst-Case-Skalierung Richtung
-   ~2,2 Mrd./Monat. Bitte einen Preisvorschlag für beide Größenordnungen.
-6. **Technische Anbindung** — OpenAI-kompatible API (Routing über LiteLLM),
-   Virtual Keys / Rate-Limits pro Gruppe wünschenswert.
-7. **Pilot** — Möglichkeit eines begrenzten Testzeitraums (z. B. 1–2 Klassen,
-   30 Tage) vor einer Budgetforderung an die Schulaufsicht.
+Unsere Anfrage in vier Punkten:
 
-Ein Projektüberblick: <https://kik.spengergasse.at>
+1. **Schulen als Abonnenten:** Bisher nutzen 32 Hochschulen Academic AI. Nimmt
+   ACOmarket auch österreichische Schulen (Sekundarstufe II, Schulerhalter Bund)
+   als Abonnenten an? Wir wären gern Pionierschule — ggf. als Pilot mit reduzierter
+   Skala (1–2 Klassen, ~30 Tage), danach Ausweitung.
+2. **Modelle & Konditionen:** Welche Modelle sind in v3.0 konkret verfügbar
+   (OpenAI/Google/Mistral/Anthropic), und wie sind die Token-Preise? Welche
+   Per-User-Limits empfehlen Sie für Schüler:innen der Sekundarstufe II
+   (Referenz u:ai: €20/User/Monat)?
+3. **API-Zugang:** Wir würden Academic AI über LiteLLM in unsere bestehende
+   Infrastruktur routen. Umfang des API-Zugangs (Chat Completions,
+   Tailored-AI-/Wissensbasis-Management), Authentifizierung
+   (X-Client-ID/X-Client-Secret), Rate-Limits und Kostendetail pro API-Key?
+4. **Formales:** Bestätigen Sie bitte, dass kein eigenes Vergabeverfahren
+   notwendig ist (Beschaffung der Azure Secure Landing Zone durch ACOmarket
+   über OCRE), und senden Sie ein Muster des Nutzungsvertrags sowie Ihr
+   Datenschutzkonzept zu. Abrechnung monatlich nach tatsächlichem Tokenverbrauch,
+   Limits von uns als Institutions-Admins steuerbar — korrekt?
 
-Wir freuen uns auf Ihr Angebot bzw. einen kurzen Erstkontakt.
+Da SSO über die ACOnet Identity Federation bei uns bereits gegeben wäre, wäre
+eine Aufnahme technisch für uns ohne Reibungsverluste denkbar.
 
 Mit freundlichen Grüßen
 Georg Graf
 HTL Spengergasse, Spengergasse 20, 1050 Wien
 
-### OCRE/BBG-spezifische Ergänzung (in die Sammel-Mail bei diesen Adressaten)
+### Draft 2 — ACOnet: OCRE-2024-Abruf durch eine Teilnehmerschule (Prio 2)
 
-> Diese beiden Punkte zusätzlich in die Mail bei Rahmenvertragsstellen:
+**An:** `cloud@aco.net`
+**Betreff:** OCRE 2024 — Abruf durch eine ACOnet-Teilnehmerschule (HTBLVA Spengergasse)
 
-- Können österreichische Bildungseinrichtungen (Schulträger: Stadt Wien bzw.
-  BM für Bildung) direkt aus dem OCRE-2024-Rahmenvertrag Call-Offs tätigen,
-  oder läuft der Zugang über Teilnehmerorganisationen (z. B. ACOnet/Universitäten)?
-- Welche LLM-/Inference-Dienste sind konkret im OCRE-2024-Katalog gelistet,
-  und zu welchen Konditionen (Preisbänder, Kombinationen mit Education-Rabatten)?
+Sehr geehrtes ACOnet-Team,
 
-> **Update 2026-10-15:** Antwort auf Frage 1 steht faktisch fest — wir sind
-> bereits ACOnet-Teilnehmer, Zugang läuft über ACOnet/ACOmarket. Die Mail an
-> `cloud@aco.net` kann daher kompakter ausfallen (Bestätigung einholen statt
-> Grundlagen klären).
+die HTL Spengergasse (HTBLVA Wien V) ist als Teilnehmerorganisation in der
+Teilnehmerliste geführt und nutzt die ACOnet Identity Federation. Im Rahmen des
+Aufbaus einer schuleigenen KI-Infrastruktur (siehe https://kik.spengergasse.at)
+haben wir drei Verständnisfragen zum OCRE 2024 Framework:
 
-### Academic AI — Anfrage-Punkte (an `office@acomarket.ac.at`)
+1. Bestätigen Sie, dass ACOnet-Teilnehmerschulen (Sekundarstufe II, Schulerhalter
+   Bund) OCRE-2024-Services auf dieselbe Weise ausschreibungsfrei abrufen können
+   wie Hochschulen (Call-Off direkt mit dem Provider, ACOmarket-Unterstützung)?
+2. Planen wir den Bezug von GPU-Inferenz-Rechenleistung (z. B. Exoscale „Concrete
+   AI / Dedicated Inference" via A1, Rank #1 in Österreich). Gibt es aus Ihrer
+   Sicht Besonderheiten bei Call-Offs für GPU-Workloads (Wasserfallprinzip,
+   Mini-Competition)?
+3. Nehmen wir die Gelegenheit wahr: Falls ACOmarket/ACOnet künftig über den
+   OCRE-Kanal hinaus eigene AI-Services für den Teilnehmerkreis (inkl. Schulen)
+   prüft — wir bringen uns als Pilotschule gern ein.
 
-> Kompakter Zweit-Draft für den realistischsten Weg (Prio 1):
+Falls für die Beantwortung der Detailfragen die ACOmarket GmbH zuständig ist,
+wären wir für einen Hinweis an die richtige Stelle dankbar.
 
-- Wir sind ACOnet-Teilnehmerorganisation (HTBLVA Spengergasse, ~2.600 Schüler:innen,
-  ~280 Lehrkräfte, 97 Klassen) und Mitglied der ACOnet Identity Federation —
-  SSO wäre damit gegeben.
-- Nimmt ACOmarket auch **Schulen** als Abonnenten an (bisher 32 Hochschulen)?
-  Ggf. als Pionier-/Pilotschule mit reduzierter Skala (1–2 Klassen, 30 Tage).
-- Verfügbare Modelle in v3.0 (OpenAI/Google/Mistral/Anthropic) und geltende
-  Token-Preise; Per-User-Limit-Empfehlung für Sekundarstufe-II-Nutzung.
-- **API-Zugang**: Umfang (Chat Completions, KB/RAG-Management), Auth-Mechanik
-  (`X-Client-ID`/`X-Client-Secret`), Limits — wir würden über LiteLLM routen.
-- Verrechnung: monatliche Token-Abrechnung, Institutions-Limit-Steuerung durch
-  uns als Admins — bestätigen.
-- Kein eigenes Vergabeverfahren nötig (Beschaffung via OCRE durch ACOmarket) —
-  bestätigen und Nutzungsvertrag-Muster übersenden.
+Mit freundlichen Grüßen
+Georg Graf
+HTL Spengergasse, Spengergasse 20, 1050 Wien
+
+### Draft 3 — Exoscale via A1: GPU-Dedicated-Inference-Angebot (Prio 3)
+
+**An:** `sales.austria@exoscale.com`
+**Betreff:** Kostenvoranschlag GPU Dedicated Inference (OCRE 2024) — HTL Spengergasse
+
+Sehr geehrtes Exoscale-Team,
+
+die HTL Spengergasse (Wien, ~2.600 Schüler:innen, ~280 Lehrkräfte) betreibt eine
+schuleigene LLM-Infrastruktur mit on-premise GPU-Backend (vLLM, Open WebUI,
+LiteLLM-Routing; https://kik.spengergasse.at). Für Absicherung und
+Lastspitzen (z. B. Schulwochen mit hohem Chat-Aufkommen) evaluieren wir
+Exoscale „Concrete AI / Dedicated Inference" als EU-gehostete Overflow- und
+Reserve-Infrastruktur — abrufbar über den OCRE 2024 Rahmenvertrag (Exoscale via
+A1, OCRE-2024 Rank #1 in Österreich).
+
+Bitte erstellen Sie uns einen Kostenvoranschlag für:
+
+1. **Szenario A — Pilot:** eine dedizierte GPU-Instanz (moderne Datacenter-GPU,
+   24–80 GB VRAM) für Modell-Hosting mit OpenAI-kompatibler API, EU-Datenzentrum
+   (Wien), Laufzeit 3 Monate, planbare Abschaltung außerhalb der Schulwochen.
+2. **Szenario B — Ausbau:** 2–4 GPU-Instanzen dauerhaft während der Schulzeiten
+   (September–Juni), für Open-Weight-Inferenz-Modelle (Größenordnung 7B–70B
+   Parameter), QPS-Spitzen ~50 gleichzeitige Anfragen.
+3. **Konditionen:** Education-/R&E-Preise im Rahmen von OCRE 2024,
+   Abrechnungsmodell (Reservierung vs. On-Demand), Einrichtungs-/Betriebsaufwand
+   für Dedicated Inference, DPA/AVV für eine österreichische Bundesschule sowie
+   Rechnungsstellung auf die Schule (UID-pflichtig).
+
+Wir sind als ACOnet-Teilnehmerorganisation OCRE-berechtigt und können den Abruf
+zügig formalisieren, sofern das Preisgepasst für unser Schulbudget passt.
+
+Mit freundlichen Grüßen
+Georg Graf
+HTL Spengergasse, Spengergasse 20, 1050 Wien
+
+### Draft 4 — BBG: KI-/LLM-Positionen für Bundesschulen (Prio 4)
+
+**An:** `office@bbg.gv.at` (ggf. BCC/Zweitkontakt: `kundenmanagement@bbg.gv.at`)
+**Betreff:** Anfrage Bundesschule — LLM-/KI-Dienstleistungen im BBG-e-Shop (HTL Spengergasse)
+
+Sehr geehrtes BBG-Team,
+
+die HTL Spengergasse (HTBLVA Wien V, ~2.600 Schüler:innen, ~280 Lehrkräfte,
+97 Klassen) ist als Bundesschule BBG-Abnehmerin (e-Shop, Grundsatzvereinbarung)
+und baut derzeit eine schuleigene, hybride KI-Infrastruktur auf: on-premise
+Backend (STT, LLM-Inferenz) plus zugekaufte API-Dienste souveräner europäischer
+Provider (siehe https://kik.spengergasse.at).
+
+Unsere Anfragen:
+
+1. **Bestand:** Gibt es im e-Shop aktuell Rahmenvereinbarungen oder Katalogpositionen
+   für LLM-API-Dienste (Token-basierte Sprachmodell-Zukauf), KI-Plattformen
+   (z. B. im Umfeld von GovGPT/Public AI) oder GPU-Inferenz-Rechenleistung, die
+   für Bundesschulen abrufbar sind?
+2. **Neubedarf:** Falls nicht — über welchen Weg gerät ein konkreter Bedarf
+   „LLM-API für Bildungseinrichtungen" in Ihre Beschaffungsplanung (Beschaffungsgruppe,
+   Bedarfsmeldung, Kontaktstelle)? Wir würden eine solche Position gern aktiv
+   anstoßen, da wir davon ausgehen, dass viele Bundesschulen denselben Bedarf haben.
+3. **Bestehende Positionen:** Wir nutzen den MS-ACH-Rahmenvertrag (Microsoft EDU
+   Austria) und haben gesehen, dass über BBG abgewickelte Positionen wie
+   Cloud-Plattformen (z. B. mit österreichischem Rechenzentrumsbezug) existieren.
+   Gibt es dazu eine fachliche Ansprechperson, die uns für KI-/Cloud-Positionen
+   beraten kann?
+
+Mit freundlichen Grüßen
+Georg Graf
+HTL Spengergasse, Spengergasse 20, 1050 Wien
+
+### Draft 5 — SoftwareOne EDU: Copilot Chat aus MS-ACH aktivieren (Prio 5)
+
+**An:** `edu.at@softwareone.com`
+**Betreff:** MS-ACH (Microsoft EDU Austria) — Microsoft Copilot Chat für HTL Spengergasse
+
+Sehr geehrtes SoftwareOne-EDU-Team,
+
+die HTL Spengergasse (HTBLVA Wien V) nimmt am MS-ACH-Rahmenvertrag (Microsoft EDU
+Austria, über BBG) teil und stellt fest, dass „Microsoft Copilot Chat" als
+Bestandteil des Agreements (M365 A3 für Bundesbedienstete und Schüler:innen)
+ausgewiesen ist. Wir möchten das für unseren Schulbetrieb aktiv nutzen und haben
+drei Fragen:
+
+1. **Aktivierung:** Welche Schritte sind für die Aktivierung von Copilot Chat an
+   unserer Schule notwendig (Tenant-Konfiguration, Synchronisierung mit dem
+   Identitätsmanagement der Bundesportale/edu.IDAM, Lizenzzuweisung für
+   Schüler:innen und Lehrkräfte)?
+2. **Datenschutz/Konfiguration:** Welche Einstellungen empfiehlt Microsoft
+   bzw. das BMBWF für den Schuleinsatz (Datenschutzkonfiguration, Teacher-Admin-
+   Controls, Ruhe-/Altersgrenzen für Schüler:innen unter 18)?
+3. **Ausblick:** Können über den MS-ACH-Weg zusätzlich Azure-OpenAI-Kapazitäten
+   oder Azure-Dienste beziehbar gemacht werden — insbesondere über den
+   OCRE-2024-Rahmenvertrag (SoftwareOne ist dort OCRE-Provider für AWS/Azure in
+   Österreich)? Für einen zweiten, separaten OCRE-Strang (GPU/LLM-API) wären wir
+   an Ihren Konditionen interessiert.
+
+Mit freundlichen Grüßen
+Georg Graf
+HTL Spengergasse, Spengergasse 20, 1050 Wien
 
 ---
 
@@ -254,11 +354,12 @@ finden Sie unter `docs/extern/cortecs-provider-evaluation.md` (ggf. auf Anfrage)
 
 ## Verwendungs-Hinweis
 
-Vor Versand je Adressat:
-- [ ] Adressaten-Selektion finalisieren (OCRE-Katalog, BBG-Katalog, Websuche)
-- [ ] Anrede + persönlicher Einstiegssatz je Firma
-- [ ] Aktuelle Schülerzahl / Schultage verifizieren
-- [ ] Volumen-Zahlen gegen `docs/extern/on-premise-vs-api-kalkulation.md` abgleichen
-- [ ] Schul-UID / Rechnungsadresse offiziell bestätigen
-- [ ] Mit Direktion / IT-Leitung abstimmen
-- [ ] Gesendete Fassung nach `docs/extern/mail-archiv/` archivieren
+Vor Versand je Draft (1 = ACOmarket, 2 = ACOnet, 3 = Exoscale, 4 = BBG, 5 = SoftwareOne):
+- [ ] Schülerzahl / Klassenanzahl aktuell verifizieren
+- [ ] Projekt-URL `https://kik.spengergasse.at` prüfen (Status-Seite aktuell?)
+- [ ] Volumen-/Szenario-Zahlen gegen `docs/extern/on-premise-vs-api-kalkulation.md` abgleichen
+- [ ] Schul-UID / Rechnungsadresse offiziell bestätigen (Relevant v. a. Draft 3)
+- [ ] Mit Direktion / IT-Leitung abstimmen (Relevant v. a. Draft 1 und 5 — diese Mails
+      können zu echten Vertragsabschlüssen führen)
+- [ ] Versand-Reihenfolge: 1 → 2 → 3 → 5 → 4 (BBG als Signal-Mail kann zuletzt laufen)
+- [ ] Gesendete Fassung je Mail nach `docs/extern/mail-archiv/` archivieren
