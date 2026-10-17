@@ -252,6 +252,8 @@ HTL Spengergasse, Spengergasse 20, 1050 Wien
 
 ### Draft 4 — BBG: KI-/LLM-Positionen für Bundesschulen (Prio 4)
 
+> Ergänzend für großer-Hardware/GPU-Server: `docs/extern/bbg-hardware-anfrage-email-draft.md`.
+
 **An:** `office@bbg.gv.at` (ggf. BCC/Zweitkontakt: `kundenmanagement@bbg.gv.at`)
 **Betreff:** Anfrage Bundesschule — LLM-/KI-Dienstleistungen im BBG-e-Shop (HTL Spengergasse)
 
