@@ -19,7 +19,7 @@
 - **ACOnet — OCRE-2024 für österreichische Teilnehmerorganisationen**:
   <https://www.aco.net/ocre-2024.html>
 
-## Recherche-Ergebnisse (2026-10-15)
+## Recherche-Ergebnisse (2026-10-15; BBG-Preisweg ergänzt 2026-10-17)
 
 > Quellen: aco.net (OCRE-2024-Seiten, Grundsätze, Teilnehmerliste), clouds.geant.org
 > (Framework-FAQ, Catalogue, Institution Guide), acomarket.at/at (Academic AI),
@@ -79,6 +79,24 @@
      „sicher nutzbare KI-Umgebung für Schulen" laut Ministerratsvortrag 16/10 (6/2025)
      **in Planung**; 100 KI-Pilotschulen-Programm (eEducation Austria) existiert.
      → Politischer Hebel: uns als Pionier-Schule mit lauffähiger Infrastruktur positionieren.
+   - **Preisabfrage (e-Shop):** Die konkreten Katalogpreise (inkl. Verwaltungscharge)
+     sind **nur im e-Shop** sichtbar — nach Login im BBG-Portal, den man nach Abschluss
+     der (seit 2025 kostenfreien) Grundsatzvereinbarung erhält (zwei kostenlose Zugänge
+     inklusive). Die öffentliche Website listet nur die Verträge (GZ-Nummer + Link in den
+     öffentlichen e-Shop); Preise erscheinen erst nach Login. Auskunft: Helpcenter
+     `office@bbg.gv.at`, Kundenmanagement `kundenmanagement@bbg.gv.at` oder die KAM.
+   - **Hardware/Server über BBG:** Das Portfolio nennt „leistungsstarke Server und
+     Netzwerke" sowie die Position **„PCs & 13 Zoll 2 in 1 — GZ 3401.04830"**
+     (individuell konfigurierte PCs, Notebooks, **Workstations**). Eine Katalogposition
+     für **große GPU-Server (256 GB+ VRAM)** ist nicht ersichtlich → Bedarfserhebung bzw.
+     „Projekt im besonderen Auftrag" über das Vergabekompetenzcenter; Preis dann per
+     Einzelangebot statt Katalogpreis.
+   - **Marktlage (BBG, Stand Mai 2026):** Speicherchip-/Halbleiter-Engpässe betreffen
+     Verfügbarkeit, Lieferzeiten und Preisstabilität der IT-Hardware-Rahmenvereinbarungen;
+     die BBG hat keine generellen Preisänderungen freigegeben und rechnet mit Angeboten
+     nur kurzer Gültigkeit. → Bei GPU-Beschaffung Lieferzeit und Preisbindung früh klären.
+   - **Kontakt Bundesschulen:** Barbara Weinmann, KAM Bund, Bundesschulen, Pädagogische
+     Hochschulen & Bildungsdirektionen (`barbara.weinmann@bbg.gv.at`).
 5. **GÉANT/Europa-Trend:** NREN-AI-Matrix (Compendium) zeigt ~15 NRENs mit
    AI-Services; Federated-LLM-Plattformen für Bildung existieren (IAedu/Portugal:
    GPT-4o/Mistral/AMALIA + API, 25k User; EduGenAI/NL via SURF+Npuls, Rollout
