@@ -48,6 +48,9 @@ Unsere Fragen:
 6. **Angebotslegung:** Welche Angaben benötigen Sie für ein konkretes Angebot
    (Speicherklasse, Bauform Rack/Desk-Side, Linux-Support, Betreuung/Garantie)?
 
+Einen ersten Überblick über die von uns angestrebten Konfigurationen haben wir als
+Anhang beigefügt.
+
 Wir würden eine solche Position gern aktiv anstoßen, da wir annehmen, dass viele
 Bundesschulen denselben Bedarf haben. Besten Dank für Ihre Auskunft.
 
@@ -58,14 +61,30 @@ https://kik.spengergasse.at
 
 ---
 
+## Anhang (als Mail-Anlage mitsenden)
+
+**Angestrebte Zielkonfigurationen — Mengen sind ein Vorschlag zur Freigabe.**
+
+| Klasse | Menge | Bauform | Speicher | Anforderungen |
+|---|---|---|---|---|
+| Einstieg | 2 *(Vorschlag)* | Desk-Side | 256 GB GPU-/Unified-Speicher | Linux, OEM-fertig (turnkey), CUDA-tauglich, 2× 10 GbE |
+| Mittel | 1 *(Vorschlag)* | Rack (2U–4U) | 512 GB GPU-Speicher | Linux, redundantes Netzteil, 10 GbE, Remote-Management (BMC) |
+| Groß | 1 *(Vorschlag)* | Rack | ≥ 1 TB GPU-Speicher | Linux, 8-GPU-tauglich, Vor-Ort-Service/Support |
+
+Zweck: schuleigene Inferenz für den Unterricht (open-weight Modelle), datenschutzkonform,
+Anbindung an das bestehende on-prem-Setup. Gewünscht sind Angebote je Klasse — falls
+wirtschaftlicher, alternativ ein Gesamtangebot.
+
+---
+
 ## Verwendungs-Hinweis
 
 Vor dem Versand prüfen:
 
 - [ ] Adressat/Anrede final wählen (Helpcenter `office@bbg.gv.at` vs. direkt KAM Weinmann)
 - [ ] Projekt-/Statusseite aktuell: https://kik.spengergasse.at
-- [ ] Gewünschte Speicherklassen/Konfigurationen final festlegen (Orientierung:
-      die Regal-/Server-Klasse der Angebots-Übersicht)
+- [ ] **Mengen im Anhang bestätigen** und Klassen/Bauform final festlegen
+      (Orientierung: die Regal-/Server-Klasse der Angebots-Übersicht)
 - [ ] Mit Direktion / IT-Leitung abstimmen (dieser Draft kann einen echten
       Beschaffungsvorgang auslösen)
 - [ ] BBG-Marktlagenseite vor Versand erneut prüfen (Stand kann aktueller sein)
