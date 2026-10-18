@@ -5,7 +5,7 @@
 aus MS-ACH). Zweikontakt für OCRE: `OCRE.EMEA@softwareone.com`.
 
 **An:** `edu.at@softwareone.com`
-**Betreff:** MS-ACH (Microsoft EDU Austria) — Microsoft Copilot Chat für HTL Spengergasse
+**Betreff:** MS-ACH (Microsoft EDU Austria) — Microsoft Copilot Chat für HTL Spengergasse?
 
 ---
 
