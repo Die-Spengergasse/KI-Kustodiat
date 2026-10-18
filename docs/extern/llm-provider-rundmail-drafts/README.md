@@ -32,12 +32,43 @@ In `provider-anfragen.md` als Kontakte erfasst, aber noch ohne Mail-Entwurf:
 | **ACONET Community** | `community@aconet.at` (David Urbaner) | Community/Infoshare-AI-Format, Mailingliste AI |
 | **cloud-discuss Mailingliste** | `noc.aco.net/mailman/listinfo/cloud-discuss` | Niederschwelliger Erstkontakt in der OCRE-Community |
 
+## Tonalität (Muster aus 01)
+
+- **Ich = persönliche Stimme, wir = Schul-Fakten.** Beweggründe und Handlungen
+  („Ich schreibe Ihnen als Kustode …", „Meine Fragen", „Ich würde …") stehen in
+  der Ich-Form; Schulstatistik, Infrastruktur und Vertragsinhalte bleiben „wir".
+- **Kustode-Intro** im ersten Absatz, mit der Herkunft der Rolle („als Kustode
+  des KI-Kustodiates der HTL Spengergasse").
+- **Leichtes Augenzwinkern** in der Überleitung („Damit diese schöne
+  Infrastruktur auch zum Leben erwacht …") — bei Behörden und Fördergebern
+  (ACOnet, BBG) sparsamer einsetzen als bei kommerziellen Providern.
+- **Diplomatische Frageform** („Können Sie bitte bestätigen …") statt Imperativ.
+- **Text-only für Outlook:** keine Markdown-Auszeichnung im Mailtext, URLs in
+  spitzen Klammern; Zeilenumbrüche von Hand, damit nichts mit `--` oder `-`
+  beginnt (wird sonst in Outlook zu einem Aufzählungszeichen).
+
+## Master-Token-Paradigma (in allen Mails angeboten)
+
+Unser bevorzugtes Betriebsmodell — als **technische Möglichkeit, nicht als
+Bedingung** formuliert:
+
+> Der Provider stellt **einen institutionellen Master-Token** bereit. Unser
+> LiteLLM-Proxy erzeugt daraus individuelle Tokens für Schüler:innen und
+> Lehrkräfte, samt Budgets und Rate-Limits. Der Provider muss keine ~2.600
+> Accounts verwalten, und es fließen keine Schüler-Identitäten zu ihm
+> (Datensparsamkeit im Sinne der DSGVO).
+
+Deshalb fragen wir nach den **Rate-/Volumen-Limits auf Masterebene** (RPM/TPM,
+gleichzeitige Requests) und nach der Verbrauchsauswertung pro Schlüssel — nicht
+nach Per-User-Limits. `docs/ai/DECISIONS.md` (2026-10-18) hält die Entscheidung fest.
+
 ## Checkliste vor Versand (je Mail)
 
 - [ ] Schülerzahl / Klassenanzahl aktuell verifizieren
 - [ ] Projekt-URL `https://kik.spengergasse.at` prüfen (Status-Seite aktuell?)
 - [ ] Volumen-/Szenario-Zahlen gegen `docs/extern/on-premise-vs-api-kalkulation.md` abgleichen
 - [ ] Schul-UID / Rechnungsadresse offiziell bestätigen (relevant v. a. 03 Exoscale)
+- [ ] `u:ai` als €20/User/Monat-Referenz vor Versand verifizieren (in 01 Punkt 2 genannt)
 - [ ] Mit Direktion / IT-Leitung abstimmen (relevant v. a. 01 ACOmarket und 04 SoftwareOne
       — diese Mails können zu echten Vertragsabschlüssen führen)
 - [ ] Gesendete Fassung nach `docs/extern/mail-archiv/` archivieren

@@ -1,7 +1,5 @@
 # 03 — Exoscale via A1: GPU-Dedicated-Inference-Angebot
 
-**An:** `sales.austria@exoscale.com`
-**Betreff:** Kostenvoranschlag GPU Dedicated Inference (OCRE 2024) — HTL Spengergasse
 **Versand-Position:** 3 von 6
 **Abhängigkeit:** ⏳ **Erst nach Antwort von 02 (ACOnet) senden** — die Mail setzt
 die ausschreibungsfreie OCRE-Berechtigung der Schule voraus; genau das ist Frage 1
@@ -9,19 +7,24 @@ in Draft 02. Ein Kostenvoranschlag, den wir formal nicht abrufen können, ist
 wertlos. Zusätzlich: Umfang von Szenario B ggf. an die Antwort von **01 (ACOmarket)**
 anpassen — deckt Academic AI den Breitband-Einsatz ab, schrumpft der Overflow-Bedarf.
 
+**An:** `sales.austria@exoscale.com`
+**Betreff:** Kostenvoranschlag GPU Dedicated Inference (OCRE 2024) — HTL Spengergasse
+
 ---
 
 Sehr geehrtes Exoscale-Team,
 
-die HTL Spengergasse (Wien, ~2.600 Schüler:innen, ~280 Lehrkräfte) betreibt eine
-schuleigene LLM-Infrastruktur mit on-premise GPU-Backend (vLLM, Open WebUI,
-LiteLLM-Routing; https://kik.spengergasse.at). Für Absicherung und
-Lastspitzen (z. B. Schulwochen mit hohem Chat-Aufkommen) evaluieren wir
-Exoscale „Concrete AI / Dedicated Inference" als EU-gehostete Overflow- und
-Reserve-Infrastruktur — abrufbar über den OCRE 2024 Rahmenvertrag (Exoscale via
-A1, OCRE-2024 Rank #1 in Österreich).
+ich schreibe Ihnen als Kustode des KI-Kustodiates der HTL Spengergasse (Wien,
+~2.600 Schüler:innen, ~280 Lehrkräfte). Wir betreiben eine schuleigene
+LLM-Infrastruktur mit on-premise GPU-Backend (vLLM, Open WebUI, LiteLLM-Routing;
+siehe <https://kik.spengergasse.at>).
 
-Bitte erstellen Sie uns einen Kostenvoranschlag für:
+Damit diese Infrastruktur auch in den belebtesten Schulwochen nicht in die Knie
+geht, evaluieren wir Exoscale „Concrete AI / Dedicated Inference" als
+EU-gehostete Overflow- und Reserve-Kapazität — abrufbar über den OCRE 2024
+Rahmenvertrag (Exoscale via A1, OCRE-2024 Rank #1 in Österreich).
+
+Bitte erstellen Sie mir einen Kostenvoranschlag für:
 
 1. **Szenario A — Pilot:** eine dedizierte GPU-Instanz (moderne Datacenter-GPU,
    24–80 GB VRAM) für Modell-Hosting mit OpenAI-kompatibler API, EU-Datenzentrum
@@ -34,8 +37,17 @@ Bitte erstellen Sie uns einen Kostenvoranschlag für:
    für Dedicated Inference, DPA/AVV für eine österreichische Bundesschule sowie
    Rechnungsstellung auf die Schule (UID-pflichtig).
 
+Zum Betrieb: Am liebsten wäre mir ein einziger institutioneller API-Key am
+OpenAI-kompatiblen Endpoint — die individuellen Tokens für Schüler:innen und
+Lehrkräfte samt Budgets und Rate-Limits erzeuge ich selbst über unseren
+LiteLLM-Proxy. Das ist für uns eine technische Möglichkeit, kein Muss; es würde
+bedeuten, dass keine Schüler-Identitäten zu Ihnen fließen (Datensparsamkeit im
+Sinne der DSGVO). Relevant wäre dafür, welche Rate-/Volumen-Limits auf einem
+solchen Key gelten.
+
 Wir sind als ACOnet-Teilnehmerorganisation OCRE-berechtigt und können den Abruf
-zügig formalisieren, sofern das Preisgepasst für unser Schulbudget passt.
+zügig formalisieren, sofern das Preis-Leistungs-Verhältnis für unser Schulbudget
+passt.
 
 Mit freundlichen Grüßen
 Georg Graf
