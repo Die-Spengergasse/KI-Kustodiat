@@ -1,63 +1,66 @@
-# 06 — Cortecs: Nachtrag (Bestandskunde)
+# 06 — Cortecs: Anfrage Bildungseinrichtung (Bestandskunde privat)
 
 **Versand-Position:** 6 von 6 (separierte Mail, kein Teil der eigentlichen Rundmail)
-**Abhängigkeit:** ✅ keine — jederzeit möglich. Anders als die übrigen Drafts ist
-diese Mail **manuell zusammenzusetzen**: Einstiegsparagraph (unten) + passende Punkte
-aus dem Referenz-Draft. Kein vollständiger Pitch nötig (positives Kundenverhältnis).
+**Abhängigkeit:** ✅ keine — jederzeit möglich.
+**Status:** versandfertig (Tonalität an die gesendeten Mails 01/02/04 angeglichen)
 
 **An:** `enterprise@cortecs.ai`
 **Betreff:** Anfrage Bildungseinrichtung — LLM-API für HTL Spengergasse
 
 ---
 
-## Teil 1 — Einstiegsparagraph (zufriedener Kunde)
-
 Sehr geehrtes Cortecs-Team,
 
-ich schreibe Ihnen als Kustode des KI-Kustodiates der HTL Spengergasse — und
-gleich vorweg: Wir sind bereits zufriedener Kunde und nutzen Cortecs-Modelle
-produktiv in unserer schuleigenen KI-Infrastruktur (LiteLLM-Routing, Open WebUI,
-Anmeldung über das Schul-AD). Die Zusammenarbeit läuft zuverlässig und
-datenschutzseitig unproblematisch. Mit der Ausweitung auf den regulären
-Schulbetrieb (alle Klassen, Lehrkräfte und Verwaltung) ergeben sich für mich nun
-eine handvoll konkrete Punkte — siehe unten.
+ich schreibe Ihnen als Kustode des KI-Kustodiates der HTL Spengergasse (HTBLVA
+Wien V, ~2.600 Schüler:innen, ~280 Lehrkräfte, 97 Klassen). Wir bauen gerade
+eine schuleigene KI-Infrastruktur auf (eigener Whisper-STT-, LiteLLM- und
+Open-WebUI-Stack, Anmeldung über das Schul-AD), siehe
+<https://kik.spengergasse.at>.
 
-*(Rest des Mail-Texts: relevanten Punkte aus Teil 2 zusammenstellen.)*
+Und gleich vorweg: Ich bin seit Frühsommer selbst Kunde bei Ihnen und mit den
+Diensten sehr zufrieden. Cortecs war damit der naheliegende Kandidat, als wir
+für die Schule EU-souveräne Provider gesucht haben - die EU-native
+Cloud-Infrastruktur, ISO 27001 und DSGVO by default passen genau zu unseren
+datenschutzseitigen Anforderungen. Mit der Ausweitung auf den regulären
+Schulbetrieb (alle Klassen, Lehrkräfte und Verwaltung) ergeben sich für mich
+nun eine handvoll konkrete Punkte:
+
+1. **Bildungs-/Schul-Rabatt:** Gibt es spezielles Pricing für öffentliche
+   Bildungseinrichtungen (HTL, nicht kommerziell, Bundesschule)?
+2. **Modellangebot und Preise:** Welche Konditionen gelten pro Mio Tokens
+   (Input/Output) für DeepSeek V4 Flash, GLM-5.2, Qwen 3.6; optional Claude
+   Opus 4.8, GPT-5.6?
+3. **Gern mit einem einzigen Token:** Am liebsten wäre mir ein einziger
+   institutioneller Master-Token. Unser LiteLLM-Proxy erzeugt daraus
+   individuelle Tokens für Schüler:innen und Lehrkräfte, samt Budgets und
+   Rate-Limits - Sie müssten keine 2.600 Accounts verwalten, und es fließen
+   keine Schüler-Identitäten zu Ihnen (Datensparsamkeit im Sinne der DSGVO).
+   Das ist für uns eine technische Möglichkeit, kein Muss. Relevant dafür:
+   Welche Rate-/Volumen-Limits (RPM/TPM, gleichzeitige Requests) gelten auf
+   Masterebene, und bekommen wir den Verbrauch pro Schlüssel ausgewertet?
+4. **Formales:** DPA-Dokument für Unterzeichnung seitens der Schule / des
+   Schulträgers (BM für Bildung)? Standard-Aufbewahrungsfristen für
+   API-Inputs/Outputs - ist Zero-Data-Retention möglich? Rechnungsstellung
+   auf eine österreichische öffentliche Schule (UID-pflichtig,
+   Rechnungsadresse: HTL Spengergasse, 1050 Wien)?
+5. **Volumen & Pilot:** Kalkuliert ist ein mittleres Szenario von ~325 Mio
+   Output-Tokens/Monat (30 % aktive Schüler), Worst-Case ~2,2 Mrd/Monat. Für
+   den Einstieg dächte ich an einen 30-tägigen Pilot mit 1-2 Klassen - wäre
+   das möglich, und stellen Sie dafür ein reduziertes Test-Kontingent bereit?
+
+Mit freundlichen Grüßen
+Georg Graf
+HTL Spengergasse, Spengergasse 20, 1050 Wien
 
 ---
 
-## Teil 2 — Referenz-Draft (2026-08-13)
+## Herkunft der Punkte
 
-> Nur als Zulieferung für die finale Mail; die Punkte unten stammen aus der
-> ursprünglichen Einzelanfrage. Punkt 6 ist an das Master-Token-Setup angepasst
-> (die individuelle Token-Verwaltung machen wir inzwischen selbst).
-
-Die HTL Spengergasse (Wien, ~2.600 Schüler, 280 Lehrer, 97 Klassen) baut
-aktuell eine hybride LLM-Infrastruktur auf (On-Premise + API) und evaluiert
-EU-souveräne Provider als Alternative zu direkten China-basierten APIs
-(DeepSeek, SiliconFlow).
-
-Cortecs ist aufgrund der EU-native-Cloud-Infrastruktur, ISO 27001-Zertifizierung
-und DSGVO-by-default für uns ein bevorzugter Kandidat. Details zur Evaluation
-finden Sie unter `docs/extern/cortecs-provider-evaluation.md` (ggf. auf Anfrage).
-
-1. **Bildungs-/Schul-Rabatt** — spezielles Pricing für öffentliche
-   Bildungseinrichtungen (HTL, nicht kommerziell, Bundesschule)?
-2. **Modellangebot und Preise** — pro Mio Tokens (Input/Output):
-   DeepSeek V4 Flash, GLM-5.2, Qwen 3.6; optional Claude Opus 4.8, GPT-5.6.
-3. **DPA und Auftragsverarbeitung** — DPA-Dokument für Unterzeichnung seitens
-   der Schule / des Schulträgers (BM für Bildung).
-4. **Datenlöschung und Aufbewahrung** — Standard-Aufbewahrungsfristen für
-   API-Inputs/Outputs? Zero-Data-Retention möglich?
-5. **Volumen-Kalkulation** — ~325 Mio Output-Tokens/Monat (mittleres Szenario,
-   30 % aktive Schüler), Worst-Case ~2,2 Mrd/Monat.
-   Details: `docs/extern/on-premise-vs-api-kalkulation.md`.
-6. **Auth-Integration** — Wir arbeiten mit einem einzigen institutionellen
-   Master-Token und erzeugen die individuellen Tokens samt Budgets pro
-   Schülergruppe selbst über unseren LiteLLM-Proxy. Welche Rate-/Volumen-Limits
-   (RPM/TPM, gleichzeitige Requests) gelten auf Masterebene und was müssen wir
-   beim Hochskalieren kennen? Die Verbrauchsauswertung pro Schlüssel wäre
-   ebenfalls hilfreich.
-7. **Test-Phase** — 30-tägiger Pilot-Zugang für 1–2 Klassen?
-8. **Rechnungsstellung** — auf österreichische öffentliche Schule?
-   (UID-pflichtig, Rechnungsadresse: HTL Spengergasse, 1050 Wien)
+> Referenz-Draft vom 2026-08-13, hier vollständig eingearbeitet: Rabatt,
+> Modellpreise, DPA, Datenlöschung, Volumen-Kalkulation, Auth-Integration,
+> Test-Phase, Rechnungsstellung. Punkt 6 des Referenz-Drafts („Virtual-Keys pro
+> Schülergruppe") ist auf den Master-Token-Baustein umgestellt — die
+> individuellen Tokens erzeugt inzwischen die Schule selbst.
+>
+> Hintergrund: `docs/extern/cortecs-provider-evaluation.md`,
+> `docs/extern/on-premise-vs-api-kalkulation.md`
