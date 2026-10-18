@@ -19,7 +19,11 @@ Die Datei-Nummer entspricht der Versand-Position — Dateisortierung = Sende-Rei
 | 03 | `03-exoscale-gpu-dedicated-inference.md` | Exoscale via A1 (`sales.austria@exoscale.com`) | ⏳ wartet auf Antwort von 02 |
 | 04 | `04-softwareone-copilot-chat.md` | SoftwareOne EDU (`edu.at@softwareone.com`) | keine Abhängigkeit — jederzeit parallel möglich |
 | 05 | `05-bbg-ki-llm-positionen.md` | BBG (`office@bbg.gv.at`) | ⏳ bewusst zuletzt, idealerweise nach 01–03 |
-| 06 | `06-cortecs-nachtrag.md` | Cortecs (`enterprise@cortecs.ai`) | keine Abhängigkeit — versandfertig |
+| 06 | `06-cortecs-nachtrag.md` | Cortecs (`enterprise@cortecs.ai`) | ⏳ idealerweise nach erster Antwort von 01 — versandfertig |
+
+**Abhängigkeitskette (Übersicht):** 02 → 03 (OCRE-Berechtigung vor Kostenvoranschlag),
+01/02/03 → 05 (Signal-Mail zuletzt), 01 → 06 (Cortecs erst, wenn die Academic-AI-Frage
+sichtbar ist). 04 ist unabhängig.
 
 ## Weitere Adressaten (noch ohne eigenen Draft)
 

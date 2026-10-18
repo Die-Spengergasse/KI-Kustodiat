@@ -1,7 +1,11 @@
 # 06 — Cortecs: Anfrage Bildungseinrichtung (Bestandskunde privat)
 
 **Versand-Position:** 6 von 6 (separierte Mail, kein Teil der eigentlichen Rundmail)
-**Abhängigkeit:** ✅ keine — jederzeit möglich.
+**Abhängigkeit:** ⏳ **Idealerweise nach erster substanzieller Antwort von 01
+(ACOmarket) senden.** Die Kernfrage der Mail — ob und mit welchem Volumen wir
+Cortecs institutionell brauchen — hängt an der Academic-AI-Frage über OCRE. Mit
+einer Erstantwort in der Hand kann der Transparenz-Absatz konkret benennen, wo die
+Dinge stehen (zugesagt/offen), statt vage zu bleiben. Sonst keine Abhängigkeit.
 **Status:** versandfertig (Tonalität an die gesendeten Mails 01/02/04 angeglichen)
 
 **An:** `enterprise@cortecs.ai`
@@ -21,9 +25,19 @@ Und gleich vorweg: Ich bin seit Frühsommer selbst Kunde bei Ihnen und mit den
 Diensten sehr zufrieden. Cortecs war damit der naheliegende Kandidat, als wir
 für die Schule EU-souveräne Provider gesucht haben - die EU-native
 Cloud-Infrastruktur, ISO 27001 und DSGVO by default passen genau zu unseren
-datenschutzseitigen Anforderungen. Mit der Ausweitung auf den regulären
-Schulbetrieb (alle Klassen, Lehrkräfte und Verwaltung) ergeben sich für mich
-nun eine handvoll konkrete Punkte:
+datenschutzseitigen Anforderungen.
+
+Aber ich will auch ehrlich mit Ihnen sein: Parallel verhandeln wir über den
+Wissenschaftsnetz-Kanal mit ACOmarket über deren Academic-AI-Plattform (das
+läuft auf Azure, beschafft über OCRE), und wir prüfen GPU-Inferenz-Rechenleistung
+über denselben Rahmenvertrag. Wenn diese Wege einschlagen, läuft ein großer
+Teil des Volumens darüber - und Ihr Anteil schrumpft womöglich auf das, was
+jene Wege nicht abdecken. Ich will nicht, dass Sie sich auf Basis von Zahlen
+ins Zeug legen, die sich dann in Luft auflösen. Betrachten Sie meine
+Volumen-Kalkulation deshalb als Szenario, nicht als Zusage.
+
+Mit der Ausweitung auf den regulären Schulbetrieb (alle Klassen, Lehrkräfte und
+Verwaltung) ergeben sich für mich nun eine handvoll konkrete Punkte:
 
 1. **Bildungs-/Schul-Rabatt:** Gibt es spezielles Pricing für öffentliche
    Bildungseinrichtungen (HTL, nicht kommerziell, Bundesschule)?
@@ -44,9 +58,10 @@ nun eine handvoll konkrete Punkte:
    auf eine österreichische öffentliche Schule (UID-pflichtig,
    Rechnungsadresse: HTL Spengergasse, 1050 Wien)?
 5. **Volumen & Pilot:** Kalkuliert ist ein mittleres Szenario von ~325 Mio
-   Output-Tokens/Monat (30 % aktive Schüler), Worst-Case ~2,2 Mrd/Monat. Für
-   den Einstieg dächte ich an einen 30-tägigen Pilot mit 1-2 Klassen - wäre
-   das möglich, und stellen Sie dafür ein reduziertes Test-Kontingent bereit?
+   Output-Tokens/Monat (30 % aktive Schüler), Worst-Case ~2,2 Mrd/Monat - wie
+   gesagt ein Szenario, nicht als Zusage und nicht als Prognose. Für den
+   Einstieg dächte ich an einen 30-tägigen Pilot mit 1-2 Klassen - wäre das
+   möglich, und stellen Sie dafür ein reduziertes Test-Kontingent bereit?
 
 Mit freundlichen Grüßen
 Georg Graf
