@@ -29,31 +29,31 @@ Meine Fragen:
 1. **Schulen als Abonnenten:** Bisher nutzen 32 Hochschulen Academic AI. Nimmt
    ACOmarket auch österreichische Schulen (Sekundarstufe II, Schulerhalter
    Bund) als Abonnenten an? Wir wären gern Pionierschule — ggf. als Pilot mit
-   reduzierter Skala (1–2 Klassen, ~30 Tage), danach Ausweitung. Stellen Sie für
-   einen solchen Pilot ein (reduziertes) Test-Kontingent bereit, oder läuft er
-   regulär über Verbrauch?
+   reduzierter Skala (1–2 Klassen, ~30 Tage), danach Ausweitung. Stellen Sie
+   für einen solchen Pilot ein (reduziertes) Test-Kontingent bereit, oder
+   läuft er regulär über Verbrauch?
 2. **Modelle & Konditionen:** Welche Modelle sind in v3.0 konkret verfügbar
    (OpenAI/Google/Mistral/Anthropic), und wie sind die Token-Preise? Wie sieht
    es mit Open Source Modellen aus? China, Frankreich, USA? Wichtig wäre mir
-   eine institutsweite Budget-Obergrenze pro Monat (Orientierung: Referenz u:ai
-   €20/User/Monat, auf unsere aktive Schülerschaft hochgerechnet) — die
+   eine institutsweite Budget-Obergrenze pro Monat (Orientierung: Referenz
+   u:ai €20/User/Monat, auf unsere aktive Schülerschaft hochgerechnet) — die
    Feinsteuerung darunter übernehmen wir selbst.
 3. **API-Zugang — gern mit einem einzigen Token:** Am liebsten wäre mir, Sie
-   stellen uns einen einzigen institutionellen Master-Token zur Verfügung. Unser
-   LiteLLM-Proxy erzeugt daraus individuelle Tokens für Schüler:innen und
-   Lehrkräfte, samt Budgets und Rate-Limits — Sie müssten keine 2.600 Accounts
-   verwalten, und es fließen keine Schüler-Identitäten zu Ihnen (Datensparsamkeit
-   im Sinne der DSGVO). Das ist für uns eine technische Möglichkeit, kein Muss.
-   Relevant dafür: Umfang des API-Zugangs (Chat Completions,
-   Tailored-AI-/Wissensbasis-Management), Authentifizierung
-   (X-Client-ID/X-Client-Secret), welche Rate-/Volumen-Limits auf dem Master-Token
-   gelten, und ob wir den Verbrauch pro API-Key ausgewertet bekommen.
-4. **Formales:** Können Sie bitte bestätigen, dass kein eigenes Vergabeverfahren
-   notwendig ist (Beschaffung der Azure Secure Landing Zone durch ACOmarket
-   über OCRE), und senden Sie ein Muster des Nutzungsvertrags sowie Ihr
-   Datenschutzkonzept zu. Abrechnung monatlich nach tatsächlichem Tokenverbrauch
-   — ist das korrekt? Und eine Detailfrage zur Auftragsverarbeitung: Wer wird
-   unser AVV-Vertragspartner — ACOmarket oder Microsoft als Teil der
+   stellen uns einen einzigen institutionellen Master-Token zur Verfügung.
+   Unser LiteLLM-Proxy erzeugt daraus individuelle Tokens für Schüler:innen
+   und Lehrkräfte, samt Budgets und Rate-Limits — Sie müssten keine 2.600
+   Accounts verwalten, und es fließen keine Schüler-Identitäten zu Ihnen
+   (Datensparsamkeit im Sinne der DSGVO). Das ist für uns eine technische
+   Möglichkeit, kein Muss. Relevant dafür: Umfang des API-Zugangs (Chat
+   Completions, Tailored-AI-/Wissensbasis-Management), Authentifizierung
+   (X-Client-ID/X-Client-Secret), welche Rate-/Volumen-Limits auf dem Master-
+   -Token gelten, und ob wir den Verbrauch pro API-Key ausgewertet bekommen.
+4. **Formales:** Können Sie bitte bestätigen, dass kein eigenes Vergabever-
+   fahren notwendig ist (Beschaffung der Azure Secure Landing Zone durch
+   ACOmarket über OCRE), und senden Sie ein Muster des Nutzungsvertrags sowie
+   Ihr Datenschutzkonzept zu. Abrechnung monatlich nach tatsächlichem Token-
+   verbrauch — ist das korrekt? Und eine Detailfrage zur Auftragsverarbeitung:
+   Wer wird unser AVV-Vertragspartner — ACOmarket oder Microsoft als Teil der
    Azure-Kette?
 
 Da SSO über die ACOnet Identity Federation bei uns bereits gegeben wäre, wäre
