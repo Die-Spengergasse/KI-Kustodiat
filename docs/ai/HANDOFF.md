@@ -1,8 +1,9 @@
 # HANDOFF — KI-Kustodiat
 
-Stand: 2026-10-15 · Live-Deploy kik verifiziert, #24-Mail versandt, STT-e2e grün.
+Stand: 2026-10-18 · Provider-Drafts aufgetrennt (#34), Ideenaufruf-Mail archiviert.
 
 ## Gerade abgeschlossen
+- **2026-10-18 — Provider-Anfragen in Einzel-Drafts (#34):** `docs/extern/provider-anfragen.md` auf Recherche reduziert; neue Ablage `docs/extern/llm-provider-rundmail-drafts/` mit einer Datei je Adressat, nummeriert nach Versand-Reihenfolge (01 ACOmarket, 02 ACOnet, 03 Exoscale, 04 SoftwareOne, 05 BBG, 06 Cortecs) + README mit Übersicht/Checkliste. Zeitliche Abhängigkeiten stehen in den Datei-Köpfen: **03 Exoscale erst nach Antwort von 02** (OCRE-Call-Off-Bestätigung ist Voraussetzung für den Abruf), **05 BBG bewusst zuletzt** nach 01–03. Zusätzlich: gesendete Ideenaufruf-Mail (#24) nach `docs/extern/mail-archiv/` verschoben (Commit `0df2454`). Commit der Draft-Aufteilung: `814512b`.
 - **2026-10-15 — Abschluss-Trio:** (1) Live-Deploy kik nachgezogen (Georg auf kik; curl-Verifikation: Homepage ohne persönliche Mail, `plan.md` 404). (2) #24 Ideenaufruf-E-Mail **versandt** — archiv der gesendeten Fassung steht noch aus. (3) STT-e2e über ZID-Front grün (Upload + Mic via HTTPS). Discussions-Kategorien umbenannt („Aktuell", „Wünsche / Ideen / Anregungen", „Allgemein", „Fragen") — **#27-Anpinnen noch offen** (nur #10 gepinnt).
 - **2026-10-15 — Repo-Aufräumen + Provider-Anfragen (#34):** Persönliche E-Mail aus allen Files entfernt (Commit `47faebd`; die Adresse lebt nur noch in git-ignored `infra/hosts/secrets.local.md`). GitHub-Teil: #27-Signatur bereinigt, Repo-Description deutsch (ohne „DGX Spark cluster"), Discussion #10 von Georg selbst umgebaut. plan.md-Rückbau (Commit `5788b2d`: Links, app.js-Route, update-homepage-Skill). `docs/extern/cortecs-anfrage-email-draft.md` → `provider-anfragen.md` umgebaut (Commit `3a471cb`, #34): Recherche-Links mit echten URLs, Adressaten-Liste, **Sammel-Mail an OCRE/BBG-Adressaten als Priorität**, Cortecs nur kurzer „zufriedener Kunde"-Nachtrag (Georg baut final manuell). Issues: #22 geschlossen, #14 BYOK-Realität, #34 Commit-Kommentar.
 - **2026-10-12 — Epic #3 strukturiert:** Drei Sub-Issues formal (Sub-Issues-API) unter #3 verlinkt: **#34** (Provider-Anfragen OCRE/ACOnet, `documentation`, M2), **#35** (Spengergassen KI-Proxy — LDAP-Login/Token-Self-Service/Multi-Provider, `infrastructure`, M3), **#14** (Token-/Auth-Konzept, `enhancement`, M2). #3 bleibt offen (offene Sub-Issues).
@@ -40,7 +41,7 @@ Stand: 2026-10-15 · Live-Deploy kik verifiziert, #24-Mail versandt, STT-e2e gr�
 2. [~] **Discussions-Kategorien umbenannt (2026-10-15):** jetzt „Aktuell", „Wünsche / Ideen / Anregungen", „Allgemein", „Fragen" (+ „Abstimmungen") — **ABER: #27 noch NICHT gepinnt** (nur #10 „KI-Kustodiat" ist gepinnt, via GraphQL `pinnedDiscussions` verifiziert). Anpinnen bleibt manuell.
 3. [ ] **#31 Feinschliff nach Sichtprüfung:** Abstände/Logo/Nav auf der Live-Seite (`kik.spengergasse.at`) eyeballen; Homepage-CTA-Umfang (Diskussions-Aufruf) final bewerten.
 2. [x] **#32 Angebots-Job (2026-10-11):** Skill `update-offers` + Runner `scripts/run-offers-job.sh` + systemd-Timer `update-offers.timer` auf kik (Mo 06:00) → Route `#/angebote`, erster Lauf deployt. Details in `infra/systemd/README.md` und `infra/hosts/kik.md`.
-3. [~] **#24 Ideenaufruf:** E-Mail **versandt (2026-10-15)**. Offen: gesendete Fassung (Outlook) nach `docs/extern/mail-archiv/`; Anker-Discussion [#27](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions/27) **manuell anpinnen** (GitHub-GraphQL bietet kein `pinDiscussion`).
+3. [~] **#24 Ideenaufruf:** E-Mail **versandt (2026-10-15)**, gesendete Fassung liegt in `docs/extern/mail-archiv/kollegium-ideen-email-draft.md` (2026-10-18, Commit `0df2454`) — noch nicht auf die Namens-/Header-Konvention des Archiv-README umgestellt. Offen: Anker-Discussion [#27](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions/27) **manuell anpinnen** (GitHub-GraphQL bietet kein `pinDiscussion`).
 2. [x] **STT-e2e über ZID-Front** — erledigt (2026-10-15, Georg: Upload + Mic im UI via HTTPS grün). Bei Whisper-Ausfall: Reserve-Pfad `whisper/README.md` (LiteLLM-Reaktivierung).
 3. [x] **BYOK-Search-e2e (verifiziert 2026-10-08):** `deepseek-v4.1-flash` via Zen-Direct-Connection → `search_web` → SearXNG-Hits + Scrapes → Antwort mit Citations. Caveat: Zen-Free-Modelle flattern (`big-pickle`, `muse-spark` derzeit 404) — pro Modell verifizieren, Details in PITFALLS.md.
 4. [x] Tote lokale LLM-Rows sind bereits `is_active=0` (alle 5 `model`-Rows, verifiziert 2026-10-08) — Picker zeigt nur Direct-Connection-Modelle; frische LDAP-User ohne Direct Connection sehen **kein Modell**.
@@ -49,7 +50,7 @@ Stand: 2026-10-15 · Live-Deploy kik verifiziert, #24-Mail versandt, STT-e2e gr�
 
 ## Offen (älter)
 - [ ] ZID-VM da (2026-10-07); STT-e2e via Front erledigt (2026-10-15).
-- [ ] Provider-Anfragen versenden (`docs/extern/provider-anfragen.md` → OCRE/BBG-Adressaten + `enterprise@cortecs.ai` als kurzer Nachtrag).
+- [ ] Provider-Anfragen versenden (Einzel-Drafts `docs/extern/llm-provider-rundmail-drafts/`, Reihenfolge = Dateinummer 01→06; Recherche in `docs/extern/provider-anfragen.md`; Cortecs zuletzt als kurzer Nachtrag an `enterprise@cortecs.ai`).
 - [ ] Hardware-Entscheidung (Issues #2, #5, #7) — Framework Desktop Strix Halo 128 GB.
 - [ ] Issue #14 (Token-/Auth-Konzept) um BYOK-Realität ergänzen (Keys liegen am Server; DeepSeek-direkt = Tier 4, Eigenverantwortung).
 - [ ] LiteLLM-Reserve (gestoppt 2026-10-07): Reaktivierung in `whisper/README.md`; `models={}`-Regel + `OPENCODE_MODELS_URL`-Rollout erst wieder relevant, wenn LiteLLM zurückkommt.
