@@ -19,11 +19,15 @@
     .home blockquote { border-left: 5px solid var(--pico-primary); padding-left: 1rem; }
     .home blockquote h3 { margin-top: 0; }
 
-    /* Logo rechts in der Navigation, neben dem Farbschema-Button. */
+    /* Logo rechts in der Navigation, neben dem Farbschema-Button.
+     * Spezifität: `.logo img` (0,1,1) schlägt `.logo-dark` (0,1,0) — die
+     * Sichtbarkeit muss daher ebenfalls auf `.logo img.<variante>` liegen,
+     * sonst steht im Hell-Schema das Dark-Radl als Artefakt unter dem Logo. */
     .logo img { height: 38px; width: auto; display: block; }
-    .logo-dark { display: none; }
-    [data-theme="dark"] .logo-light { display: none; }
-    [data-theme="dark"] .logo-dark { display: block; }
+    .logo img.logo-light { display: block; }
+    .logo img.logo-dark { display: none; }
+    [data-theme="dark"] .logo img.logo-light { display: none; }
+    [data-theme="dark"] .logo img.logo-dark { display: block; }
 
     /* Größerer Abstand unter der H1 auf der Startseite. */
     .home h1 { margin-bottom: 2.5rem; }
