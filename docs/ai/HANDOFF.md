@@ -40,6 +40,9 @@ Stand: 2026-10-18 · Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 ve
   sensible Punkte nicht stärker verschleiern, als die Regel es verlangt.
 
 ## Offen (nächste Session)
+1. [ ] **Suchkapazität für den Breitbandbetrieb (neu 2026-10-18, noch kein Issue):** SearXNG läuft schon jetzt degradiert (`bing` tot → `yahoo` trägt jede Suche, `fallback_used: true`; Details in `PITFALLS.md`). Vor dem Breitband-Rollout zu klären: Ergebnis-Cache, Such-Quota je Schüler im Proxy, mehrere Instanzen mit diversifiziertem Egress, bezahlte Such-API als Rückgrat. Entscheidung über Issue vs. Einordnung in #35 steht aus.
+2. [ ] **Provider-Follow-up zur Suche:** bei ACOmarket nachfragen (a) welches Such-Backend, (b) abschaltbar, (c) Umleitung auf eigene Instanz — relevant, weil bei `u:ai` Internetsuche (Perplexity) und Mistral die EU-Verarbeitung verlassen. Für 05 BBG als Lastenheft-Zeile erwogen (Suchkomponente optional/abschaltbar, Backend offengelegt).
+
 1. [x] **Live-Deploy kik** — erledigt (2026-10-15, von Georg auf kik selbst; SSH von think bleibt Port-22-Timeout). Verifiziert via curl `kik.spengergasse.at`: Homepage 200 ohne persönliche E-Mail, `plan.md` → 404.
 2. [~] **Discussions-Kategorien umbenannt (2026-10-15):** jetzt „Aktuell", „Wünsche / Ideen / Anregungen", „Allgemein", „Fragen" (+ „Abstimmungen") — **ABER: #27 noch NICHT gepinnt** (nur #10 „KI-Kustodiat" ist gepinnt, via GraphQL `pinnedDiscussions` verifiziert). Anpinnen bleibt manuell.
 3. [ ] **#31 Feinschliff nach Sichtprüfung:** Abstände/Logo/Nav auf der Live-Seite (`kik.spengergasse.at`) eyeballen; Homepage-CTA-Umfang (Diskussions-Aufruf) final bewerten.

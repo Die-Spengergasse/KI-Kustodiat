@@ -73,6 +73,9 @@ nach Per-User-Limits. `docs/ai/DECISIONS.md` (2026-10-18) hält die Entscheidung
 - [ ] Volumen-/Szenario-Zahlen gegen `docs/extern/on-premise-vs-api-kalkulation.md` abgleichen
 - [ ] Schul-UID / Rechnungsadresse offiziell bestätigen (relevant v. a. 03 Exoscale)
 - [ ] `u:ai` als €20/User/Monat-Referenz vor Versand verifizieren (in 01 Punkt 2 genannt)
+      → **erledigt 2026-10-18:** €20/Monat-Guthaben bestätigt (Uni Wien, hartes Limit
+      ohne Übertrag); Angewandte €10 → institutionskonfigurierbar. Achtung: Deckel,
+      kein Erwartungswert.
 - [ ] Mit Direktion / IT-Leitung abstimmen (relevant v. a. 01 ACOmarket und 04 SoftwareOne
       — diese Mails können zu echten Vertragsabschlüssen führen)
 - [ ] Gesendete Fassung nach `docs/extern/mail-archiv/` archivieren

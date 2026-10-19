@@ -43,8 +43,22 @@
      Bildgenerierung; **API-Zugang seit v2.0** (Chat Completions + KB-Management,
      `X-Client-ID`/`X-Client-Secret`) → mit LiteLLM routbar.
    - Verrechnung: nutzungsabhängig monatlich nach tatsächlichen Tokens
-     (Azure-Preisliste); Tokenkostenlimits pro User (univie-Referenz: €20/User/Monat)
-     und pro Institution; Institutionen-Admins steuern Limits + Kostenreport (CSV).
+     (Azure-Preisliste). Tokenkostenlimits pro User und pro Institution;
+     Institutionen-Admins steuern Limits + Kostenreport (CSV).
+     **Belegt (2026-10-18, verifiziert auf univie.ac.at):** Die Uni Wien
+     (`u:ai`, ausdrücklich Teil des Academic-AI-Projekts) gibt
+     **€20/Monat Guthaben** je Nutzer:in — Aufladung am Monatsersten, **hartes
+     Monatslimit ohne Übertrag** (ausgeschöpft = gesperrt bis Folgemonat). Die
+     Angewandte gibt **€10/Monat** → das Per-User-Limit ist
+     **institutionskonfigurierbar**, was unser Master-Token-Modell (Budget-Hoheit
+     bei der Schule) empirisch stützt. €20 ist ein **Deckel, kein Erwartungswert** —
+     nie als Kostenprognose verwenden (2.600 × €20 wäre eine theoretische Maximalsumme).
+   - **Datenschutz-Caveat (belegt 2026-10-18):** Bei `u:ai` verlassen
+     **Internetsuche (Perplexity) und das Modell Mistral** die EU-Verarbeitung —
+     laut Uni Wien ist „die Datenschutzkonformität dann nicht mehr vollständig
+     gegeben". Für den Schuleinsatz relevant: Suchkomponente nicht beim Provider
+     mitbuchen, sondern selbst orchestreren (eigene SearXNG), und die
+     Mistral-Verfügbarkeit für Schulklassen gesondert klären.
    - Bereits 32 österreichische Institutionen (Hochschulen) an Bord; Beschaffung der
      Azure-Landing-Zone läuft über **OCRE** → kein eigenes Vergabeverfahren nötig.
    - Ungeklärt (→ Anfrage): nimmt ACOmarket **Schulen** (nicht nur Hochschulen)?
