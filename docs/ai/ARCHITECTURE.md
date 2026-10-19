@@ -11,8 +11,11 @@ disable ollama`, kein lokales LLM); **LiteLLM + Postgres + models-proxy
 gestoppt** (Reserve, Reaktivierung in `whisper/README.md` dokumentiert).
 Open WebUI (`:3000`, Klartext hinter ZID-SSL-nginx) spricht Whisper **direkt**
 an (`http://whisper:9000/v1`); Chat-LLM kommt per BYOK vom User
-(`direct.enable=true`, z. B. DeepSeek-Token). SearXNG (`:80`) bleibt
-Search-Backend für Tool-Calls FC-fähiger BYOK-Modelle. SingleGpuGuard ist mit
+(`direct.enable=true`, z. B. DeepSeek-Token). SearXNG (`:80`, Schulnetz-IP
+`10.50.11.10`) bleibt Search-Backend für Tool-Calls FC-fähiger BYOK-Modelle.
+**Instanz-Trennung (2026-10-19, #36):** dies ist die *Schul*-Instanz; die
+private Instanz des Operators (claw) ist ein getrenntes System (kein
+Cross-Fallback). SingleGpuGuard ist mit
 gestopptem LiteLLM inaktiv (ohnehin STT-inkompatibel — gated nur
 completion/embeddings, keine Transkription).
 
@@ -107,7 +110,7 @@ KI-Kustodiat/
 ## Data Flows
 
 - STT: Browser (via ZID-HTTPS-Front) → Open WebUI `:3000` → Whisper `whisper:9000` direkt (`WHISPER_API_KEY`) → GPU. Kein LiteLLM-Hop. Reserve-Pfad via LiteLLM (`:11434` → `whisper-1`/`groq-whisper`) dokumentiert, derzeit gestoppt.
-- Chat: Browser → Open WebUI `:3000` → BYOK-Modell-API direkt (User-Key, `direct.enable=true`) — kein lokaler Hop. Tool-Calls (`search_web`) → SearXNG (`gregor:80`) → Antwort.
+- Chat: Browser → Open WebUI `:3000` → BYOK-Modell-API direkt (User-Key, `direct.enable=true`) — kein lokaler Hop. Tool-Calls (`search_web`) → SearXNG (`10.50.11.10:80`, Schul-Instanz — Instanz-Trennung #36, kein Fallback auf die private Instanz des Operators) → Antwort.
 - Login: Open WebUI `:3000` → LDAPS `ldap.spengergasse.at:636` (LDAP-only, Issue #22).
 - Reaktivierung LiteLLM: `up -d litellm db models-proxy` + Deployment-Rows prüfen + Open-WebUI-Base zurück auf `http://litellm:11434/v1` (siehe `whisper/README.md`).
 

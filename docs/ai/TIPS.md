@@ -33,13 +33,15 @@ Ollama → LiteLLM-DB (LiteLLM_ProxyModelTable, store_model_in_db=true)
   bash_aliases (OPENCODE_MODELS_URL) und LiteLLM-DB api_base beim Wechsel:
   alle synchron pflegen, NIE `10.8.0.18` einbauen.
 - Suchserver ist Gregor selbst auf Port 80 (keine Secrets nötig): nginx `:80`
-  proxyt offen auf SearXNG (`127.0.0.1:8888` bleibt localhost-only). opencode-MCP
-  nutzt `SEARXNG_PRIMARY=http://10.8.0.16`, `SEARXNG_PRIMARY_AUTH=` (leer),
-  `SEARXNG_CHAIN=gregor` (Profil: google → brave → braveapi, kein Free-Tier).
-  Altes `SEARX_URL` wird vom aktuellen Wrapper ignoriert; MCP-`command` muss auf
-  `~/.config/opencode/skills/searxng/scripts/opencode-searxng` zeigen (der
-  Helpers-Repo-Pfad existiert nicht). Verifikation: `curl
-  "http://10.8.0.16/search?q=…&format=json"` → echte Results ohne Auth.
+  proxyt offen auf SearXNG (`127.0.0.1:8888` bleibt localhost-only). Primär-Ziel
+  für Schulklienten ist die **Schulnetz-IP `10.50.11.10`** (Instanz-Trennung
+  2026-10-19, #36) — die VPN-IP `10.8.0.16` nur noch für Admin-Zugriff.
+  opencode-MCP nutzt `SEARXNG_PRIMARY=http://10.50.11.10`,
+  `SEARXNG_PRIMARY_AUTH=` (leer), `SEARXNG_CHAIN=strict` (Profil: bing →
+  yahoo → braveapi, kein Free-Tier; Legacy-Alias `gregor` vom Skill noch
+  akzeptiert). Kein Fallback auf claw — keine privaten Credentials auf
+  Schul-Hosts. Verifikation: `curl
+  "http://10.50.11.10/search?q=…&format=json"` → echte Results ohne Auth.
 
 ## Open WebUI Database
 
@@ -171,7 +173,7 @@ Key config values (set via compose.yaml env OR Admin Panel; ConfigVars persist i
 |--------|---------|
 | `web.search.enable` | Enable web search |
 | `web.search.engine` | `"searxng"`, `"google_pse"`, etc. |
-| `web.search.searxng_query_url` | `"http://10.8.0.16/search?q=<query>"` (Issue #21: gregor:80, Schulnetz-only, ohne Auth) |
+| `web.search.searxng_query_url` | `"http://10.50.11.10/search?q=<query>"` (Issue #21 erstmals, Issue #36 auf Schulnetz-IP umgestellt; ohne Auth) |
 | `web.search.result_count` | Results to fetch (default 3) |
 | `web.search.concurrent_requests` | Parallel search requests (0=unlimited) |
 | `web.search.confirmation.enable` | Show "Search the web?" dialog before each search |
@@ -340,7 +342,7 @@ all tool use including web_search.
 Ollama connection** (no LiteLLM in the chat path) and a dedicated
 **qwen3:8b-search** model (FC=native, search-friendly system prompt), native
 web search works end-to-end: model calls `search_web` → Open WebUI queries
-SearXNG (gregor:80) → results injected → final answer. Verified e2e 2026-09-17.
+SearXNG (10.50.11.10:80) → results injected → final answer. Verified e2e 2026-09-17.
 The 1.7B verdict below remains true for small models.
 
 ## Open WebUI Native Tool-Call Mechanics (Issue #21, verified against v0.10.2 source)
