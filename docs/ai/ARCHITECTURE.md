@@ -108,6 +108,17 @@ KI-Kustodiat-intern/  (private — alle Implementationsdetails)
 > **immer** dorthin; dieses Repo verweist nur noch (Syntax:
 > `KI-Kustodiat-intern:<pfad>`).
 
+## Website & Veröffentlichung
+
+| Artefakt | Quelle | Auslieferung |
+|---|---|---|
+| Offizielle Website `https://kik.spengergasse.at` | `website/` (Shell + `content/*.md` via Hash-Router, Pico/marked lokal vendored) | `rsync` auf kik → `/var/www/kik` (nginx, statisch) |
+| GitHub Pages | `pages/index.html` — **nur** ein Button »Hier geht's zur offiziellen Website« + `<link rel="canonical">` (#38) | `.github/workflows/deploy-pages.yml` |
+| Angebots-Job | `scripts/run-offers-job.sh` + Skill `update-offers` | systemd-Timer auf kik, Mo 06:00 |
+
+Deploy-Rezept und kik-Zugang (SSH nur über den gregor-Jump-Host):
+`KI-Kustodiat-intern:infra/hosts/kik.md`.
+
 ## Knowledge Files (`docs/ai/`)
 
 | File | Purpose | Update mode |
