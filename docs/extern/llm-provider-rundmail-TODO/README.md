@@ -1,6 +1,6 @@
 # LLM-Provider-Rundmail — Einzel-Drafts
 
-Aufgetröst aus `docs/extern/provider-anfragen.md` (Research-Datei mit Kernbefunden,
+Aufgetröst aus `docs/Recherche/provider-anfragen.md` (Research-Datei mit Kernbefunden,
 Links und Adressaten bleibt dort). Hier liegt **eine Datei pro E-Mail**, nummeriert
 nach der **Versand-Reihenfolge**.
 
@@ -70,7 +70,7 @@ nach Per-User-Limits. `docs/ai/DECISIONS.md` (2026-10-18) hält die Entscheidung
 
 - [ ] Schülerzahl / Klassenanzahl aktuell verifizieren
 - [ ] Projekt-URL `https://kik.spengergasse.at` prüfen (Status-Seite aktuell?)
-- [ ] Volumen-/Szenario-Zahlen gegen `docs/extern/on-premise-vs-api-kalkulation.md` abgleichen
+- [ ] Volumen-/Szenario-Zahlen gegen `docs/Recherche/on-premise-vs-api-kalkulation.md` abgleichen
 - [ ] Schul-UID / Rechnungsadresse offiziell bestätigen (relevant v. a. 03 Exoscale)
 - [ ] `u:ai` als €20/User/Monat-Referenz vor Versand verifizieren (in 01 Punkt 2 genannt)
       → **erledigt 2026-10-18:** €20/Monat-Guthaben bestätigt (Uni Wien, hartes Limit
@@ -78,12 +78,12 @@ nach Per-User-Limits. `docs/ai/DECISIONS.md` (2026-10-18) hält die Entscheidung
       kein Erwartungswert.
 - [ ] Mit Direktion / IT-Leitung abstimmen (relevant v. a. 01 ACOmarket und 04 SoftwareOne
       — diese Mails können zu echten Vertragsabschlüssen führen)
-- [ ] Gesendete Fassung nach `docs/extern/mail-archiv/` archivieren
+- [ ] Gesendete Fassung nach `docs/extern/mail-archiv-sent/` archivieren
 
 ## Grundlagen
 
-- Research, Kernbefunde und Quellen: `docs/extern/provider-anfragen.md`
+- Research, Kernbefunde und Quellen: `docs/Recherche/provider-anfragen.md`
 - BBG-Hardware/GPU-Server (ergänzend zu 05): `docs/extern/bbg-hardware-anfrage-email-draft.md`
-- Cortecs-Evaluation (Referenz für 06): `docs/extern/cortecs-provider-evaluation.md`
+- Cortecs-Evaluation (Referenz für 06): `docs/Recherche/cortecs-provider-evaluation.md`
 
 > URLs in den Mails sind text-only (Outlook rendert kein Markdown).

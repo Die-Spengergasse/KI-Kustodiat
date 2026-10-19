@@ -1,6 +1,6 @@
 # Entwurf — BBG: Beschaffung großer GPU-/KI-Server (256 GB+ VRAM) für eine Bundesschule
 
-> **Issue:** #34 · **Ergänzt:** `docs/extern/provider-anfragen.md` (dort Draft 4 = KI-/LLM-Positionen)
+> **Issue:** #34 · **Ergänzt:** `docs/Recherche/provider-anfragen.md` (dort Draft 4 = KI-/LLM-Positionen)
 > **An:** `office@bbg.gv.at` — Zweitkontakt/CC: `kundenmanagement@bbg.gv.at`
 > **Ansprechperson Bundesschulen (optional direkt):** Barbara Weinmann, KAM Bund /
 > Bundesschulen / PH / Bildungsdirektionen, `barbara.weinmann@bbg.gv.at`
@@ -88,5 +88,5 @@ Vor dem Versand prüfen:
 - [ ] Mit Direktion / IT-Leitung abstimmen (dieser Draft kann einen echten
       Beschaffungsvorgang auslösen)
 - [ ] BBG-Marktlagenseite vor Versand erneut prüfen (Stand kann aktueller sein)
-- [ ] Gesendete Fassung nach `docs/extern/mail-archiv/` archivieren
+- [ ] Gesendete Fassung nach `docs/extern/mail-archiv-sent/` archivieren
       (→ `YYYY-MM-DD_aus_bbg-hardware-anfrage.md`)

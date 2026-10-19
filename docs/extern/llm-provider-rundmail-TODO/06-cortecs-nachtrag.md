@@ -77,5 +77,5 @@ HTL Spengergasse, Spengergasse 20, 1050 Wien
 > Schülergruppe") ist auf den Master-Token-Baustein umgestellt — die
 > individuellen Tokens erzeugt inzwischen die Schule selbst.
 >
-> Hintergrund: `docs/extern/cortecs-provider-evaluation.md`,
-> `docs/extern/on-premise-vs-api-kalkulation.md`
+> Hintergrund: `docs/Recherche/cortecs-provider-evaluation.md`,
+> `docs/Recherche/on-premise-vs-api-kalkulation.md`

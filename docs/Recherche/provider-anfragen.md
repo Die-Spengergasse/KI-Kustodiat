@@ -1,7 +1,7 @@
 # Provider-Anfragen — Recherche (Issue #34)
 
 > **Status:** Recherche-Referenz. Die E-Mail-Drafts sind aufgetrennt nach
-> `docs/extern/llm-provider-rundmail-drafts/` (eine Datei je Adressat, nummeriert
+> `docs/extern/llm-provider-rundmail-TODO/` (eine Datei je Adressat, nummeriert
 > nach Versand-Reihenfolge, inkl. Abhängigkeiten und Vor-Versand-Checkliste).
 > **Priorität:** Sammel-Mail an die *vielen* Adressaten (OCRE/BBG/Provider).
 > Cortecs ist ein separater, kurzer Nachtrag.
@@ -154,7 +154,7 @@
 
 ## E-Mail-Drafts
 
-→ `docs/extern/llm-provider-rundmail-drafts/` (README mit Versand-Reihenfolge,
+→ `docs/extern/llm-provider-rundmail-TODO/` (README mit Versand-Reihenfolge,
 Abhängigkeiten, Adressaten ohne eigenen Draft und Vor-Versand-Checkliste)
 
 Versand-Reihenfolge: **01 ACOmarket → 02 ACOnet → 03 Exoscale (wartet auf 02)

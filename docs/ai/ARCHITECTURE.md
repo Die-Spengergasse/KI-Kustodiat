@@ -83,9 +83,14 @@ Mit LiteLLM: Ollama → LiteLLM → Open WebUI (3 Hops, aber Guard + Auth + Rout
 
 ```
 KI-Kustodiat/  (public — Konzeptdoku & Wissensbasis)
-├── docs/ai/              # Wissensbasis (TIPS, DECISIONS, PITFALLS, etc.)
-├── docs/praesentation/   # Eröffnungskonferenz-Slides + ZID-Archiv
-├── docs/extern/          # externes Kursangebot etc.
+├── docs/ai/                    # Wissensbasis (TIPS, DECISIONS, PITFALLS, etc.)
+├── docs/Recherche/             # Recherche-Referenzen (Provider-Anfragen, Cortecs-Evaluation, Kalkulation)
+├── docs/extern/                # Außenkommunikation
+│   ├── llm-provider-rundmail-TODO/   # offene Provider-Drafts (01→06, Sende-Reihenfolge)
+│   ├── mail-archiv-sent/             # gesendete Mails + Archiv-Konvention (README)
+│   ├── bbg-hardware-anfrage-email-draft.md
+│   └── pup-priglinger/               # KI-Kursangebot-Anfrage
+├── docs/praesentation/         # Slides; archiv/<YYYY-MM-DD>-<anlass>/ je Vortrag
 ├── website/, pages/      # öffentliche Homepage
 ├── scripts/              # Job-Runner für die Website
 └── .github/workflows/    # GitHub Pages deploy
