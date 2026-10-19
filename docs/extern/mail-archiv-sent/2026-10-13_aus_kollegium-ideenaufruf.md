@@ -1,3 +1,19 @@
+# KI-Kustodiat: Ideenaufruf an das Kollegium
+
+Datum: 2026-10-13
+Von: Georg Graf
+An: Kollegium der HTL Spengergasse
+Betreff: KI-Kustodiat: Ideenaufruf an das Kollegium
+Richtung: aus
+
+> **Issue:** #24 · **Discussion:** [#27](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions/27)
+> (Anker, Ideen-Threads #25/#26) · **Archiviert:** 2026-10-19
+> Gesendete Fassung; der Entwurf entstand ab 2026-09-28 (rev. 3 am 2026-10-11).
+> Von/Absenderadresse bewusst nicht ausgeschrieben — siehe
+> `KI-Kustodiat-intern:infra/hosts/secrets.local.md`.
+
+---
+
 Liebe Kollegin, lieber Kollege,
 
 Wie der Herr Direktor schon in der Eröffnungskonferenz erwähnt hat, habe ich das
