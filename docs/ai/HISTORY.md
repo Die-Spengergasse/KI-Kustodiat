@@ -13,8 +13,8 @@ Entries here are no longer active truth. Never delete from this file.
 - **Origin**: DECISIONS.md
 - **Reason**: Session 4 ersetzte den echten 4B-Modell durch qwen3:1.7b (getaggt als qwen3:4b), reduzierte Context auf 24K mit Q8-KV-Cache, und optimierte Generation-Parameter. Session 4-5 deaktivierten builtin_tools und tool_choice.
 
-## 2026-07-05 (SUPERSEDED 2026-07-05, origin: infra/hosts/inventory.md, reason: box renamed dev-rig-01 → gregor + repurposed): dev-rig-01 inventory
-- Full original text of `infra/hosts/inventory.md` (deleted 2026-07-05; merged into `infra/hosts/gregor.md`):
+## 2026-07-05 (SUPERSEDED 2026-07-05, origin: KI-Kustodiat-intern:infra/hosts/inventory.md (seinerzeit im public repo), reason: box renamed dev-rig-01 → gregor + repurposed): dev-rig-01 inventory
+- Full original text of `KI-Kustodiat-intern:infra/hosts/inventory.md` (deleted 2026-07-05; merged into `KI-Kustodiat-intern:infra/hosts/gregor.md`):
   ```
   Role: Dev / test / experiment rig (not a vLLM backend)
   Hostname: TODO
@@ -30,11 +30,11 @@ Entries here are no longer active truth. Never delete from this file.
   Open precheck: confirm two PSU PCIe leads are separate cables, not daisy-chain.
   Role rationale: 8 GB cannot run GLM-5.2/DeepSeek V4/Qwen 3.6 at usable precision.
   ```
-- **Origin**: `infra/hosts/inventory.md` (single-section file).
-- **Reason**: the box was renamed `gregor` and repurposed as the interim inference+gateway host on 2026-07-05. Per-host files (`infra/hosts/gregor.md`) now replace the single `inventory.md`; the dev-rig-01 era is summarised in gregor.md's "History" subsection.
+- **Origin**: `KI-Kustodiat-intern:infra/hosts/inventory.md` (single-section file).
+- **Reason**: the box was renamed `gregor` and repurposed as the interim inference+gateway host on 2026-07-05. Per-host files (`KI-Kustodiat-intern:infra/hosts/gregor.md`) now replace the single `inventory.md`; the dev-rig-01 era is summarised in gregor.md's "History" subsection.
 
 ## 2026-07-05 (REDACTION RUN)
-- Scrubbed gregor's raw WireGuard IP and Docker/LAN IPs from all `docs/ai/*` files; replaced with the placeholder `<WG_IP_GREGOR>` + a pointer to `infra/hosts/secrets.local.md` (git-ignored). Both IPs are temporary/DHCP and belong only in `secrets.local.md`. Port numbers (`:11434/:11435/:11436`) kept (operationally essential, harmless without the IP). No credentials were ever committed.
+- Scrubbed gregor's raw WireGuard IP and Docker/LAN IPs from all `docs/ai/*` files; replaced with the placeholder `<WG_IP_GREGOR>` + a pointer to `KI-Kustodiat-intern:infra/hosts/secrets.local.md` (git-ignored). Both IPs are temporary/DHCP and belong only in `secrets.local.md`. Port numbers (`:11434/:11435/:11436`) kept (operationally essential, harmless without the IP). No credentials were ever committed.
 - **Note**: the prior commit `124ebed` (2026-07-05, knowledge-persistence run) contains the raw IP in git history. Forward-only redaction chosen (RFC1918, VPN-only, no creds) — the IP remains in that one historical commit; no force-push performed.
 
 ## 2026-09-24 (SUPERSEDED 2026-07-05, origin: STATE.md, reason: LDAP war nie funktional, #22): Open WebUI deployt mit AD LDAP (Session 3)

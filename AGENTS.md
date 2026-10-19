@@ -34,10 +34,13 @@ Before starting any task, read the following files in order:
 6. `docs/ai/STATE.md`
 7. `docs/ai/TIPS.md` (Open WebUI admin tips, DB operations, known `{}` bug fix)
 8. `docs/ai/DOMAIN.md` (if task involves business logic)
-9. `infra/hosts/<hostname>.md` (if the task touches a specific host) +
-   `infra/hosts/secrets.local.md` (read for current IPs/MACs/key locations —
-   git-ignored, never commit; IPs are often DHCP/temporary, so reference
-   hosts by NAME in docs and resolve the IP at task time).
+9. **Config/Implementation (`KI-Kustodiat-intern`):** Host-Inventar
+   `KI-Kustodiat-intern:infra/hosts/<hostname>.md` (wenn der Task einen Host betrifft) +
+   `KI-Kustodiat-intern:infra/hosts/secrets.local.md` (aktuelle IPs/MACs/Key-Ablagen, git-ignored).
+   IPs sind oft DHCP/temporär → Hosts in Doku immer beim NAMEN nennen und die
+   IP zur Task-Zeit auflösen. Alle Implementationsdetails (compose, nginx,
+   systemd, Modelfiles, Env-Templates) liegen ausschließlich im privaten
+   Schwester-Repo `~/repos/Die-Spengergasse/KI-Kustodiat-intern`.
 
 If the user says "continue", "resume", or "finish where we left off":
 read and act on HANDOFF.md immediately without asking clarifying questions.
@@ -73,12 +76,14 @@ The following skills have NO slash commands. Invoke them by natural language:
 
 ## Repository
 
-- GitHub: Die-Spengergasse/KI-Kustodiat
-- Issue tracker: GitHub Issues
+- GitHub: Die-Spengergasse/KI-Kustodiat (public) ·
+  Die-Spengergasse/KI-Kustodiat-intern (private: Configs + Interna)
+- **Implementation details always go to the private sibling repo.**
 
 ## Key Contacts
 
-- Owner: Georg Graf (@georgernstgraf) — Mail: see `infra/hosts/secrets.local.md`
+- Owner: Georg Graf (@georgernstgraf) — Mail: see
+  `KI-Kustodiat-intern:infra/hosts/secrets.local.md`
 
 ## Development Environment
 

@@ -85,7 +85,7 @@ Die Website wird **nicht** über GitHub Pages, sondern aus dem Schulserver bedie
 ```bash
 rsync -a --delete --exclude='*.rsync' website/ kik:/var/www/kik/
 ```
-(`kik` ist die Management-VM; Docroot laut `infra/nginx/sites-available/kik.spengergasse.at`.)
+(`kik` ist die Management-VM; Docroot laut `KI-Kustodiat-intern:infra/nginx/sites-available/kik.spengergasse.at`.)
 
 ## Neue Seite ergänzen
 
