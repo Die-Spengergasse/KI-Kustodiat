@@ -11,7 +11,7 @@ Instanz des Operators (nicht Teil dieses Repos).
 | Eigenschaft | Wert |
 |---|---|
 | Host | gregor (`/opt/searxng/`) |
-| Erreichbarkeit | `http://10.50.11.10:80` (Schulnetz, nginx `default_server`) — **Primär-Ziel für Schulklienten**; zusätzlich `http://10.8.0.16:80` (Operator-VPN, nur Admin-Zugriff) |
+| Erreichbarkeit | `http://gregor.kik:80` = `gregor.kik.htl-wien5.schule` (Schulnetz-DNS **nur im Schulnetz auflösbar**, → `10.50.11.10`) — **Primär-Ziel für Schulklienten**; zusätzlich `http://10.8.0.16:80` (Operator-VPN, nur Admin-Zugriff) |
 | Auth | **keine** — bewusst offen im Schulnetz/VPN, Absicherung über die Netzgrenze (DECISIONS 2026-09-17; nicht „reparieren") |
 | TLS | nein (Prototyp-Betrieb, interne IP) |
 | Egress | direkt aus dem Schulnetz (HTL-IP) — **kein Proxy**, keine Abhängigkeit von Operator-Infrastruktur |
@@ -25,9 +25,9 @@ Brave-API-Key und keinen GitHub-PAT; `SEARXNG_SECRET` liegt in
 
 | Host | Kontext | Suchinstanz |
 |---|---|---|
-| gregor (opencode + Open WebUI) | Schule | `10.50.11.10`, kein Auth, `SEARXNG_CHAIN=strict` |
-| dell (opencode) | Schule | `10.50.11.10` |
-| kik (Angebots-Job) | Schule | `gregor.kik:80` / Schulnetz-IP |
+| gregor (opencode + Open WebUI) | Schule | `http://gregor.kik`, kein Auth, `SEARXNG_CHAIN=strict` |
+| dell (opencode) | Schule | `http://gregor.kik` |
+| kik (Angebots-Job, grafg) | Schule | `http://gregor.kik` |
 | think / claw / elite (opencode) | privat | private Instanz des Operators (nicht hier) |
 
 Kein Fallback zwischen den Instanzen — fällt eine aus, hat der jeweilige

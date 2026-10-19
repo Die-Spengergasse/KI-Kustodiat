@@ -34,14 +34,14 @@ Ollama → LiteLLM-DB (LiteLLM_ProxyModelTable, store_model_in_db=true)
   alle synchron pflegen, NIE `10.8.0.18` einbauen.
 - Suchserver ist Gregor selbst auf Port 80 (keine Secrets nötig): nginx `:80`
   proxyt offen auf SearXNG (`127.0.0.1:8888` bleibt localhost-only). Primär-Ziel
-  für Schulklienten ist die **Schulnetz-IP `10.50.11.10`** (Instanz-Trennung
+  für Schulklienten ist der **Schulnetz-DNS-Name `http://gregor.kik`** (= `gregor.kik.htl-wien5.schule` → `10.50.11.10`, nur im Schulnetz auflösbar; Instanz-Trennung
   2026-10-19, #36) — die VPN-IP `10.8.0.16` nur noch für Admin-Zugriff.
-  opencode-MCP nutzt `SEARXNG_PRIMARY=http://10.50.11.10`,
+  opencode-MCP nutzt `SEARXNG_PRIMARY=http://gregor.kik`,
   `SEARXNG_PRIMARY_AUTH=` (leer), `SEARXNG_CHAIN=strict` (Profil: bing →
   yahoo → braveapi, kein Free-Tier; Legacy-Alias `gregor` vom Skill noch
   akzeptiert). Kein Fallback auf claw — keine privaten Credentials auf
   Schul-Hosts. Verifikation: `curl
-  "http://10.50.11.10/search?q=…&format=json"` → echte Results ohne Auth.
+  "http://gregor.kik/search?q=…&format=json"` → echte Results ohne Auth.
 
 ## Open WebUI Database
 
@@ -173,7 +173,7 @@ Key config values (set via compose.yaml env OR Admin Panel; ConfigVars persist i
 |--------|---------|
 | `web.search.enable` | Enable web search |
 | `web.search.engine` | `"searxng"`, `"google_pse"`, etc. |
-| `web.search.searxng_query_url` | `"http://10.50.11.10/search?q=<query>"` (Issue #21 erstmals, Issue #36 auf Schulnetz-IP umgestellt; ohne Auth) |
+| `web.search.searxng_query_url` | `"http://gregor.kik/search?q=<query>"` (Issue #21 erstmals, Issue #36 neu angelegt auf Schulnetz-DNS; ohne Auth) |
 | `web.search.result_count` | Results to fetch (default 3) |
 | `web.search.concurrent_requests` | Parallel search requests (0=unlimited) |
 | `web.search.confirmation.enable` | Show "Search the web?" dialog before each search |

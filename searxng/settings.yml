@@ -37,9 +37,10 @@ use_default_settings:
       - duckduckgo news
 
 server:
-  # Secret kommt aus /opt/searxng/.env (SEARXNG_SECRET, mode 600) via
-  # docker-compose environment — nie im Klartext in dieser Datei.
-  secret_key: "${SEARXNG_SECRET}"
+  # KEIN secret_key hier: SearXNG liest das Secret aus der Environment
+  # SEARXNG_SECRET (/opt/searxng/.env, mode 600), wenn settings.yml den
+  # Key nicht setzt (settings_defaults.SettingsValue, environ_name=
+  # 'SEARXNG_SECRET'). Ein Platzhalter im File würde wörtlich übernommen.
   limiter: false
   image_proxy: true
   bind_address: "0.0.0.0"
