@@ -1,0 +1,23 @@
+# Referenzkopie: systemd-User-Unit für den OpenCode-Server auf gregor
+# (~/.config/systemd/user/opencode.service). Seit der SVN-Austragung von
+# EDV/Deployed/gregor (KI-Kustodiat Issue #36) hier verwaltet.
+# Die Unit ist host-übergreifend identisch (Auto-Upgrade beim Start via
+# ExecStartPre, siehe SVN-Doku CONVENTIONS) — bei Änderungen an der
+# Konvention alle Hosts synchron halten.
+
+[Unit]
+Description=OpenCode V2 Server (127.0.0.1:4096)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/georg
+ExecStartPre=-/home/georg/.opencode/bin/opencode upgrade --method curl
+TimeoutStartSec=300
+ExecStart=/home/georg/.opencode/bin/opencode serve --service
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
