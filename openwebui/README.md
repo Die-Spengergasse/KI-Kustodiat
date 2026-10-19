@@ -93,8 +93,10 @@ das `web_search`-Tool nicht zuverlässig aufrufen.
 Mit `function_calling: "none"` (unser aktueller Fix) ist Web Search
 komplett deaktiviert.
 
-**SearXNG** ist verfügbar unter `https://searxng.claw.graf.priv.at` —
-bereit für Nutzung sobald ein größeres Modell (7B+) läuft.
+**SearXNG** läuft auf gregor selbst — `http://10.50.11.10/search?q=<query>`
+(Schulnetz-IP, ohne Auth; Config und Ops siehe `searxng/README.md`).
+Bereit für Nutzung sobald ein FC-fähiges Modell (BYOK, 7B+-Klasse oder
+Cloud-Direct) Web-Search-Tool-Calls zuverlässig ausführt.
 
 ## Audio / STT
 

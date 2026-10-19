@@ -37,6 +37,7 @@ from `secrets.local.md`.
 | models.dev merging-proxy | `:11436` | Docker (`python:3.12-alpine`) | injects `litellm` provider into upstream catalog; opencode `OPENCODE_MODELS_URL` points here. |
 | Postgres 16 (LiteLLM DB) | internal | Docker (not published) | `db` service, bundled. LiteLLM `:main-stable` rejects SQLite (fatal). |
 | Open WebUI | `:3000` | Docker (published) | `ghcr.io/open-webui/open-webui:v0.11.4` (digest-pinned); **LDAP-only** auth (service-account bind, `sAMAccountName`, local login form disabled) against `ldap.spengergasse.at:636`; STT via whisper-1 through LiteLLM. Mic requires HTTPS — pending (Caddy/nginx). |
+| SearXNG | `:80` | nginx `default_server` → Docker `127.0.0.1:8888` | Schul-Metasuche, **ohne Auth** (Schulnetz/VPN-Grenze, bewusst — DECISIONS 2026-09-17). Primär-Ziel für Schulklienten: Schulnetz-IP `10.50.11.10`. Config + Ops: **`searxng/README.md`** (dieses Repo). |
 
 ### Custom LiteLLM plugin
 
