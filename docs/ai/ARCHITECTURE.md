@@ -84,18 +84,17 @@ Mit LiteLLM: Ollama → LiteLLM → Open WebUI (3 Hops, aber Guard + Auth + Rout
 ```
 KI-Kustodiat/  (public — Konzeptdoku & Wissensbasis)
 ├── docs/ai/                    # Wissensbasis (TIPS, DECISIONS, PITFALLS, etc.)
-├── docs/Recherche/             # Recherche-Referenzen (Provider-Anfragen, Cortecs-Evaluation, Kalkulation)
-├── docs/extern/                # Außenkommunikation
-│   ├── llm-provider-rundmail-TODO/   # offene Provider-Drafts (01→06, Sende-Reihenfolge)
-│   ├── mail-archiv-sent/             # gesendete Mails + Archiv-Konvention (README)
-│   ├── bbg-hardware-anfrage-email-draft.md
-│   └── pup-priglinger/               # KI-Kursangebot-Anfrage
+├── docs/Recherche/             # Recherche-Referenzen (Cortecs-Evaluation, Kalkulation;
+│                               #   Provider-Anfragen → KI-Kustodiat-intern:docs/extern/)
 ├── docs/praesentation/         # Slides; archiv/<YYYY-MM-DD>-<anlass>/ je Vortrag
 ├── website/, pages/      # öffentliche Homepage
 ├── scripts/              # Job-Runner für die Website
 └── .github/workflows/    # GitHub Pages deploy
 
 KI-Kustodiat-intern/  (private — alle Implementationsdetails)
+├── docs/extern/          # Außenkommunikation: Mail-Archiv (mail-archiv-sent/),
+│                         # offene Drafts (llm-provider-rundmail-TODO/), pup-priglinger/,
+│                         # provider-anfragen.md, BBG-Hardware-Draft
 ├── infra/hosts/          # <hostname>.md per host + secrets.local.md (git-ignored)
 ├── infra/nginx/          # vhost-Configs
 ├── infra/opencode/       # opencode-Provider-Overlay
