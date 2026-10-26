@@ -1,6 +1,6 @@
 # Angebote
 
-_Aktualisiert: 2026-10-19._
+_Aktualisiert: 2026-10-26._
 
 Überblick über Token-Preise, Gratis- und Bildungsangebote sowie Optionen für eigene
 Hardware. Wenn du eine Entscheidung treffen willst, nimm die Zahlen hier als Startpunkt
@@ -71,6 +71,20 @@ vorliegt.
 | Supermicro | SYS-422GA-NRT, 8× RTX PRO 6000 Blackwell Server Edition | 768 GB GPU-Speicher (8× 96 GB) | Rack | 173.031 $ (Listenpreis 196.626 $) | 2026-10-13 | [UpStation](https://ai.upstation.io/p/UPS-GPU-RTXPRO-8) |
 | NVIDIA / OEM | DGX B300 (8× B300) | 2,3 TB GPU-Speicher (8× 288 GB) | Rack | 475.000–500.000 $ (Tier-2-Systembauer, NDA-Range); Supermicro-Angebot netto 499.937 $ (Liste 568.110 $) | 2026-10-13 | [UpStation](https://ai.upstation.io/p/UPS-GPU-B300-8) |
 | NVIDIA / OEM | DGX B200 (8× B200) | 1,44 TB GPU-Speicher (8× 180 GB) | Rack | 390.000–410.000 $ (Tier-2-Systembauer, NDA-Range) | 2026-10-13 | [UpStation](https://ai.upstation.io/p/UPS-GPU-B200-8-T2) |
+
+### Beschaffungsweg über die BBG
+
+_Stand: 2026-10-26._
+
+| Thema | Stand |
+|---|---|
+| Zugang | Bundesschulen sind BBG-Abnehmerin. Die Grundsatzvereinbarung ist kostenfrei und enthält zwei e-Shop-Zugänge. |
+| Preise | Katalogpreise gibt es ausschließlich im e-Shop nach Login. Öffentlich sind nur Vertrags- und Ausschreibungslisten (GZ-Nummern, Termine). |
+| PCs & Workstations | „PCs & 13 Zoll 2 in 1" (GZ 3401.04830) — individuell konfigurierte PCs, Notebooks und Workstations. |
+| Server | Eigene Rahmenvereinbarung „Serversysteme, Netzwerkkomponenten und Storagesysteme" (GZ 3401.03804). Neuvergabe als SSN 2026-2 (neun Hersteller-Lose, u. a. Supermicro; abrufbar ab 2026-11-20) und SSN 2026-3 (Palo Alto, Cisco; ab 2027-01-22). |
+| GPU ab 256 GB | Nicht belegt. Im laufenden Verfahren SSN 2026-3 enthalten die öffentlichen Unterlagen keine GPU-Positionen; das Preisblatt von SSN 2026-2 ist nach Fristablauf nicht mehr abrufbar. |
+
+Quellen: [Aktuelle Verträge](https://www.bbg.gv.at/information/aktuelle-vertraege) · [Aktuelle Ausschreibungen](https://www.bbg.gv.at/information/aktuelle-ausschreibungen) · [SSN 2026-3 im Vergabeportal](https://bbg.vergabeportal.at/Detail/257753)
 
 Hinweis: Hardwarepreise sind stark schwankend (Speichermangel 2026). Enterprise-Systeme
 werden oft nur auf Anfrage angeboten; die genannten Preise sind Listenpreise, Distributor-

@@ -74,6 +74,10 @@ anderen Seiten anfassen.
      **keine** Einträge früherer Läufe. Entferne alles, was den aktuellen Regeln nicht mehr
      entspricht (Gebraucht-GPUs, DIY-/Bausatz-Lösungen, abgekündigte Modelle). Die Seite
      zeigt ausschließlich, was die heutige Recherche belegt.
+   - **BBG-Block:** Setze nach den Hardware-Tabellen den Abschnitt „Beschaffungsweg über die
+     BBG" **wortgleich und vollständig** aus dem Abschnitt „BBG-Block (fest)" dieses Skills ein.
+     Diesen Block **nicht recherchieren, nicht umformulieren, nicht kürzen** — er ist datiert
+     und wird bei Bedarf manuell nachgezogen.
    - einen kurzen Hinweis, dass Preise Momentaufnahmen sind und vor einer Entscheidung
      beim Anbieter zu prüfen sind.
    - Abschlusszeile mit Querlinks: `Zurück zur [Startseite](#/) · [Status](status.md) · [Milestones](milestones.md)`.
@@ -84,8 +88,32 @@ anderen Seiten anfassen.
 3. **Verifizieren.** Die Datei muss rendern und ihre `*.md`-Links müssen auflösbar sein
    (Prüfung wie im Skill `update-homepage`, Abschnitt Verifizieren).
 
+## BBG-Block (fest)
+
+Dieser Block wird **wortgleich** in die Seite übernommen. Er wird **nicht** vom Job recherchiert
+und bei Änderungen (neue SSN-Verfahren, neue GZ) manuell nachgezogen. Faktenbasis: öffentliche
+BBG-Daten (Vertrags-/Ausschreibungsliste, Vergabeportal), Stand 2026-10-26.
+
+```markdown
+### Beschaffungsweg über die BBG
+
+_Stand: 2026-10-26._
+
+| Thema | Stand |
+|---|---|
+| Zugang | Bundesschulen sind BBG-Abnehmerin. Die Grundsatzvereinbarung ist kostenfrei und enthält zwei e-Shop-Zugänge. |
+| Preise | Katalogpreise gibt es ausschließlich im e-Shop nach Login. Öffentlich sind nur Vertrags- und Ausschreibungslisten (GZ-Nummern, Termine). |
+| PCs & Workstations | „PCs & 13 Zoll 2 in 1" (GZ 3401.04830) — individuell konfigurierte PCs, Notebooks und Workstations. |
+| Server | Eigene Rahmenvereinbarung „Serversysteme, Netzwerkkomponenten und Storagesysteme" (GZ 3401.03804). Neuvergabe als SSN 2026-2 (neun Hersteller-Lose, u. a. Supermicro; abrufbar ab 2026-11-20) und SSN 2026-3 (Palo Alto, Cisco; ab 2027-01-22). |
+| GPU ab 256 GB | Nicht belegt. Im laufenden Verfahren SSN 2026-3 enthalten die öffentlichen Unterlagen keine GPU-Positionen; das Preisblatt von SSN 2026-2 ist nach Fristablauf nicht mehr abrufbar. |
+
+Quellen: [Aktuelle Verträge](https://www.bbg.gv.at/information/aktuelle-vertraege) · [Aktuelle Ausschreibungen](https://www.bbg.gv.at/information/aktuelle-ausschreibungen) · [SSN 2026-3 im Vergabeportal](https://bbg.vergabeportal.at/Detail/257753)
+```
+
 ## Grenzen
 
-- **Öffentlich** ist nur diese Angebots-Übersicht. Beschaffungs-/BBG-Vorgänge, Verhandlungen
-  und Kontakte gehören **nicht** hierher, sondern ins interne Schwester-Repo.
+- **Öffentlich** ist nur diese Angebots-Übersicht. **Verhandlungen, Kontakte, Preise und
+  Beschaffungsstrategie** gehören **nicht** hierher, sondern ins interne Schwester-Repo.
+  Der obige BBG-Block ist die eng gefasste Ausnahme: **ausschließlich** öffentliche Fakten
+  (GZ-Nummern, Verfahrenstermine, Nachweisgrenzen) — keine Preise, keine Absichten.
 - Kein Commit, kein Deploy im Skill — das erledigt `scripts/run-offers-job.sh`.
