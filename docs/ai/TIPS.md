@@ -27,19 +27,19 @@ Ollama → LiteLLM-DB (LiteLLM_ProxyModelTable, store_model_in_db=true)
 - Verifikations-Endpoints: `curl -s -H "Authorization: Bearer $LITELLM_PROXY_KEY"
   http://localhost:11434/v1/models` (exakt die 6 gregor-Modelle) und
   `curl -s http://localhost:11436/api.json` (`litellm.api` UND 6 Models prüfen).
-- **`10.8.0.18` ist eine tote IP** (2026-07; gregor war damals dort). Heute ist
-  gregor `10.8.0.16` (VPN). Kein DNS für gregor — IP-Doppel in
+- **`<TOTE_VPN_IP_2026-07>` ist eine tote IP** (2026-07; gregor war damals dort). Heute ist
+  gregor `<WG_IP_GREGOR>` (VPN). Kein DNS für gregor — IP-Doppel in
   `/opt/litellm/.env` (LITELLM_PUBLIC_URL), opencode.json (baseURL),
   bash_aliases (OPENCODE_MODELS_URL) und LiteLLM-DB api_base beim Wechsel:
-  alle synchron pflegen, NIE `10.8.0.18` einbauen.
+  alle synchron pflegen, NIE `<TOTE_VPN_IP_2026-07>` einbauen.
 - Suchserver ist Gregor selbst auf Port 80 (keine Secrets nötig): nginx `:80`
   proxyt offen auf SearXNG (`127.0.0.1:8888` bleibt localhost-only). Primär-Ziel
-  für Schulklienten ist der **Schulnetz-DNS-Name `http://gregor.kik`** (= `gregor.kik.htl-wien5.schule` → `10.50.11.10`, nur im Schulnetz auflösbar; Instanz-Trennung
-  2026-10-19, #36) — die VPN-IP `10.8.0.16` nur noch für Admin-Zugriff.
+  für Schulklienten ist der **Schulnetz-DNS-Name `http://gregor.kik`** (= `gregor.kik.htl-wien5.schule` → `<LAN_IP_GREGOR>`, nur im Schulnetz auflösbar; Instanz-Trennung
+  2026-10-19, #36) — die VPN-IP `<WG_IP_GREGOR>` nur noch für Admin-Zugriff.
   opencode-MCP nutzt `SEARXNG_PRIMARY=http://gregor.kik`,
   `SEARXNG_PRIMARY_AUTH=` (leer), `SEARXNG_CHAIN=strict` (Profil: bing →
   yahoo → braveapi, kein Free-Tier; Legacy-Alias `gregor` vom Skill noch
-  akzeptiert). Kein Fallback auf claw — keine privaten Credentials auf
+  akzeptiert). Kein Fallback auf die private Operator-Instanz — keine privaten Credentials auf
   Schul-Hosts. Verifikation: `curl
   "http://gregor.kik/search?q=…&format=json"` → echte Results ohne Auth.
 
@@ -342,7 +342,7 @@ all tool use including web_search.
 Ollama connection** (no LiteLLM in the chat path) and a dedicated
 **qwen3:8b-search** model (FC=native, search-friendly system prompt), native
 web search works end-to-end: model calls `search_web` → Open WebUI queries
-SearXNG (10.50.11.10:80) → results injected → final answer. Verified e2e 2026-09-17.
+SearXNG (<LAN_IP_GREGOR>:80) → results injected → final answer. Verified e2e 2026-09-17.
 The 1.7B verdict below remains true for small models.
 
 ## Open WebUI Native Tool-Call Mechanics (Issue #21, verified against v0.10.2 source)

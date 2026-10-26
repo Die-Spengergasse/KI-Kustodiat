@@ -12,10 +12,10 @@ gestoppt** (Reserve, Reaktivierung in `KI-Kustodiat-intern:whisper/README.md` do
 Open WebUI (`:3000`, Klartext hinter ZID-SSL-nginx) spricht Whisper **direkt**
 an (`http://whisper:9000/v1`); Chat-LLM kommt per BYOK vom User
 (`direct.enable=true`, z. B. DeepSeek-Token). SearXNG (`:80`, Schulnetz-DNS
-`gregor.kik` → `10.50.11.10`) bleibt Search-Backend für Tool-Calls FC-fähiger BYOK-Modelle.
+`gregor.kik`, nur im Schulnetz aufgelöst) bleibt Search-Backend für Tool-Calls FC-fähiger BYOK-Modelle.
 **Instanz-Trennung (2026-10-19, #36):** dies ist die *Schul*-Instanz; die
-private Instanz des Operators (claw) ist ein getrenntes System (kein
-Cross-Fallback). SingleGpuGuard ist mit
+private Instanz des Operators ist ein externes System (kein
+Cross-Fallback, Name/URL/Doku nicht hier). SingleGpuGuard ist mit
 gestopptem LiteLLM inaktiv (ohnehin STT-inkompatibel — gated nur
 completion/embeddings, keine Transkription).
 
