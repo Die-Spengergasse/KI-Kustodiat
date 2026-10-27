@@ -5,15 +5,18 @@ Kontext: 2.600 Schüler, 280 Lehrer, 97 Klassen (STATE.md), Budget ~€9.000
 Zugehörig: Issue #14 (Token- und Auth-Konzept)
 Siehe auch: `cortecs-provider-evaluation.md` (DSGVO-Tier-Klassifikation)
 
-> **Überholt in einem Punkt (2026-10-27):** Die On-Premise-Säule (Framework Desktop
-> Strix Halo 128 GB) ist **gestrichen**. Sie trägt keine Schulklasse (256 GB/s
-> Speicherbandbreite, gemessen ~4 parallele Sessions bei 32 tok/s), und die
-> diskrete 96-GB-Klasse, die es täte, kostet als Kauf €10.000+ bei 3–4 Jahren
-> Nutzwert. Ersetzt durch eine **gemietete** Dedicated-Inference-Karte (RTX Pro 6000,
+> **Vorläufiger Vermerk (2026-10-27, Arbeitshypothese — nicht entschieden):** Der
+> On-Premise-Kaufweg (Framework Desktop Strix Halo 128 GB) ist derzeit **nicht der
+> bevorzugte Weg**, bleibt aber eine offene Option. Gründe: 256 GB/s Speicherbandbreite
+> tragen keine Schulklasse (gemessen ~4 parallele Sessions bei 32 tok/s), und die
+> diskrete 96-GB-Klasse, die es täte, kostet als Kauf €10.000+ bei 3–4 Jahren Nutzwert.
+> Geprüft wird stattdessen eine **gemietete** Dedicated-Inference-Karte (RTX Pro 6000,
 > 96 GB) an Schultagen 08:00–22:00, Ferien auf null: ~€5.570/Schuljahr, kein Capex.
-> Token-Kalkulation und Cortecs-Vergleich bleiben gültig. Herleitung:
-> `KI-Kustodiat-intern:docs/extern/provider-anfragen.md` („GPU-Inferenz: Miete vs.
-> Tokens") und `KI-Kustodiat-intern:docs/ai/DECISIONS.md` (2026-10-27).
+> **Entschieden ist nichts** — die Entscheidung hängt an der Call-off-Fähigkeit des
+> Produkts, am Preis, an einem Pilotmonat und an der Budgetfreigabe. Token-Kalkulation
+> und Cortecs-Vergleich bleiben in jedem Fall gültig. Stand und Kipp-Punkte:
+> `KI-Kustodiat-intern:docs/ai/DECISIONS.md` („Offen — Arbeitshypothese"), Herleitung in
+> `KI-Kustodiat-intern:docs/extern/provider-anfragen.md` („GPU-Inferenz: Miete vs. Tokens").
 
 ## Annahmen
 
