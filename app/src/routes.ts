@@ -60,16 +60,16 @@ export const PUBLIC_ROUTES = [
     description: 'Häufig gestellte Fragen zum KI-Kustodiat der Spengergasse.',
   },
   {
-    path: '/anleitung',
-    title: 'Anleitung — KI-Kustodiat',
-    heading: 'Anleitung — Token und Diktat',
+    path: '/anleitung/tokens',
+    title: 'Anleitung Tokens — KI-Kustodiat',
+    heading: 'Anleitung Tokens',
     description:
       'Wie du einen API-Token erzeugst, ihn in Coding-Werkzeugen und für Sprache-zu-Text einsetzt und was die Limits bedeuten.',
   },
   {
-    path: '/openwebui-anleitung',
-    title: 'Open WebUI — Anleitung — KI-Kustodiat',
-    heading: 'Open WebUI — Anleitung',
+    path: '/anleitung/openwebui',
+    title: 'Anleitung Open WebUI — KI-Kustodiat',
+    heading: 'Anleitung Open WebUI',
     description: 'Anleitung zum Zugang zu Open WebUI und zum Einbinden eigener KI-Modelle.',
   },
 ] as const satisfies readonly RouteDefinition[]
@@ -106,28 +106,29 @@ export function canonicalUrl(input: string): string {
   return path === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${path}`
 }
 
-/** Everything under `/portal` is the client-rendered (noindex) authenticated area. */
-export function isPortalPath(input: string): boolean {
+/** Everything under `/tokens` is the client-rendered (noindex) authenticated area. */
+export function isTokensPath(input: string): boolean {
   const path = normalizeRoutePath(input)
-  return path === '/portal' || path.startsWith('/portal/')
+  return path === '/tokens' || path.startsWith('/tokens/')
 }
 
 /**
- * Portal pages (Issue #48). Everything else under `/portal` is served the same
- * noindex shell but shows a "not found" note — the nav below is the single
- * source for the authenticated area's navigation and its labels.
+ * Tokenverwaltung pages (Issue #48, formerly under `/portal`). Everything else
+ * under `/tokens` is served the same noindex shell but shows a "not found" note —
+ * the nav below is the single source for the authenticated area's navigation and
+ * its labels.
  */
-export const PORTAL_PAGES = [
-  { path: '/portal', label: 'Übersicht' },
-  { path: '/portal/keys', label: 'API-Keys' },
-  { path: '/portal/usage', label: 'Verbrauch' },
+export const TOKENS_PAGES = [
+  { path: '/tokens', label: 'Übersicht' },
+  { path: '/tokens/keys', label: 'API-Keys' },
+  { path: '/tokens/usage', label: 'Verbrauch' },
 ] as const
 
-export type PortalPagePath = (typeof PORTAL_PAGES)[number]['path']
+export type TokensPagePath = (typeof TOKENS_PAGES)[number]['path']
 
-export function matchPortalPage(input: string): PortalPagePath | null {
+export function matchTokensPage(input: string): TokensPagePath | null {
   const path = normalizeRoutePath(input)
-  const match = PORTAL_PAGES.find((page) => page.path === path)
+  const match = TOKENS_PAGES.find((page) => page.path === path)
   return match === undefined ? null : match.path
 }
 

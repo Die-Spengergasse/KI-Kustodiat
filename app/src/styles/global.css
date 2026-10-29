@@ -640,16 +640,40 @@ tfoot td {
   font-size: 0.9em;
 }
 
-/* Old page: link-only paragraphs rendered as a card grid by `app.js`. */
-.cards {
+/* Start page groups: every `##` section of `website/content/index.md` becomes a
+ * tile (`HomePage`), inside it the links stay ordinary links. */
+.tiles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--spacing-gutter);
   margin: var(--spacing-section) 0;
 }
 
-.cards > * {
+/* Long endpoints (`https://whisper.kik.spengergasse.at/v1/`) must not poke out of
+ * the tile. */
+.tiles code {
+  overflow-wrap: anywhere;
+}
+
+.tiles .ui-card__title {
+  font-size: var(--text-h4);
+}
+
+.tiles ul {
+  margin-top: 0;
+  padding-left: 1.1rem;
+}
+
+.tiles li {
+  margin-bottom: var(--spacing-list-item);
+}
+
+.tiles li:last-child {
   margin-bottom: 0;
+}
+
+.prose.tile {
+  font-size: 0.95rem;
 }
 
 /* PageHeader — h1 block with optional back link, lead paragraph and actions. */

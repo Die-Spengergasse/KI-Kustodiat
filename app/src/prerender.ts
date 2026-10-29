@@ -9,7 +9,7 @@ import {
   NOT_FOUND_PAGE_PATH,
   PUBLIC_ROUTES,
   canonicalUrl,
-  isPortalPath,
+  isTokensPath,
   matchPublicRoute,
   outputFilePath,
 } from './routes'
@@ -20,23 +20,23 @@ export interface DocumentMeta {
   description: string
   /**
    * Public route path of the document, or `null` when it has no indexable URL
-   * (portal shell, 404, dev-only pages). Non-null paths get `<link rel="canonical">`
+   * (Tokenverwaltung, 404, dev-only pages). Non-null paths get `<link rel="canonical">`
    * and the OpenGraph block.
    */
   path: string | null
-  /** Portal and 404 documents must never be indexed. */
+  /** The authenticated area and the 404 document must never be indexed. */
   noindex: boolean
 }
 
-export const PORTAL_OUTPUT_FILE = 'portal.html'
+export const TOKENS_OUTPUT_FILE = 'tokens.html'
 export const NOT_FOUND_OUTPUT_FILE = '404.html'
 
 /** `og:type` of every public document: the site has pages, no articles. */
 export const OG_TYPE = 'website'
 
-export const PORTAL_META: DocumentMeta = {
-  title: 'Portal — KI-Kustodiat',
-  description: 'Token-Portal des KI-Kustodiats der Spengergasse.',
+export const TOKENS_META: DocumentMeta = {
+  title: 'Tokenverwaltung — KI-Kustodiat',
+  description: 'Tokenverwaltung des KI-Kustodiats der Spengergasse.',
   path: null,
   noindex: true,
 }
@@ -136,8 +136,8 @@ export function documentMetaFor(input: string): DocumentMeta {
   if (isDesignRoute(input)) {
     return DESIGN_META
   }
-  if (isPortalPath(input)) {
-    return PORTAL_META
+  if (isTokensPath(input)) {
+    return TOKENS_META
   }
   const route = matchPublicRoute(input)
   if (route === undefined) {
@@ -146,7 +146,7 @@ export function documentMetaFor(input: string): DocumentMeta {
   return { title: route.title, description: route.description, path: route.path, noindex: false }
 }
 
-export type PrerenderKind = 'page' | 'portal' | 'not-found'
+export type PrerenderKind = 'page' | 'tokens' | 'not-found'
 
 export interface PrerenderTarget {
   /** Route to render through the SSR entry; `null` for the client-rendered shell. */
@@ -159,7 +159,7 @@ export interface PrerenderTarget {
 
 /**
  * Every file the prerender step must emit: one document per public route plus the
- * portal shell and the (prerendered) 404 page. `sitemap.xml` and `robots.txt` are
+ * Tokenverwaltung shell and the (prerendered) 404 page. `sitemap.xml` and `robots.txt` are
  * derived from the same route table in `bots.ts`.
  */
 export function prerenderTargets(): PrerenderTarget[] {
@@ -177,7 +177,7 @@ export function prerenderTargets(): PrerenderTarget[] {
 
   return [
     ...pages,
-    { urlPath: null, outputPath: PORTAL_OUTPUT_FILE, kind: 'portal', meta: PORTAL_META },
+    { urlPath: null, outputPath: TOKENS_OUTPUT_FILE, kind: 'tokens', meta: TOKENS_META },
     {
       urlPath: NOT_FOUND_PAGE_PATH,
       outputPath: NOT_FOUND_OUTPUT_FILE,

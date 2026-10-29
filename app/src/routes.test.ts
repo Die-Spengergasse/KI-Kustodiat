@@ -3,7 +3,7 @@ import {
   NOT_FOUND_PAGE_PATH,
   PUBLIC_ROUTES,
   canonicalUrl,
-  isPortalPath,
+  isTokensPath,
   legacyHashTarget,
   matchPublicRoute,
   normalizeRoutePath,
@@ -16,8 +16,8 @@ const EXPECTED_PATHS = [
   '/milestones',
   '/angebote',
   '/faq',
-  '/anleitung',
-  '/openwebui-anleitung',
+  '/anleitung/tokens',
+  '/anleitung/openwebui',
 ]
 
 describe('public route table', () => {
@@ -51,13 +51,13 @@ describe('public route table', () => {
     expect(matchPublicRoute('/status/details')).toBeUndefined()
   })
 
-  it('does not shadow the portal namespace', () => {
-    expect(PUBLIC_ROUTES.some((route) => isPortalPath(route.path))).toBe(false)
+  it('does not shadow the token-management namespace', () => {
+    expect(PUBLIC_ROUTES.some((route) => isTokensPath(route.path))).toBe(false)
   })
 
   it('keeps the 404 sentinel out of the public route table', () => {
     expect(matchPublicRoute(NOT_FOUND_PAGE_PATH)).toBeUndefined()
-    expect(isPortalPath(NOT_FOUND_PAGE_PATH)).toBe(false)
+    expect(isTokensPath(NOT_FOUND_PAGE_PATH)).toBe(false)
   })
 })
 
@@ -91,21 +91,24 @@ describe('normalizeRoutePath', () => {
   })
 })
 
-describe('isPortalPath', () => {
-  it.each(['/portal', '/portal/', '/portal/keys', '/portal/keys/new'])('matches %s', (path) => {
-    expect(isPortalPath(path)).toBe(true)
+describe('isTokensPath', () => {
+  it.each(['/tokens', '/tokens/', '/tokens/keys', '/tokens/keys/new'])('matches %s', (path) => {
+    expect(isTokensPath(path)).toBe(true)
   })
 
-  it.each(['/', '/status', '/portalx', '/portal-keys'])('does not match %s', (path) => {
-    expect(isPortalPath(path)).toBe(false)
-  })
+  it.each(['/', '/status', '/tokensx', '/tokens-keys', '/anleitung/tokens'])(
+    'does not match %s',
+    (path) => {
+      expect(isTokensPath(path)).toBe(false)
+    },
+  )
 })
 
 describe('legacyHashTarget', () => {
   const cases: Array<[string, string | null]> = [
     ['#/status', '/status'],
     ['#/status/', '/status'],
-    ['#/openwebui-anleitung', '/openwebui-anleitung'],
+    ['#/anleitung/openwebui', '/anleitung/openwebui'],
     ['#/status?utm=x', '/status'],
     ['#/', '/'],
     ['', null],
@@ -123,7 +126,7 @@ describe('legacyHashTarget', () => {
       const target = legacyHashTarget(hash)
       if (target !== null) {
         expect(
-          target === '/' || matchPublicRoute(target) !== undefined || isPortalPath(target),
+          target === '/' || matchPublicRoute(target) !== undefined || isTokensPath(target),
         ).toBe(true)
       }
     }

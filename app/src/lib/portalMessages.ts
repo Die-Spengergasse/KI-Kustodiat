@@ -1,5 +1,5 @@
 /**
- * German wording of the portal's auth states (Issue #47).
+ * German wording of the Tokenverwaltung's auth states (Issue #47).
  *
  * Pure functions, unit-tested: the page must stay readable and the wording must
  * not drift between the login form, the lockout notice and the role badge.
@@ -36,7 +36,7 @@ export function loginFailureMessage(input: LoginFailureInput): string {
     return 'Benutzername oder Passwort ist falsch.'
   }
   if (input.status === 403 && input.error === 'no_access') {
-    return input.message ?? 'Für dieses Konto ist kein Zugang zum Portal vorgesehen.'
+    return input.message ?? 'Für dieses Konto ist kein Zugang zur Tokenverwaltung vorgesehen.'
   }
   if (input.status === 403) {
     return 'Die Anfrage konnte nicht geprüft werden. Bitte die Seite neu laden.'
@@ -45,7 +45,7 @@ export function loginFailureMessage(input: LoginFailureInput): string {
     return 'Das Schulverzeichnis ist gerade nicht erreichbar. Bitte später erneut versuchen.'
   }
   if (input.status === 503) {
-    return 'Das Portal ist noch nicht fertig eingerichtet.'
+    return 'Die Tokenverwaltung ist noch nicht fertig eingerichtet.'
   }
   return 'Anmeldung fehlgeschlagen. Bitte später erneut versuchen.'
 }

@@ -12,7 +12,7 @@ Bausteine laufen produktiv, die zentrale Modellversorgung ist aber noch nicht ei
 - **Anmeldung über das Schul-Verzeichnis (LDAP)** — ein Spengergassen-Login, kein separates
   Konto und kein E-Mail-Formular.
 - **Bring Your Own Token (BYOK):** Willst du ein eigenes Modell nutzen, bindest du deinen
-  Provider-Account selbst ein. Siehe [Anleitung](openwebui-anleitung.md).
+  Provider-Account selbst ein. Siehe [Anleitung](anleitung/openwebui.md).
 - **Spracherkennung (Whisper) im Haus:** Die Audio-Transkription läuft zu **100 % lokal** auf
   einer gespendeten Grafikkarte. Es verlassen keine Audiodaten die Schule.
 - **Metasuche (SearXNG)** über eine schuleigene Suchinstanz.
@@ -39,4 +39,4 @@ Bausteine laufen produktiv, die zentrale Modellversorgung ist aber noch nicht ei
 
 ---
 
-Zurück zur [Startseite](#/) · [Milestones](milestones.md) · [Anleitung](openwebui-anleitung.md)
+Zurück zur [Startseite](#/) · [Milestones](milestones.md) · [Anleitung](anleitung/openwebui.md)

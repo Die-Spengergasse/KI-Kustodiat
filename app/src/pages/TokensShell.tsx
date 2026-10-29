@@ -9,9 +9,9 @@ import {
   type PortalUser,
 } from '../lib/portalApi'
 import { loginFailureMessage, roleLabel } from '../lib/portalMessages'
-import { PORTAL_PAGES, matchPortalPage } from '../routes'
-import { KeysPage } from './portal/KeysPage'
-import { UsagePage } from './portal/UsagePage'
+import { TOKENS_PAGES, matchTokensPage } from '../routes'
+import { KeysPage } from './tokens/KeysPage'
+import { UsagePage } from './tokens/UsagePage'
 
 type View =
   | { kind: 'loading' }
@@ -19,18 +19,18 @@ type View =
   | { kind: 'authenticated'; user: PortalUser; csrfToken: string | null }
   | { kind: 'unavailable'; message: string }
 
-interface PortalShellProps {
+interface TokensShellProps {
   /** Current path — resolved by the same route table the server uses. */
   path: string
 }
 
 /**
  * The authenticated area (Issues #47/#48): LDAP login, navigation, key
- * management and the usage view. Deliberately client-rendered — `/portal/*` is
+ * management and the usage view. Deliberately client-rendered — `/tokens/*` is
  * served as an empty document and marked `noindex`; every page starts with
  * `GET /api/auth/me`, so a dead session immediately shows the login form again.
  */
-export function PortalShell({ path }: PortalShellProps) {
+export function TokensShell({ path }: TokensShellProps) {
   const [view, setView] = useState<View>({ kind: 'loading' })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -48,7 +48,7 @@ export function PortalShell({ path }: PortalShellProps) {
         error:
           error instanceof PortalApiError
             ? loginFailureMessage({ status: error.status, ...error.body })
-            : 'Das Portal ist gerade nicht erreichbar.',
+            : 'Die Tokenverwaltung ist gerade nicht erreichbar.',
       })
     }
   }, [])
@@ -76,7 +76,7 @@ export function PortalShell({ path }: PortalShellProps) {
         setView({
           kind: 'anonymous',
           csrfToken: view.csrfToken,
-          error: 'Das Portal ist gerade nicht erreichbar.',
+          error: 'Die Tokenverwaltung ist gerade nicht erreichbar.',
         })
       }
     } finally {
@@ -100,7 +100,7 @@ export function PortalShell({ path }: PortalShellProps) {
   if (view.kind === 'loading') {
     return (
       <>
-        <PageHeader title="Portal" />
+        <PageHeader title="Tokenverwaltung" />
         <p className="muted">Anmeldestatus wird geprüft …</p>
       </>
     )
@@ -109,7 +109,7 @@ export function PortalShell({ path }: PortalShellProps) {
   if (view.kind === 'unavailable') {
     return (
       <>
-        <PageHeader title="Portal" />
+        <PageHeader title="Tokenverwaltung" />
         <Card>
           <p role="alert">{view.message}</p>
         </Card>
@@ -121,7 +121,7 @@ export function PortalShell({ path }: PortalShellProps) {
     return (
       <>
         <PageHeader
-          title="Portal"
+          title="Tokenverwaltung"
           lead="Anmeldung mit dem Schulkonto. Danach verwaltest du hier deine API-Keys und siehst deinen Verbrauch."
         />
         <Card title="Anmelden">
@@ -171,32 +171,33 @@ export function PortalShell({ path }: PortalShellProps) {
             </div>
           </form>
           <p className="muted">
-            Was das Portal ist und wofür du einen Schlüssel brauchst: <a href="/anleitung">Anleitung</a>.
+            Wofür du einen Schlüssel brauchst und wie du ihn einsetzt:{' '}
+            <a href="/anleitung/tokens">Anleitung Tokens</a>.
           </p>
         </Card>
       </>
     )
   }
 
-  const page = matchPortalPage(path)
+  const page = matchTokensPage(path)
 
   return (
     <>
-      <nav className="portal-nav" aria-label="Portal">
+      <nav className="portal-nav" aria-label="Tokenverwaltung">
         <ul>
-          {PORTAL_PAGES.map((entry) => (
+          {TOKENS_PAGES.map((entry) => (
             <li key={entry.path}>
               <a
                 href={entry.path}
-                aria-current={entry.path === (page ?? '/portal') ? 'page' : undefined}
+                aria-current={entry.path === (page ?? '/tokens') ? 'page' : undefined}
               >
                 {entry.label}
               </a>
             </li>
           ))}
-          {/* Öffentliche Seite, keine Portal-Route — deshalb nicht in PORTAL_PAGES. */}
+          {/* Öffentliche Seite, keine Route der Tokenverwaltung — deshalb nicht in TOKENS_PAGES. */}
           <li>
-            <a href="/anleitung">Hilfe</a>
+            <a href="/anleitung/tokens">Hilfe</a>
           </li>
         </ul>
         <ul>
@@ -217,31 +218,31 @@ export function PortalShell({ path }: PortalShellProps) {
         <>
           <PageHeader title="Seite nicht gefunden" />
           <Card>
-            <p>Diese Portalseite gibt es nicht.</p>
+            <p>Diese Seite der Tokenverwaltung gibt es nicht.</p>
             <Prose>
               <p>
-                Zurück zur <a href="/portal">Übersicht</a>.
+                Zurück zur <a href="/tokens">Übersicht</a>.
               </p>
             </Prose>
           </Card>
         </>
       )}
 
-      {page === '/portal' && (
+      {page === '/tokens' && (
         <>
           <PageHeader
-            title="Portal"
+            title="Tokenverwaltung"
             lead={`Angemeldet als ${view.user.displayName} (${view.user.sam}).`}
           />
           <Card title="Was du hier tun kannst">
             <Prose>
               <ul>
                 <li>
-                  <a href="/portal/keys">API-Keys</a> — Schlüssel für den KI-Proxy erzeugen,
+                  <a href="/tokens/keys">API-Keys</a> — Schlüssel für den KI-Proxy erzeugen,
                   rotieren und widerrufen. Der Schlüssel wird genau einmal angezeigt.
                 </li>
                 <li>
-                  <a href="/portal/usage">Verbrauch</a> — Tokens und Anteil am Monatskontingent,
+                  <a href="/tokens/usage">Verbrauch</a> — Tokens und Anteil am Monatskontingent,
                   aufgeschlüsselt nach Modell.
                 </li>
               </ul>
@@ -253,10 +254,10 @@ export function PortalShell({ path }: PortalShellProps) {
         </>
       )}
 
-      {page === '/portal/keys' && (
+      {page === '/tokens/keys' && (
         <KeysPage csrfToken={view.csrfToken} onSessionExpired={() => void load()} />
       )}
-      {page === '/portal/usage' && <UsagePage onSessionExpired={() => void load()} />}
+      {page === '/tokens/usage' && <UsagePage onSessionExpired={() => void load()} />}
     </>
   )
 }

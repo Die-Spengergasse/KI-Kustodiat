@@ -9,9 +9,7 @@ import type { PublicRoute } from '../routes'
  *
  * The single element the old static page added outside the Markdown
  * (`website/index.html` → `#page .back`) is the `← Zur Startseite` link; it is
- * rendered here instead of being duplicated into every document. Unlike the
- * start page, subpages keep link-only paragraphs as plain paragraphs — the old
- * `app.js` only ran `buttonify()` on the home content.
+ * rendered here instead of being duplicated into every document.
  */
 export function MarkdownPage({ route }: { route: PublicRoute }) {
   return (
@@ -19,7 +17,7 @@ export function MarkdownPage({ route }: { route: PublicRoute }) {
       <a className="page-header__back" href="/">
         ← Zur Startseite
       </a>
-      <MarkdownContent markdown={CONTENT_MARKDOWN[route.path]} linkButtons={false} />
+      <MarkdownContent markdown={CONTENT_MARKDOWN[route.path]} />
     </Prose>
   )
 }

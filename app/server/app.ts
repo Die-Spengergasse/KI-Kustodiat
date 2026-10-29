@@ -9,13 +9,13 @@ import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest }
 import type { ViteDevServer } from 'vite'
 import {
   NOT_FOUND_OUTPUT_FILE,
-  PORTAL_OUTPUT_FILE,
+  TOKENS_OUTPUT_FILE,
   documentMetaFor,
   renderDocument,
 } from '../src/prerender'
 import { findBotFile } from '../src/bots'
 import { isDesignRoute } from '../src/devRoutes'
-import { isPortalPath, matchPublicRoute, normalizeRoutePath, outputFilePath } from '../src/routes'
+import { isTokensPath, matchPublicRoute, normalizeRoutePath, outputFilePath } from '../src/routes'
 import { registerAuthRoutes } from './routes/auth'
 import { registerKeyRoutes } from './routes/keys'
 import { registerUsageRoutes } from './routes/usage'
@@ -81,7 +81,7 @@ async function registerDev(app: FastifyInstance, rootDir: string): Promise<PageH
     // `/_design` is a dev-only tooling route (see src/devRoutes.ts); production
     // intentionally falls through to the 404 document.
     const isKnownPath =
-      isPortalPath(urlPath) || matchPublicRoute(urlPath) !== undefined || isDesignRoute(urlPath)
+      isTokensPath(urlPath) || matchPublicRoute(urlPath) !== undefined || isDesignRoute(urlPath)
 
     // sitemap.xml / robots.txt are generated from the route table; in dev they
     // are rendered per request instead of being read from `dist/`.
@@ -91,13 +91,13 @@ async function registerDev(app: FastifyInstance, rootDir: string): Promise<PageH
     }
 
     try {
-      const appHtml = isPortalPath(urlPath) ? '' : await renderWithVite(vite, urlPath)
+      const appHtml = isTokensPath(urlPath) ? '' : await renderWithVite(vite, urlPath)
       const html = renderDocument(
         await vite.transformIndexHtml(requestUrl, template),
         documentMetaFor(urlPath),
         appHtml,
       )
-      if (isPortalPath(urlPath)) {
+      if (isTokensPath(urlPath)) {
         // Same header the production server sets on the authenticated area.
         reply.header('x-robots-tag', 'noindex, nofollow')
       }
@@ -146,11 +146,11 @@ async function registerProd(app: FastifyInstance, distDir: string): Promise<Page
       return notFound(reply)
     }
 
-    if (isPortalPath(urlPath)) {
+    if (isTokensPath(urlPath)) {
       return reply
         .header('x-robots-tag', 'noindex, nofollow')
         .type('text/html; charset=utf-8')
-        .sendFile(PORTAL_OUTPUT_FILE)
+        .sendFile(TOKENS_OUTPUT_FILE)
     }
 
     const botFile = findBotFile(urlPath)

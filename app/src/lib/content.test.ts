@@ -9,9 +9,7 @@ const ALL_LINKS = PUBLIC_ROUTES.flatMap((route) =>
 
 describe('page content', () => {
   it('is read from the old site (website/content/*.md), not copied into the app', () => {
-    expect(HOME_MARKDOWN).toContain(
-      '[Open WebUI Chat öffnen](https://openwebui.kik.spengergasse.at)',
-    )
+    expect(HOME_MARKDOWN).toContain('[Open WebUI Chat](https://openwebui.kik.spengergasse.at)')
     expect(HOME_MARKDOWN).toContain('[Status](status.md)')
     expect(CONTENT_MARKDOWN['/status']).toContain('# Status des Projekts')
   })

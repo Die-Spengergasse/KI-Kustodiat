@@ -1,21 +1,30 @@
 # KI-Kustodiat der Spengergasse
 
-KI für Unterricht, für die Studierenden, um uns selber zu hefen ... und den Studierenden Erfahrung
-mit den Werkzeugen zu ermöglichen. Und ...
+KI für den Unterricht, für die Studierenden, um uns selber zu helfen … und den
+Studierenden Erfahrung mit den Werkzeugen zu ermöglichen. Und …
 
-es gibt schon ein bisschen was:
+Es gibt schon ein bisschen was:
 
-## Open WebUI Chat
+## Dienste
 
-[Open WebUI Chat öffnen](https://openwebui.kik.spengergasse.at) [Anleitung](openwebui-anleitung.md)
+- [Open WebUI Chat](https://openwebui.kik.spengergasse.at) — im Browser chatten, Schul-Login genügt
+- [KI-API für Coding-Werkzeuge](/anleitung/tokens) — Skripte, eigene Programme, Coding-Assistenten
+- [Diktat: Sprache zu Text](/anleitung/tokens) — auf schuleigener Hardware, Audiodaten bleiben im Haus
 
-Für den Chat ist ein **Spengergassen-Login** erforderlich: Benutzername = Teil deiner Schul-Mailadresse **vor dem `@`** (z.&nbsp;B. `vorname.nachname`), dazu dein normales Schulpasswort.
+## Tokens
 
-## Überblick
+- [Tokenverwaltung](/tokens) — Schlüssel erzeugen, rotieren, widerrufen; Verbrauch ansehen
+- [Anleitung Tokens](anleitung/tokens.md) — wofür du einen Token brauchst und wie du ihn einsetzt
 
-- [Anleitung](anleitung.md)
-- [Status](status.md)
-- [Milestones](milestones.md)
-- [Angebote](angebote.md)
-- [Diskussion](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions)
-- [FAQ](faq.md)
+## Dokumentation
+
+- [Anleitung Open WebUI](anleitung/openwebui.md) — anmelden und eigene Modelle einbinden
+- [Status](status.md) — was schon läuft und was noch fehlt
+- [Milestones](milestones.md) — Projektfortschritt und nächste Schritte
+- [Angebote](angebote.md) — Token-Preise, Gratis- und Bildungsangebote, Hardware
+- [FAQ](faq.md) — häufig gestellte Fragen
+
+## Diskussion
+
+- [Diskussionsforum](https://github.com/Die-Spengergasse/KI-Kustodiat/discussions) — Ideen, Wünsche, Anregungen
+- [Repository](https://github.com/Die-Spengergasse/KI-Kustodiat) — Quellcode und Dokumentation

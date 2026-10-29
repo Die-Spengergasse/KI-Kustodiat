@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   BOT_FILES,
-  PORTAL_DISALLOW_PATH,
+  TOKENS_DISALLOW_PATH,
   ROBOTS_OUTPUT_FILE,
   ROBOTS_PATH,
   SITEMAP_OUTPUT_FILE,
@@ -26,8 +26,8 @@ describe('sitemap.xml', () => {
     expect(sitemap.trimEnd().endsWith('</urlset>')).toBe(true)
   })
 
-  it('never mentions the portal or a dev-only route', () => {
-    expect(sitemap).not.toContain('/portal')
+  it('never mentions the token management or a dev-only route', () => {
+    expect(locs).not.toContain(canonicalUrl('/tokens'))
     expect(sitemap).not.toContain('_design')
     expect(sitemap).not.toContain('404')
   })
@@ -36,10 +36,10 @@ describe('sitemap.xml', () => {
 describe('robots.txt', () => {
   const robots = renderRobots()
 
-  it('allows the public site and disallows the portal', () => {
+  it('allows the public site and disallows the token management', () => {
     expect(robots).toContain('User-agent: *')
     expect(robots).toContain('Allow: /')
-    expect(robots).toContain(`Disallow: ${PORTAL_DISALLOW_PATH}`)
+    expect(robots).toContain(`Disallow: ${TOKENS_DISALLOW_PATH}`)
   })
 
   it('points at the generated sitemap', () => {

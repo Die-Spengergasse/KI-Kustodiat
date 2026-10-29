@@ -139,8 +139,8 @@ export function DesignPage() {
         actions={
           <>
             <Button href="/">Primär als Link</Button>
-            <Button variant="outline" href="/portal">
-              Outline zum Portal
+            <Button variant="outline" href="/tokens">
+              Outline zur Tokenverwaltung
             </Button>
           </>
         }

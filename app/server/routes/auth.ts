@@ -187,7 +187,7 @@ export async function registerAuthRoutes(app: FastifyInstance): Promise<void> {
       await audit('login_denied_role', 'DN does not map to a portal role')
       return reply.code(403).send({
         error: 'no_access',
-        message: 'Für dieses Konto ist kein Zugang zum Portal vorgesehen.',
+        message: 'Für dieses Konto ist kein Zugang zur Tokenverwaltung vorgesehen.',
       })
     }
     const role = applyAdminGroup(directoryRole, lookup.user.groups, config.adminGroup)

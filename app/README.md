@@ -1,11 +1,11 @@
-# app — Website und Token-Portal
+# app — Website und Tokenverwaltung
 
 Die neue App des KI-Kustodiats (Teil von #35): **eine** React-Anwendung für die
-öffentliche Website **und** das Token-Portal. Die öffentlichen Seiten werden zur
+öffentliche Website **und** die Tokenverwaltung. Die öffentlichen Seiten werden zur
 **Build-Zeit vorgerendert** (SSG) und rendern den Text aus
-`website/content/*.md`; `/portal/*` bleibt client-gerendert.
+`website/content/**/*.md`; `/tokens/*` bleibt client-gerendert.
 
-Dieser Stand enthält alle sechs öffentlichen Seiten, die Bot-Artefakte
+Dieser Stand enthält alle sieben öffentlichen Seiten, die Bot-Artefakte
 (`sitemap.xml`, `robots.txt`, echte 404), den **Portal-Kern** aus Issue #47
 (LDAP-Login gegen das Schul-AD, serverseitige Sessions, CSRF, Login-Rate-Limit,
 Auto-Provisioning nach LiteLLM, Rollen aus dem Verzeichnis-DN) sowie die
@@ -41,14 +41,14 @@ widerrufen, Monatsverbrauch pro Modell). Kontingent-Policy und Anträge folgen i
   öffentliche Website unverändert, `/api/auth/*` antwortet `503` mit den
   fehlenden Variablennamen.
 
-## Portal (#47)
+## Tokenverwaltung (#47, URL seit #57)
 
 | Route                   | Verhalten                                                                                             |
 | ----------------------- | ----------------------------------------------------------------------------------------------------- |
 | `GET /api/auth/me`      | Session-Status + frisches CSRF-Token; ohne Session **401**                                            |
 | `POST /api/auth/login`  | Search-then-Bind gegen LDAP; falsche/fehlende Credentials **401**, ohne CSRF **403**, Lockout **429** |
 | `POST /api/auth/logout` | Session in der DB widerrufen, Cookies löschen (**204**)                                               |
-| `/portal`               | Client-gerenderte Login-/Statusseite, `noindex` (Meta + `x-robots-tag`)                               |
+| `/tokens`               | Client-gerenderte Login-/Statusseite, `noindex` (Meta + `x-robots-tag`)                               |
 
 Ablauf eines Logins (`server/routes/auth.ts`):
 
@@ -89,8 +89,8 @@ Port und Bind-Adresse sind über `PORT` und `HOST` überschreibbar
 | `POST /api/keys/:t/rotate` | neuer Schlüssel mit derselben Bezeichnung, alter wird widerrufen → **201** mit neuem `secret`           |
 | `DELETE /api/keys/:t`      | widerrufen → **200**; fremder/Unbekannter Token → **404** (kein Existenz-Leak)                          |
 | `GET /api/usage/summary`   | laufender Monat: Tokens und Spend pro Modell, Summen, `allowance.percentUsed` (+ `monthlyUsd` intern)   |
-| `/portal/keys`             | client-gerendert, `noindex`: Liste, Erzeugen mit Einmal-Anzeige, Rotieren, Widerrufen                   |
-| `/portal/usage`            | client-gerendert, `noindex`: Prozent des Monatskontingents, Tokens gesamt und pro Modell                |
+| `/tokens/keys`             | client-gerendert, `noindex`: Liste, Erzeugen mit Einmal-Anzeige, Rotieren, Widerrufen                   |
+| `/tokens/usage`            | client-gerendert, `noindex`: Prozent des Monatskontingents, Tokens gesamt und pro Modell                |
 
 Regeln, die der Code durchsetzt:
 
@@ -183,13 +183,18 @@ Fixture-Schema, `server/routes/keys.integration.test.ts` den HTTP-Vertrag
 | `/milestones`          | `dist/milestones/index.html`          |
 | `/angebote`            | `dist/angebote/index.html`            |
 | `/faq`                 | `dist/faq/index.html`                 |
-| `/anleitung`           | `dist/anleitung/index.html`           |
-| `/openwebui-anleitung` | `dist/openwebui-anleitung/index.html` |
+| `/anleitung/tokens`    | `dist/anleitung/tokens/index.html`    |
+| `/anleitung/openwebui` | `dist/anleitung/openwebui/index.html` |
 
-Dazu `dist/portal.html` (leere Shell, `noindex`, wird für `/portal/*` ausgeliefert)
+Die Startseite ist die einzige Seite mit eigener Gliederung: `src/pages/HomePage.tsx`
+splittet `website/content/index.md` an den `##`-Überschriften
+(`splitMarkdownSections` in `src/lib/markdown.ts`) und rendert jede Gruppe als
+Kachel — die Links darin bleiben normale Links.
+
+Dazu `dist/tokens.html` (leere Shell, `noindex`, wird für `/tokens/*` ausgeliefert)
 und `dist/404.html` (unbekannte Pfade, HTTP-Status 404). Aus derselben Routen-Tabelle
 entstehen `dist/sitemap.xml` (genau die öffentlichen Routen) und `dist/robots.txt`
-(`Disallow: /portal`, Verweis auf die Sitemap) — eine neue Route kann also nicht
+(`Disallow: /tokens`, Verweis auf die Sitemap) — eine neue Route kann also nicht
 vergessen werden.
 
 Die Routen-Tabelle steht in `src/routes.ts` und ist die einzige Quelle für Client,
@@ -209,7 +214,7 @@ umgeleitet — beim Laden und bei `hashchange`.
 ```
 vite build                                -> dist/ (Client-Bundle + index.html-Template)
 vite build --ssr src/entry-server.tsx     -> .ssr/entry-server.js
-tsx scripts/prerender.ts                  -> dist/**/index.html, dist/portal.html,
+tsx scripts/prerender.ts                  -> dist/**/index.html, dist/tokens.html,
                                              dist/404.html, dist/sitemap.xml, dist/robots.txt
 ```
 
@@ -281,8 +286,8 @@ src/
   components/ui/       Button, Card, Table, Prose, PageHeader, Shell, ThemeToggle
   pages/MarkdownPage   Unterseiten (Markdown + „← Zur Startseite“)
   pages/HomePage       Startseite (Markdown, .home, Karten-Buttons)
-  pages/PortalShell    Login, Navigation, Seitenwahl im authentifizierten Bereich
-  pages/portal/        KeysPage (Einmal-Secret, Rotieren, Widerrufen), UsagePage
+  pages/TokensShell    Login, Navigation, Seitenwahl im authentifizierten Bereich
+  pages/tokens/        KeysPage (Einmal-Secret, Rotieren, Widerrufen), UsagePage
   pages/               dazu 404 und die Dev-Seite /_design
 server/
   app.ts               Fastify-App: Dev mit Vite-Middleware, Prod aus dist/, API-Routen zuerst
@@ -315,7 +320,7 @@ scripts/
 drizzle/              generierte SQL-Migrationen + Journal
 tests/                 Playwright: Startseite und Unterseiten (Struktur + Pixel-Parität),
                        Metadaten/Sitemap/robots/404, /_design-Screenshots, Theme,
-                       /portal, /portal/keys, /portal/usage (noindex + Login-Formular)
+                       /tokens, /tokens/keys, /tokens/usage (noindex + Login-Formular)
 public/assets/         Logos (hell/dunkel) — Kopie aus website/assets/
 ```
 
@@ -338,14 +343,14 @@ Layout auf dem Host (`/srv/kik-app/`):
 releases/<ts>/dist      nur Build-Artefakte (kein node_modules) — nginx-`root`
 current -> releases/…   Symlink, atomar getauscht (ln -sfn + mv -T)
 app/                    Produktions-Install des Servers (npm ci --omit=dev)
-app/dist -> ../current/dist   damit /portal.html aus dem aktiven Release kommt
+app/dist -> ../current/dist   damit /tokens.html aus dem aktiven Release kommt
 ```
 
 - **Statisch zuerst:** Die öffentlichen Routen liefert nginx direkt aus
-  `current/dist` (`try_files $uri $uri/index.html =404`), nur `/portal`,
+  `current/dist` (`try_files $uri $uri/index.html =404`), nur `/tokens`,
   `/api/auth`, `/api/keys`, `/api/usage` gehen an `127.0.0.1:8080`. Ein Ausfall
-  des Dienstes lässt die Website stehen; `/portal` zeigt dann die statische
-  Ausfallseite (`public/portal-fallback.html` → `dist/portal-fallback.html`,
+  des Dienstes lässt die Website stehen; `/tokens` zeigt dann die statische
+  Ausfallseite (`public/tokens-fallback.html` → `dist/tokens-fallback.html`,
   per nginx `error_page 502 503 504`).
 - **Produktionsstart ist `tsx`, nicht `node server/index.js`** — das Repo hat
   keinen Server-Bundler; `tsx` ist reguläre Runtime-Dependency. `vite` fehlt im

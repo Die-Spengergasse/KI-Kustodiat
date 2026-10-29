@@ -5,7 +5,7 @@
 #
 # Ablauf (alles oder nichts):
 #   1. Abhängigkeiten im Repo sicherstellen und `npm run build` (Client + SSR + Prerender).
-#   2. `dist/` prüfen (index/404/portal/sitemap/robots/Fallback müssen existieren).
+#   2. `dist/` prüfen (index/404/tokens/sitemap/robots/Fallback müssen existieren).
 #   3. Neues Release `/srv/kik-app/releases/<ts>/dist` anlegen (nur Build-Artefakte,
 #      **kein** node_modules).
 #   4. Produktions-Install des Node-Servers unter `/srv/kik-app/app` synchronisieren
@@ -98,9 +98,9 @@ step "Build (Client + SSR + Prerender)"
 
 # ── 2. dist prüfen ──────────────────────────────────────────────────────────
 step "Build-Artefakte prüfen"
-for required in index.html 404.html portal.html portal-fallback.html sitemap.xml robots.txt \
+for required in index.html 404.html tokens.html tokens-fallback.html sitemap.xml robots.txt \
   status/index.html angebote/index.html faq/index.html milestones/index.html \
-  openwebui-anleitung/index.html; do
+  anleitung/tokens/index.html anleitung/openwebui/index.html; do
   [ -s "$APP_DIR/dist/$required" ] || die "dist/$required fehlt oder ist leer"
 done
 for required in assets; do
@@ -155,7 +155,7 @@ for entry in package.json package-lock.json tsconfig.json server src drizzle db 
       "$APP_DIR/$entry" "$APP_RUNTIME/$entry"
   fi
 done
-# Der Dienst liest die vorgerenderten Dokumente (/portal) aus dem aktiven Release.
+# Der Dienst liest die vorgerenderten Dokumente (/tokens) aus dem aktiven Release.
 sudo -n ln -sfn ../current/dist "$APP_RUNTIME/dist"
 
 RUNTIME_LOCK_SUM="$(sha256sum "$APP_DIR/package-lock.json" | cut -d' ' -f1)"
@@ -175,7 +175,7 @@ sudo -n chmod -R a+rX "$APP_RUNTIME"
 [ -f "$APP_RUNTIME/node_modules/tsx/dist/cli.mjs" ] || die "tsx fehlt im Produktions-Install"
 sudo -n -u kik-app test -r "$APP_RUNTIME/node_modules/tsx/dist/cli.mjs" ||
   die "kik-app kann $APP_RUNTIME nicht lesen"
-sudo -n -u kik-app test -r "$NEW_RELEASE/dist/portal.html" ||
+sudo -n -u kik-app test -r "$NEW_RELEASE/dist/tokens.html" ||
   die "kik-app kann das Release $NEW_RELEASE nicht lesen"
 
 # ── 5. Release atomar umschalten ────────────────────────────────────────────

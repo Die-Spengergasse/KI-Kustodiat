@@ -20,8 +20,8 @@ export const PUBLIC_PAGE_COMPONENTS: Record<PublicRoutePath, PageComponent> = {
   '/milestones': MarkdownPage,
   '/angebote': MarkdownPage,
   '/faq': MarkdownPage,
-  '/anleitung': MarkdownPage,
-  '/openwebui-anleitung': MarkdownPage,
+  '/anleitung/tokens': MarkdownPage,
+  '/anleitung/openwebui': MarkdownPage,
 }
 
 export { NotFoundPage }

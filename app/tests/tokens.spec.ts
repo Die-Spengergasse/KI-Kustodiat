@@ -1,19 +1,19 @@
 import { expect, test } from '@playwright/test'
 
 /**
- * `/portal` (Issue #47) is the client-rendered authenticated area. It must stay
- * unindexed in both modes and always offer the LDAP login form — the form is
- * rendered even when the API is not configured (a fresh clone / CI), only the
- * submit then reports the missing deployment.
+ * `/tokens` (Issues #47/#57) is the client-rendered authenticated area. It must
+ * stay unindexed in both modes and always offer the LDAP login form — the form
+ * is rendered even when the API is not configured (a fresh clone / CI), only
+ * the submit then reports the missing deployment.
  */
-test.describe('portal', () => {
+test.describe('token management', () => {
   test('serves the noindex login page', async ({ page }) => {
-    const response = await page.goto('/portal')
+    const response = await page.goto('/tokens')
     expect(response?.status()).toBe(200)
     expect(response?.headers()['x-robots-tag']).toContain('noindex')
 
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/)
-    await expect(page.locator('h1')).toHaveText('Portal')
+    await expect(page.locator('h1')).toHaveText('Tokenverwaltung')
 
     await expect(page.getByLabel('Benutzername')).toBeVisible()
     await expect(page.getByLabel('Passwort')).toBeVisible()
@@ -37,19 +37,19 @@ test.describe('portal', () => {
 })
 
 /**
- * `/portal/keys` and `/portal/usage` (Issue #48) are pages of the same noindex
+ * `/tokens/keys` and `/tokens/usage` (Issue #48) are pages of the same noindex
  * shell: without a session they must still render the login form, never a key or
  * a number, and the API must answer without leaking anything.
  */
-test.describe('portal pages', () => {
-  for (const path of ['/portal/keys', '/portal/usage'] as const) {
+test.describe('token management pages', () => {
+  for (const path of ['/tokens/keys', '/tokens/usage'] as const) {
     test(`${path} serves the noindex login shell`, async ({ page }) => {
       const response = await page.goto(path)
       expect(response?.status()).toBe(200)
       expect(response?.headers()['x-robots-tag']).toContain('noindex')
 
       await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/)
-      await expect(page.locator('h1')).toHaveText('Portal')
+      await expect(page.locator('h1')).toHaveText('Tokenverwaltung')
       await expect(page.getByLabel('Benutzername')).toBeVisible()
       await expect(page.getByRole('button', { name: 'Anmelden' })).toBeVisible()
       // No secret and no usage number before login.

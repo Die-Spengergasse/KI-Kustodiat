@@ -20,7 +20,7 @@ type View =
   | { status: 'ready'; summary: UsageSummary }
 
 /**
- * `/portal/usage` (Issue #48): this month's tokens and spend per model, shown as
+ * `/tokens/usage` (Issue #48): this month's tokens and spend per model, shown as
  * a share of the monthly allowance (percent) plus token counts — no USD figure
  * as the headline, per the 2026-10-29 decision.
  */

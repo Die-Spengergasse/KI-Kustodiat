@@ -4,7 +4,7 @@
  * Both are *derived* from {@link PUBLIC_ROUTES}, never hand-written: a route that
  * is added to the table shows up in the sitemap on the next build, and the
  * disallow rule for the authenticated area comes from the same table that keeps
- * `/portal` out of it. `scripts/prerender.ts` writes the files into `dist/`, the
+ * `/tokens` out of it. `scripts/prerender.ts` writes the files into `dist/`, the
  * dev server renders them on the fly.
  */
 
@@ -16,7 +16,7 @@ export const SITEMAP_OUTPUT_FILE = 'sitemap.xml'
 export const ROBOTS_OUTPUT_FILE = 'robots.txt'
 
 /** The authenticated area is client-rendered, noindex and never indexed. */
-export const PORTAL_DISALLOW_PATH = '/portal'
+export const TOKENS_DISALLOW_PATH = '/tokens'
 
 export interface BotFile {
   /** Request path the file is served under. */
@@ -42,12 +42,12 @@ export function renderSitemap(): string {
   ].join('\n')
 }
 
-/** Allow everything public, keep crawlers out of `/portal`, point at the sitemap. */
+/** Allow everything public, keep crawlers out of `/tokens`, point at the sitemap. */
 export function renderRobots(): string {
   return [
     'User-agent: *',
     'Allow: /',
-    `Disallow: ${PORTAL_DISALLOW_PATH}`,
+    `Disallow: ${TOKENS_DISALLOW_PATH}`,
     '',
     `Sitemap: ${SITE_ORIGIN}${SITEMAP_PATH}`,
     '',

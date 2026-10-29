@@ -61,19 +61,21 @@ test.describe('sitemap.xml', () => {
     const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1])
 
     expect(locs).toEqual(PUBLIC_ROUTES.map((route) => canonicalUrl(route.path)))
-    expect(sitemap).not.toContain('/portal')
+    expect(locs).not.toContain(canonicalUrl('/tokens'))
   })
 })
 
 test.describe('robots.txt', () => {
-  test('points at the sitemap and keeps crawlers out of the portal', async ({ request }) => {
+  test('points at the sitemap and keeps crawlers out of the token management', async ({
+    request,
+  }) => {
     const response = await request.get('/robots.txt')
     expect(response.status()).toBe(200)
     expect(response.headers()['content-type']).toContain('text/plain')
 
     const robots = await response.text()
     expect(robots).toContain('User-agent: *')
-    expect(robots).toContain('Disallow: /portal')
+    expect(robots).toContain('Disallow: /tokens')
     expect(robots).toContain('Sitemap: https://kik.spengergasse.at/sitemap.xml')
   })
 })
@@ -101,13 +103,20 @@ test.describe('not found', () => {
   })
 })
 
-test.describe('portal', () => {
+test.describe('token management', () => {
   test('is served as a noindex shell that is not in the sitemap', async ({ request }) => {
-    const response = await request.get('/portal')
+    const response = await request.get('/tokens')
 
     expect(response.status()).toBe(200)
     expect(response.headers()['x-robots-tag']).toContain('noindex')
     expect(await response.text()).toContain('<meta name="robots" content="noindex, nofollow">')
-    expect(await (await request.get('/sitemap.xml')).text()).not.toContain('/portal')
+
+    const locs = [...(await (await request.get('/sitemap.xml')).text()).matchAll(/<loc>([^<]+)<\/loc>/g)]
+    expect(locs.map((match) => match[1])).not.toContain(canonicalUrl('/tokens'))
+  })
+
+  test('the former /portal path is gone (hard cut, #57)', async ({ request }) => {
+    const response = await request.get('/portal')
+    expect(response.status()).toBe(404)
   })
 })

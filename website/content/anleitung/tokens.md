@@ -1,4 +1,4 @@
-# Anleitung — Token und Diktat
+# Anleitung Tokens
 
 Es gibt zwei Wege ins KI-Kustodiat: **im Browser chatten** (ohne Token) und
 **über die API arbeiten** (mit Token). Diese Seite erklärt beides — und wie du
@@ -11,11 +11,11 @@ Sprache zu Text umwandeln lässt.
 | Chat im Browser (Open WebUI) | nein, Schul-Login genügt | <https://openwebui.kik.spengergasse.at> |
 | Coding-Assistent, Skripte, eigene Programme | **ja** | `https://api.kik.spengergasse.at/v1` |
 | Diktat / Sprache zu Text | **ja** | `https://whisper.kik.spengergasse.at/v1/` |
-| Portal selbst (Schlüssel, Verbrauch) | nein, nur Login | <https://kik.spengergasse.at/portal> |
+| Tokenverwaltung (Schlüssel, Verbrauch) | nein, nur Login | <https://kik.spengergasse.at/tokens> |
 
 ## Token erzeugen
 
-1. <https://kik.spengergasse.at/portal> öffnen und mit dem **Schul-Login**
+1. <https://kik.spengergasse.at/tokens> öffnen und mit dem **Schul-Login**
    anmelden (Benutzername = Teil vor dem `@` deiner Schuladresse, Passwort =
    Schulpasswort — dasselbe wie im Open WebUI).
 2. **API-Keys → Schlüssel erzeugen**, eine Bezeichnung vergeben (z. B. „Laptop").
@@ -74,7 +74,7 @@ verlassen die Schule nicht.
 
 ## Grenzen und Kontingent
 
-- **Monatskontingent:** im Portal unter **Verbrauch** als Prozentwert und in
+- **Monatskontingent:** in der Tokenverwaltung unter **Verbrauch** als Prozentwert und in
   Tokens. Es wird am Monatsanfang zurückgesetzt.
 - **Rate-Limit:** 120 Anfragen pro Minute und Schlüssel — gezählt über alle
   Modelle zusammen. Für normales Arbeiten reicht das deutlich; es bremst
@@ -91,8 +91,8 @@ verlassen die Schule nicht.
 
 - Ein Token ist ein **Passwort**. Nicht in Git-Repositories, nicht in Chats,
   nicht per Mail weitergeben.
-- Wenn ein Token verloren geht oder versehentlich geteilt wurde: im Portal
-  **widerrufen** und einen neuen erzeugen. Das wirkt sofort.
+- Wenn ein Token verloren geht oder versehentlich geteilt wurde: in der
+  Tokenverwaltung **widerrufen** und einen neuen erzeugen. Das wirkt sofort.
 - Im Browser (z. B. für Diktat-Tools) nur speichern, wenn du dem Gerät traust.
 
 ## Wenn etwas nicht geht
@@ -100,7 +100,7 @@ verlassen die Schule nicht.
 | Meldung | Bedeutung |
 | --- | --- |
 | `401` | Token fehlt, ist falsch oder wurde widerrufen — neu erzeugen. |
-| `403` | Das Konto ist für das Portal nicht freigeschaltet (Rolle im Schul-Verzeichnis). |
+| `403` | Das Konto ist für die Tokenverwaltung nicht freigeschaltet (Rolle im Schul-Verzeichnis). |
 | `429` | Zu viele Anfragen in kurzer Zeit — kurz warten und erneut versuchen. |
 | Modell wird nicht gefunden | Modellname prüfen: `whisper-large-v3` beim Diktat, `GET /v1/models` für den Chat. |
 | Im Diktat-Werkzeug stehen Coding-Modelle zur Auswahl | Der Client filtert die Modellliste nicht — `whisper-large-v3` direkt auswählen. |

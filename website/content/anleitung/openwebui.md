@@ -1,4 +1,4 @@
-# Open WebUI — Anleitung
+# Anleitung Open WebUI
 
 Diese Anleitung beschreibt den **Zugang zum Chat** und das **Einbinden eigener KI-Modelle**.
 Open WebUI ist das Chat-Frontend des Kustodiats, betrieben auf schuleigenen Servern unter

@@ -29,7 +29,7 @@ interface View {
 const INITIAL_VIEW: View = { status: 'loading', limit: 0, keys: [], message: null }
 
 /**
- * `/portal/keys` (Issue #48): list, create (show-once), rotate and revoke the
+ * `/tokens/keys` (Issue #48): list, create (show-once), rotate and revoke the
  * logged-in user's gateway keys. The secret lives in component state only — a
  * reload, a navigation or "Ausblenden" discards it for good.
  */
@@ -50,7 +50,7 @@ export function KeysPage({ csrfToken, onSessionExpired }: KeysPageProps) {
           return 'Die Sitzung ist abgelaufen. Bitte neu anmelden.'
         }
         if (error.body.message !== undefined) return error.body.message
-        if (error.status === 503) return 'Das Portal ist noch nicht fertig eingerichtet.'
+        if (error.status === 503) return 'Die Tokenverwaltung ist noch nicht fertig eingerichtet.'
       }
       return 'Der Gateway ist gerade nicht erreichbar. Bitte später erneut versuchen.'
     },
@@ -175,7 +175,7 @@ export function KeysPage({ csrfToken, onSessionExpired }: KeysPageProps) {
           <p className="muted">
             Trage ihn jetzt in dein Werkzeug ein (z. B. opencode: <code>OPENAI_API_KEY</code>,{' '}
             <code>OPENAI_BASE_URL</code> = Proxy-Adresse) — Beispiele für Chat und Diktat stehen in
-            der <a href="/anleitung">Anleitung</a>.
+            der <a href="/anleitung/tokens">Anleitung Tokens</a>.
           </p>
         </Card>
       )}

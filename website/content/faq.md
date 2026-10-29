@@ -4,4 +4,4 @@ Nix da.
 
 ---
 
-Zurück zur [Startseite](#/) · [Status](status.md) · [Anleitung](openwebui-anleitung.md)
+Zurück zur [Startseite](#/) · [Status](status.md) · [Anleitung](anleitung/openwebui.md)

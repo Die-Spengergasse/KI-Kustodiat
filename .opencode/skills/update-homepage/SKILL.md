@@ -16,8 +16,8 @@ metadata:
 # Skill: update-homepage
 
 Erzeugt die Übersichtsseiten der Website unter `website/content/` aus den aktuellen
-Projektquellen. Der Skill schreibt **nur generierte Seiten** — die handgeschriebene
-`openwebui-anleitung.md` und die Startseite bleiben unangetastet.
+Projektquellen. Der Skill schreibt **nur generierte Seiten** — die handgeschriebenen
+Anleitungen unter `website/content/anleitung/` und die Startseite bleiben unangetastet.
 
 ## Generierte Seiten (Ziel)
 
@@ -27,7 +27,7 @@ Projektquellen. Der Skill schreibt **nur generierte Seiten** — die handgeschri
 | `website/content/milestones.md` | `gh api repos/$R/milestones` + zugeordnete Issues |
 | `website/content/faq.md` | **nur anlegen, wenn fehlend** — nie füllen (bleibt leer, bis echte Fragen kommen) |
 
-Nicht anfassen: `website/content/openwebui-anleitung.md`, `website/index.html`,
+Nicht anfassen: `website/content/anleitung/`, `website/content/index.md`, `website/index.html`,
 `website/app.js`, `website/vendor/`, `website/assets/`.
 
 ## Ablauf

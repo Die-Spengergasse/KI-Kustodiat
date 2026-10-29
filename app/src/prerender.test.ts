@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest'
 import {
   NOT_FOUND_META,
   NOT_FOUND_OUTPUT_FILE,
-  PORTAL_META,
-  PORTAL_OUTPUT_FILE,
+  TOKENS_META,
+  TOKENS_OUTPUT_FILE,
   documentMetaFor,
   escapeHtml,
   prerenderTargets,
@@ -147,7 +147,7 @@ describe('escapeHtml', () => {
 describe('prerenderTargets', () => {
   const targets = prerenderTargets()
 
-  it('emits one page target per public route plus portal shell and 404 page', () => {
+  it('emits one page target per public route plus the token-management shell and 404 page', () => {
     expect(targets).toHaveLength(PUBLIC_ROUTES.length + 2)
 
     for (const route of PUBLIC_ROUTES) {
@@ -159,17 +159,17 @@ describe('prerenderTargets', () => {
     }
   })
 
-  it('emits portal and 404 shells as noindex documents without a route to render', () => {
-    const portal = targets.find((target) => target.outputPath === PORTAL_OUTPUT_FILE)
+  it('emits the token-management and 404 shells as noindex documents without a route', () => {
+    const tokens = targets.find((target) => target.outputPath === TOKENS_OUTPUT_FILE)
     const notFound = targets.find((target) => target.outputPath === NOT_FOUND_OUTPUT_FILE)
 
-    expect(portal).toEqual({
+    expect(tokens).toEqual({
       urlPath: null,
-      outputPath: PORTAL_OUTPUT_FILE,
-      kind: 'portal',
-      meta: PORTAL_META,
+      outputPath: TOKENS_OUTPUT_FILE,
+      kind: 'tokens',
+      meta: TOKENS_META,
     })
-    expect(portal?.meta.noindex).toBe(true)
+    expect(tokens?.meta.noindex).toBe(true)
     expect(notFound?.urlPath).toBe(NOT_FOUND_PAGE_PATH)
     expect(notFound?.meta.noindex).toBe(true)
     expect(notFound?.kind).toBe('not-found')
@@ -198,9 +198,10 @@ describe('documentMetaFor', () => {
     }
   })
 
-  it('marks the portal as noindex and without a canonical URL', () => {
-    expect(documentMetaFor('/portal/keys')).toEqual(PORTAL_META)
-    expect(documentMetaFor('/portal/keys').path).toBeNull()
+  it('marks the token management as noindex and without a canonical URL', () => {
+    expect(documentMetaFor('/tokens/keys')).toEqual(TOKENS_META)
+    expect(documentMetaFor('/tokens/keys').path).toBeNull()
+    expect(documentMetaFor('/tokens').noindex).toBe(true)
   })
 
   it('falls back to the not-found metadata for unknown paths', () => {

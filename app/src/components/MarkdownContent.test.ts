@@ -41,56 +41,29 @@ describe('MarkdownContent', () => {
   })
 
   it('rewrites Markdown links to real route paths', () => {
-    const html = render('Siehe [Status](status.md) und [Anleitung](./openwebui-anleitung.md).')
+    const html = render('Siehe [Status](status.md) und [Tokens](anleitung/tokens.md).')
 
     expect(html).toContain('href="/status"')
-    expect(html).toContain('href="/openwebui-anleitung"')
+    expect(html).toContain('href="/anleitung/tokens"')
     expect(html).not.toContain('.md"')
   })
 
-  it('turns a single-link paragraph into one filled button', () => {
-    const html = render('[Open WebUI Chat öffnen](https://openwebui.kik.spengergasse.at)')
-
-    expect(html).toBe(
-      '<p><a class="ui-button ui-button--primary" href="https://openwebui.kik.spengergasse.at">' +
-        'Open WebUI Chat öffnen</a></p>',
-    )
-  })
-
-  it('turns a multi-link paragraph into the card grid with outline buttons', () => {
+  it('keeps links plain — the start page groups them, it does not button them', () => {
     const html = render(
-      '[Chat](https://openwebui.kik.spengergasse.at) [Anleitung](openwebui-anleitung.md)',
+      '[Open WebUI Chat](https://openwebui.kik.spengergasse.at) [Anleitung](anleitung/openwebui.md)',
     )
 
     expect(html).toBe(
-      '<div class="cards">' +
-        '<a class="ui-button ui-button--outline" href="https://openwebui.kik.spengergasse.at">Chat</a>' +
-        '<a class="ui-button ui-button--outline" href="/openwebui-anleitung">Anleitung</a>' +
-        '</div>',
+      '<p><a href="https://openwebui.kik.spengergasse.at">Open WebUI Chat</a> ' +
+        '<a href="/anleitung/openwebui">Anleitung</a></p>',
     )
+    expect(html).not.toContain('ui-button')
   })
 
-  it('keeps link-only paragraphs as written when linkButtons is false', () => {
-    const html = renderToStaticMarkup(
-      createElement(MarkdownContent, {
-        markdown:
-          '[Chat](https://openwebui.kik.spengergasse.at) [Anleitung](openwebui-anleitung.md)',
-        linkButtons: false,
-      }),
-    )
+  it('keeps list items with a link and a description', () => {
+    const html = render('- [Tokenverwaltung](/tokens) — Schlüssel erzeugen\n')
 
-    expect(html).toBe(
-      '<p><a href="https://openwebui.kik.spengergasse.at">Chat</a> ' +
-        '<a href="/openwebui-anleitung">Anleitung</a></p>',
-    )
-  })
-
-  it('keeps normal paragraphs, including their inline links', () => {
-    const html = render('Für den Chat ist ein **Login** nötig, siehe [Status](status.md).')
-
-    expect(html).toContain('<p>Für den Chat ist ein <strong>Login</strong> nötig')
-    expect(html).toContain('<a href="/status">Status</a>')
-    expect(html).not.toContain('cards')
+    expect(html).toBe('<ul>\n<li><a href="/tokens">Tokenverwaltung</a> — Schlüssel erzeugen</li>\n</ul>')
   })
 
   it('wraps GFM tables in the scroll container', () => {

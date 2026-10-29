@@ -1,8 +1,8 @@
 import { Shell } from './components/ui'
 import { isDesignRoute } from './devRoutes'
-import { isPortalPath, matchPublicRoute } from './routes'
+import { isTokensPath, matchPublicRoute } from './routes'
 import { DesignPage } from './pages/DesignPage'
-import { PortalShell } from './pages/PortalShell'
+import { TokensShell } from './pages/TokensShell'
 import { NotFoundPage, PUBLIC_PAGE_COMPONENTS } from './pages/registry'
 
 /**
@@ -20,10 +20,10 @@ export function App({ path }: { path: string }) {
     )
   }
 
-  if (isPortalPath(path)) {
+  if (isTokensPath(path)) {
     return (
       <Shell>
-        <PortalShell path={path} />
+        <TokensShell path={path} />
       </Shell>
     )
   }

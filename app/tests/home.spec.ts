@@ -1,37 +1,44 @@
 import { expect, test } from '@playwright/test'
 
 /**
- * Start-page structure (`#44`).
+ * Start-page structure (`#44`, reworked in `#57`).
  *
- * The migration from the Pico page to React was accepted with a pixel comparison
- * against screenshots of the old live page. That comparison has served its
- * purpose and was retired (2026-10-29): a frozen snapshot of a retired page
- * blocks every content change. What stays is the part that catches real
- * mistakes — headings, labels, the link set, and no external requests.
+ * The start page is a lead paragraph plus one tile per `##` group of
+ * `website/content/index.md`. What this suite protects: the four groups and
+ * their order, that the links inside them are ordinary links (the oversized
+ * button cards are gone on purpose), and no external requests.
  */
 
 /** Live page anchors inside `<main>`, in document order. */
 const LIVE_MAIN_LINKS = [
+  // Dienste
   'https://openwebui.kik.spengergasse.at',
-  '/openwebui-anleitung',
-  '/anleitung',
+  '/anleitung/tokens',
+  '/anleitung/tokens',
+  // Tokens
+  '/tokens',
+  '/anleitung/tokens',
+  // Dokumentation
+  '/anleitung/openwebui',
   '/status',
   '/milestones',
   '/angebote',
-  'https://github.com/Die-Spengergasse/KI-Kustodiat/discussions',
   '/faq',
+  // Diskussion
+  'https://github.com/Die-Spengergasse/KI-Kustodiat/discussions',
+  'https://github.com/Die-Spengergasse/KI-Kustodiat',
 ]
 
 const LIVE_H1 = 'KI-Kustodiat der Spengergasse'
 
-const LIVE_H2 = ['Open WebUI Chat', 'Überblick']
+const LIVE_GROUPS = ['Dienste', 'Tokens', 'Dokumentation', 'Diskussion']
 
 test.describe('start page structure', () => {
-  test('renders hero, sections and the same links as the live page', async ({ page }) => {
+  test('renders the four tile groups and the same links as the live page', async ({ page }) => {
     await page.goto('/')
 
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(LIVE_H1)
-    await expect(page.getByRole('heading', { level: 2 })).toHaveText(LIVE_H2)
+    await expect(page.getByRole('heading', { level: 2 })).toHaveText(LIVE_GROUPS)
     await expect(page.getByRole('heading', { level: 3 })).toHaveCount(0)
 
     // Header: brand link, theme toggle, light/dark logo — nothing else.
@@ -44,23 +51,30 @@ test.describe('start page structure', () => {
       header.getByRole('link', { name: 'HTL Spengergasse — Startseite' }),
     ).toHaveAttribute('href', '/')
 
-    // Content: the link paragraphs became a card grid, everything else stayed.
+    // Content: one tile per group, ordinary links inside.
     const main = page.getByRole('main')
+    const tiles = main.locator('.tiles article.ui-card')
+    await expect(tiles).toHaveCount(LIVE_GROUPS.length)
+    await expect(tiles.locator('.ui-card__title')).toHaveText(LIVE_GROUPS)
+
     await expect(main.locator('a')).toHaveCount(LIVE_MAIN_LINKS.length)
     expect(
       await main.locator('a').evaluateAll((links) => links.map((a) => a.getAttribute('href'))),
     ).toEqual(LIVE_MAIN_LINKS)
 
-    const cards = main.locator('.cards a')
-    await expect(cards).toHaveCount(2)
-    await expect(cards).toHaveText(['Open WebUI Chat öffnen', 'Anleitung'])
-    for (const card of await cards.all()) {
-      await expect(card).toHaveClass(/ui-button--outline/)
-    }
+    // No button markup in the content area any more (#57).
+    await expect(main.locator('.ui-button')).toHaveCount(0)
 
     // `.md` Markdown links are real routes now, not hash routes.
     await expect(page.locator('a[href$=".md"]')).toHaveCount(0)
-    await expect(main.getByRole('link', { name: 'Status' })).toHaveAttribute('href', '/status')
+    await expect(main.getByRole('link', { name: 'Anleitung Tokens' })).toHaveAttribute(
+      'href',
+      '/anleitung/tokens',
+    )
+    await expect(main.getByRole('link', { name: 'Tokenverwaltung' })).toHaveAttribute(
+      'href',
+      '/tokens',
+    )
 
     // Footer of the old page.
     const footer = page.locator('footer')
@@ -70,7 +84,7 @@ test.describe('start page structure', () => {
       'https://github.com/Die-Spengergasse/KI-Kustodiat',
     )
 
-    // The main links above, plus skip link, header brand and logo link.
+    // The main links above, plus skip link, header brand and logo link, footer.
     await expect(page.locator('a')).toHaveCount(LIVE_MAIN_LINKS.length + 4)
     await expect(page.locator('a.skip-link')).toHaveAttribute('href', '#main')
   })
@@ -95,12 +109,14 @@ test.describe('start page structure', () => {
 
     expect(response.headers()['content-type']).toContain('text/html')
     expect(html).toContain('<h1>KI-Kustodiat der Spengergasse</h1>')
-    expect(html).toContain('es gibt schon ein bisschen was:')
-    expect(html).toContain('<h2>Open WebUI Chat</h2>')
-    expect(html).toContain('<h2>Überblick</h2>')
-    expect(html).toContain('Open WebUI Chat öffnen')
+    expect(html).toContain('Es gibt schon ein bisschen was:')
+    for (const group of LIVE_GROUPS) {
+      expect(html).toContain(`<h2 class="ui-card__title">${group}</h2>`)
+    }
+    expect(html).toContain('Open WebUI Chat')
     expect(html).toContain('href="/status"')
     expect(html).toContain('href="/faq"')
+    expect(html).toContain('href="/tokens"')
     expect(html).not.toContain('Lade …')
   })
 
