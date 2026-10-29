@@ -114,8 +114,10 @@ Regeln, die der Code durchsetzt:
   Schlüssel bedient Chat, Coding und Diktat, und agentisches Coding erzeugt
   leicht Dutzende Requests pro Minute — deshalb großzügig. Es begrenzt
   Runaway-Clients (Retry-Schleifen), nicht normale Arbeit; #49 verschärft es je
-  Rolle. Für Speech-to-Text ist es die **einzige** Fairness-Mechanik, weil dort
-  kein Geld fließt (Spend ≈ 0, siehe PITFALLS).
+  Rolle. Für Speech-to-Text ist es die **einzige** Fairness-Mechanik: das
+  Deployment rechnet mit `input_cost_per_second: 0` (eigene GPU), also bleibt
+  das EUR-Budget dort wirkungslos — ohne den Preis würde LiteLLM Listenpreis
+  buchen (siehe PITFALLS).
 - **Alias ≠ Bezeichnung.** LiteLLM verlangt global eindeutige `key_alias`
   (verifiziert: „Key with alias '…' already exists. Unique key aliases across all
   keys are required"), ein Label wie „Laptop" wäre also pro Person nur einmal und
