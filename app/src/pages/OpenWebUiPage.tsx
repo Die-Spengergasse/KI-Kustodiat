@@ -1,10 +1,13 @@
+import { PageHeader, Prose } from '../components/ui'
 import type { PublicRoute } from '../routes'
 
 export function OpenWebUiPage({ route }: { route: PublicRoute }) {
   return (
     <>
-      <h1>{route.heading}</h1>
-      <p>Platzhalter für die Open-WebUI-Anleitung (Zugang und eigenen Modell-Zugang).</p>
+      <PageHeader title={route.heading} />
+      <Prose>
+        <p>Platzhalter für die Open-WebUI-Anleitung (Zugang und eigenen Modell-Zugang).</p>
+      </Prose>
     </>
   )
 }

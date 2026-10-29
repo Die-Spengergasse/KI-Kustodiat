@@ -12,6 +12,7 @@ import {
   matchPublicRoute,
   outputFilePath,
 } from './routes'
+import { isDesignRoute } from './devRoutes'
 
 export interface DocumentMeta {
   title: string
@@ -32,6 +33,13 @@ export const PORTAL_META: DocumentMeta = {
 export const NOT_FOUND_META: DocumentMeta = {
   title: 'Seite nicht gefunden — KI-Kustodiat',
   description: 'Diese Seite existiert nicht.',
+  noindex: true,
+}
+
+/** Title for the dev-only style guide; it is never prerendered (see `devRoutes.ts`). */
+export const DESIGN_META: DocumentMeta = {
+  title: 'Design-System — KI-Kustodiat',
+  description: 'Entwicklungsseite: Design-Tokens und UI-Primitives.',
   noindex: true,
 }
 
@@ -81,6 +89,9 @@ export function renderDocument(template: string, meta: DocumentMeta, appHtml: st
 }
 
 export function documentMetaFor(input: string): DocumentMeta {
+  if (isDesignRoute(input)) {
+    return DESIGN_META
+  }
   if (isPortalPath(input)) {
     return PORTAL_META
   }

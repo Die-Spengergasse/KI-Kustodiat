@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { App } from './App'
 import { legacyHashTarget, normalizeRoutePath } from './routes'
-import './styles.css'
+import './styles/global.css'
 
 // Legacy hash URLs from the old static site: `/#/status` -> `/status`.
 // A full navigation is used on purpose — the target page already exists as

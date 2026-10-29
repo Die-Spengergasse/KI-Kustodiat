@@ -1,0 +1,684 @@
+/*
+ * Global stylesheet: Tailwind 4 (preflight + token-driven utilities) plus the
+ * base element styles and the component classes used by the UI primitives.
+ *
+ * Everything below reads from `tokens.css`. Class names are semantic
+ * (`ui-button`, `ui-card`, `prose`, `site-nav`), so components stay readable and
+ * the portal can reuse the exact same rules. Unlayered rules intentionally win
+ * over Tailwind's layered preflight; no `!important` is needed.
+ */
+
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* ==========================================================================
+ * Base
+ * ========================================================================== */
+
+html {
+  font-size: var(--root-font-size);
+  background-color: var(--color-canvas);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  background-color: var(--color-canvas);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-body);
+  line-height: var(--text-body--line-height);
+  text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+  tab-size: 4;
+  transition:
+    background-color var(--default-transition-duration) var(--ease-standard),
+    color var(--default-transition-duration) var(--ease-standard);
+}
+
+::selection {
+  background-color: var(--color-selection);
+}
+
+/* The one focus style for the whole app: Pico's 2px `--pico-primary-focus`
+ * ring, applied only for keyboard/programmatic focus. */
+:where(a, button, input, select, textarea, summary, [role='button'], [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-primary-underline);
+  text-underline-offset: 0.125em;
+  transition:
+    color var(--default-transition-duration) var(--ease-standard),
+    text-decoration-color var(--default-transition-duration) var(--ease-standard);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+  text-decoration-color: currentColor;
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-strong);
+}
+
+small {
+  font-size: var(--text-small);
+}
+
+mark {
+  padding: 0.125rem 0.25rem;
+  background-color: var(--color-mark-bg);
+  color: var(--color-mark-fg);
+  vertical-align: baseline;
+}
+
+ins {
+  color: var(--color-ins);
+  text-decoration: none;
+}
+
+del {
+  color: var(--color-del);
+}
+
+/* ==========================================================================
+ * Typography — Pico's heading ladder (size, line-height, colour, rhythm)
+ * ========================================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 var(--spacing-section);
+  font-family: inherit;
+  font-weight: var(--font-weight-heading);
+}
+
+h1 {
+  font-size: var(--text-h1);
+  line-height: var(--text-h1--line-height);
+  color: var(--color-heading-1);
+}
+
+h2 {
+  font-size: var(--text-h2);
+  line-height: var(--text-h2--line-height);
+  color: var(--color-heading-2);
+}
+
+h3 {
+  font-size: var(--text-h3);
+  line-height: var(--text-h3--line-height);
+  color: var(--color-heading-3);
+}
+
+h4 {
+  font-size: var(--text-h4);
+  line-height: var(--text-h4--line-height);
+  color: var(--color-heading-4);
+}
+
+h5 {
+  font-size: var(--text-h5);
+  line-height: var(--text-h5--line-height);
+  color: var(--color-heading-5);
+}
+
+h6 {
+  font-size: var(--text-h6);
+  line-height: var(--text-h6--line-height);
+  color: var(--color-heading-6);
+}
+
+/* Pico only puts the large `--pico-typography-spacing-top` above a heading that
+ * follows a block, so a heading at the top of a page keeps its tighter spacing. */
+:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h1 {
+  margin-top: var(--spacing-heading-1);
+}
+
+:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h2 {
+  margin-top: var(--spacing-heading-2);
+}
+
+:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h3 {
+  margin-top: var(--spacing-heading-3);
+}
+
+:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h4 {
+  margin-top: var(--spacing-heading-4);
+}
+
+:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h5 {
+  margin-top: var(--spacing-heading-5);
+}
+
+:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h6 {
+  margin-top: var(--spacing-heading-6);
+}
+
+p {
+  margin: 0 0 var(--spacing-section);
+}
+
+ul,
+ol {
+  margin: 0 0 var(--spacing-section);
+  padding-inline-start: 1.5rem;
+}
+
+ul {
+  list-style: square;
+}
+
+li {
+  margin-bottom: var(--spacing-list-item);
+}
+
+li > ul,
+li > ol {
+  margin-top: var(--spacing-list-item);
+  margin-bottom: 0;
+}
+
+blockquote {
+  margin: var(--spacing-section) 0;
+  padding: var(--spacing-gutter);
+  border-inline-start: var(--border-callout) solid var(--color-primary);
+}
+
+blockquote > :first-child {
+  margin-top: 0;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+figure {
+  margin: 0 0 var(--spacing-section);
+}
+
+figcaption {
+  padding: calc(var(--spacing-gutter) / 2) 0;
+  color: var(--color-fg-muted);
+}
+
+hr {
+  height: 0;
+  margin: var(--spacing-section) 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+abbr[title] {
+  border-bottom: 1px dotted;
+  text-decoration: none;
+  cursor: help;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ==========================================================================
+ * Code
+ * ========================================================================== */
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
+  font-size: var(--text-code);
+}
+
+code,
+kbd,
+samp,
+pre {
+  border-radius: var(--radius-control);
+  background-color: var(--color-code-bg);
+  color: var(--color-code-fg);
+}
+
+code,
+kbd,
+samp {
+  display: inline-block;
+  padding: 0.375rem;
+  line-height: initial;
+}
+
+pre {
+  display: block;
+  margin: 0 0 var(--spacing-section);
+  padding: var(--spacing-gutter);
+  overflow-x: auto;
+  line-height: var(--text-body--line-height);
+}
+
+pre > code,
+pre > samp {
+  display: block;
+  padding: 0;
+  background: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+kbd {
+  background-color: var(--color-fg);
+  color: var(--color-canvas);
+  font-weight: bolder;
+  vertical-align: baseline;
+}
+
+/* ==========================================================================
+ * Tables
+ * ========================================================================== */
+
+table {
+  width: 100%;
+  margin: 0 0 var(--spacing-section);
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-indent: 0;
+}
+
+th,
+td {
+  padding: var(--spacing-table-y) var(--spacing-gutter);
+  border-bottom: var(--border-hairline) solid var(--color-border);
+  text-align: start;
+}
+
+thead th,
+thead td,
+tfoot th,
+tfoot td {
+  font-weight: var(--font-weight-th);
+  border-bottom-width: var(--border-emphasis);
+}
+
+tfoot th,
+tfoot td {
+  border-top: var(--border-hairline) solid var(--color-border);
+}
+
+/* Horizontal scroll wrapper — the markup the old `website/app.js` injected
+ * around every rendered markdown table. */
+.table-scroll {
+  margin-bottom: var(--spacing-section);
+  overflow-x: auto;
+}
+
+.table-scroll > table {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+ * Layout: container (Pico's `.container` width ladder)
+ * ========================================================================== */
+
+.container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: var(--container-page-sm);
+    padding-inline: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: var(--container-page-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: var(--container-page-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: var(--container-page-xl);
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: var(--container-page-2xl);
+  }
+}
+
+/* ==========================================================================
+ * Shell: header, navigation, logo, footer
+ * ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--spacing-nav-x);
+  top: -10rem;
+  z-index: 10;
+  padding: var(--spacing-nav-y) var(--spacing-control-x);
+  border-radius: var(--radius-control);
+  background-color: var(--color-surface);
+  color: var(--color-fg);
+}
+
+.skip-link:focus-visible {
+  top: var(--spacing-nav-x);
+}
+
+.site-header {
+  padding-block: var(--spacing-block);
+}
+
+.site-header__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-gutter);
+}
+
+.site-header__brand {
+  color: var(--color-fg);
+  text-decoration: none;
+}
+
+.site-header__brand:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-nav-x);
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-nav-x);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav li {
+  margin-bottom: 0;
+}
+
+.site-nav a {
+  display: inline-block;
+  padding: var(--spacing-nav-y) var(--spacing-nav-x);
+  border-radius: var(--radius-control);
+  color: var(--color-fg);
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current='page'] {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary-underline);
+}
+
+/* Logo: two files, one per theme. Per CONVENTIONS the show/hide rules must keep
+ * the same specificity as the base rule (`.logo img`), otherwise the dark logo
+ * leaks through in the light theme. The media query is the `auto` fallback for
+ * browsers with JS disabled. */
+.logo {
+  display: block;
+  line-height: 0;
+}
+
+.logo img {
+  width: auto;
+  height: 38px;
+  display: block;
+}
+
+.logo img.logo-light {
+  display: block;
+}
+
+.logo img.logo-dark {
+  display: none;
+}
+
+[data-theme='dark'] .logo img.logo-light {
+  display: none;
+}
+
+[data-theme='dark'] .logo img.logo-dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .logo img.logo-light {
+    display: none;
+  }
+
+  :root:not([data-theme='light']) .logo img.logo-dark {
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .logo img {
+    height: 28px;
+  }
+}
+
+.site-main {
+  flex: 1 0 auto;
+  padding-block: var(--spacing-block);
+}
+
+.site-footer {
+  padding-block: var(--spacing-block);
+  font-size: var(--text-small);
+}
+
+/* ==========================================================================
+ * UI primitives
+ * ========================================================================== */
+
+/* Button — the Pico `[role=button], button` look. Variants only re-point the
+ * variant custom properties, so hover/focus/disabled behave identically. */
+.ui-button {
+  --ui-button-bg: var(--color-primary-bg);
+  --ui-button-bg-hover: var(--color-primary-bg-hover);
+  --ui-button-border: var(--color-primary-bg);
+  --ui-button-border-hover: var(--color-primary-bg-hover);
+  --ui-button-fg: var(--color-primary-fg);
+  --ui-button-fg-hover: var(--color-primary-fg);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-nav-x);
+  margin: 0;
+  padding: var(--spacing-control-y) var(--spacing-control-x);
+  border: var(--border-hairline) solid var(--ui-button-border);
+  border-radius: var(--radius-control);
+  background-color: var(--ui-button-bg);
+  color: var(--ui-button-fg);
+  font-family: inherit;
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-body);
+  line-height: var(--text-body--line-height);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--default-transition-duration) var(--ease-standard),
+    border-color var(--default-transition-duration) var(--ease-standard),
+    color var(--default-transition-duration) var(--ease-standard),
+    box-shadow var(--default-transition-duration) var(--ease-standard);
+}
+
+.ui-button:hover,
+.ui-button:focus-visible {
+  border-color: var(--ui-button-border-hover);
+  background-color: var(--ui-button-bg-hover);
+  color: var(--ui-button-fg-hover);
+  text-decoration: none;
+}
+
+.ui-button:where([disabled], [aria-disabled='true']) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.ui-button--outline {
+  --ui-button-bg: transparent;
+  --ui-button-bg-hover: transparent;
+  --ui-button-border: var(--color-primary);
+  --ui-button-border-hover: var(--color-primary-hover);
+  --ui-button-fg: var(--color-primary);
+  --ui-button-fg-hover: var(--color-primary-hover);
+}
+
+/* Card — Pico `article`: surface, radius, elevation. */
+.ui-card {
+  padding: var(--spacing-block);
+  border-radius: var(--radius-card);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.ui-card > :last-child {
+  margin-bottom: 0;
+}
+
+.ui-card__title {
+  margin-top: 0;
+  margin-bottom: var(--spacing-section);
+}
+
+.ui-card__footer {
+  margin-top: var(--spacing-section);
+  padding-top: var(--spacing-section);
+  border-top: var(--border-hairline) solid var(--color-border);
+}
+
+/* Prose — wrapper for rendered Markdown. Element styling lives in the base
+ * section above; this only adds the page-level extras of the old site. */
+.prose > :first-child {
+  margin-top: 0;
+}
+
+/* Old page: `.home > p:first-of-type { font-size: 1.05em }`. */
+.prose > p:first-of-type {
+  font-size: var(--text-lead);
+}
+
+/* Old page: `.muted { color: var(--pico-muted-color); font-size: 0.9em }`. */
+.muted {
+  color: var(--color-fg-muted);
+  font-size: 0.9em;
+}
+
+/* Old page: link-only paragraphs rendered as a card grid by `app.js`. */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+  margin: var(--spacing-section) 0;
+}
+
+.cards > * {
+  margin-bottom: 0;
+}
+
+/* PageHeader — h1 block with optional back link, lead paragraph and actions. */
+.page-header {
+  margin-bottom: var(--spacing-block);
+}
+
+.page-header__back {
+  display: inline-block;
+  margin-bottom: var(--spacing-block);
+}
+
+.page-header__lead {
+  font-size: var(--text-lead);
+}
+
+.page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-nav-x);
+  margin-top: var(--spacing-section);
+}
+
+.page-header > :last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+ * Dev-only theme preview (used by `/_design`)
+ * ========================================================================== */
+
+.theme-preview {
+  min-width: 0;
+  padding: var(--spacing-gutter);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-card);
+  background-color: var(--color-canvas);
+  color: var(--color-fg);
+}
+
+.theme-preview__label {
+  margin: 0 0 var(--spacing-section);
+  color: var(--color-fg-muted);
+  font-size: var(--text-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.theme-preview > :last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+ * Reduced motion — transitions stay, but nothing animates.
+ * ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

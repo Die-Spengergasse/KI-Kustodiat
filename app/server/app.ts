@@ -11,6 +11,7 @@ import {
   documentMetaFor,
   renderDocument,
 } from '../src/prerender'
+import { isDesignRoute } from '../src/devRoutes'
 import { isPortalPath, matchPublicRoute, normalizeRoutePath, outputFilePath } from '../src/routes'
 
 export type AppMode = 'dev' | 'prod'
@@ -59,7 +60,10 @@ async function registerDev(app: FastifyInstance, rootDir: string): Promise<PageH
   return async (request, reply) => {
     const requestUrl = request.raw.url ?? '/'
     const urlPath = normalizeRoutePath(requestUrl)
-    const isKnownPath = isPortalPath(urlPath) || matchPublicRoute(urlPath) !== undefined
+    // `/_design` is a dev-only tooling route (see src/devRoutes.ts); production
+    // intentionally falls through to the 404 document.
+    const isKnownPath =
+      isPortalPath(urlPath) || matchPublicRoute(urlPath) !== undefined || isDesignRoute(urlPath)
 
     try {
       const appHtml = isPortalPath(urlPath) ? '' : await renderWithVite(vite, urlPath)

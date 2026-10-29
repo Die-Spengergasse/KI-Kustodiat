@@ -1,5 +1,7 @@
-import type { ReactNode } from 'react'
-import { PUBLIC_ROUTES, isPortalPath, matchPublicRoute } from './routes'
+import { Shell } from './components/ui'
+import { isDesignRoute } from './devRoutes'
+import { isPortalPath, matchPublicRoute } from './routes'
+import { DesignPage } from './pages/DesignPage'
 import { PortalShell } from './pages/PortalShell'
 import { NotFoundPage, PUBLIC_PAGE_COMPONENTS } from './pages/registry'
 
@@ -8,11 +10,21 @@ import { NotFoundPage, PUBLIC_PAGE_COMPONENTS } from './pages/registry'
  * by the browser entry, so server markup and hydration always agree.
  */
 export function App({ path }: { path: string }) {
+  // Dev-only style guide. `import.meta.env.DEV` is statically replaced, so neither
+  // the page nor its components survive in a production build.
+  if (import.meta.env.DEV && isDesignRoute(path)) {
+    return (
+      <Shell path={path}>
+        <DesignPage />
+      </Shell>
+    )
+  }
+
   if (isPortalPath(path)) {
     return (
-      <Layout path={path}>
+      <Shell path={path}>
         <PortalShell />
-      </Layout>
+      </Shell>
     )
   }
 
@@ -20,35 +32,8 @@ export function App({ path }: { path: string }) {
   const Page = route === undefined ? undefined : PUBLIC_PAGE_COMPONENTS[route.path]
 
   return (
-    <Layout path={path}>
+    <Shell path={route?.path ?? path}>
       {route === undefined || Page === undefined ? <NotFoundPage /> : <Page route={route} />}
-    </Layout>
-  )
-}
-
-function Layout({ path, children }: { path: string; children: ReactNode }) {
-  return (
-    <>
-      <header className="site-header">
-        <nav className="site-nav" aria-label="Hauptnavigation">
-          <ul>
-            {PUBLIC_ROUTES.map((route) => (
-              <li key={route.path}>
-                <a href={route.path} aria-current={route.path === path ? 'page' : undefined}>
-                  {route.heading}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href="/portal">Portal</a>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>{children}</main>
-      <footer className="site-footer">
-        <p>KI-Kustodiat — HTL Spengergasse</p>
-      </footer>
-    </>
+    </Shell>
   )
 }

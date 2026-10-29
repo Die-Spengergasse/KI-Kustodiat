@@ -1,0 +1,234 @@
+/*
+ * KI-Kustodiat design tokens — the single source of truth for the public site
+ * and the (later) token portal.
+ *
+ * The values are not invented: they are lifted from the stylesheet Pico 2.1.1
+ * (`website/vendor/pico.min.css`) and the inline override block of the old
+ * static page (`website/index.html`), so the new app keeps the current look.
+ * Every group names the Pico variable it replaces; the mapping is auditable.
+ *
+ * Tailwind 4 CSS-first configuration: tokens in the `@theme` block both emit the
+ * CSS custom properties and generate the matching utilities (`bg-canvas`,
+ * `text-h1`, `rounded-card`, `p-gutter`, …). The portal builds on the same file.
+ *
+ * Runtime theming: every colour is a `light-dark()` pair (light value first,
+ * dark value second). The side that is used follows CSS `color-scheme`, which
+ * the theme block at the end of this file derives from `data-theme`. This keeps
+ * one declaration per colour instead of a duplicated light/dark override block
+ * and lets the design route render both themes side by side.
+ */
+
+@theme {
+  /* ── Fonts ───────────────────────────────────────────────────────────────
+   * Pico: --pico-font-family-sans-serif / --pico-font-family-monospace.
+   * System fonts only — the app must not load anything from the network. */
+  --font-sans:
+    system-ui, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, 'Helvetica Neue',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* Pico's root size ladder was neutralised by website/index.html:
+   * `:root { --pico-font-size: 87.5% }` → a flat 14px base instead of
+   * 100% → 131.25% across the breakpoints. Keep the flat 87.5% (rem keeps
+   * working, a browser zoom still scales everything). */
+  --root-font-size: 87.5%;
+
+  /* ── Type scale ──────────────────────────────────────────────────────────
+   * Pico: h1…h6 { --pico-font-size / --pico-line-height }, body 400/1.5,
+   * small 0.875em, code 0.875em.
+   * The lead size comes from website/index.html `.home > p:first-of-type`. */
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-lead: 1.05rem;
+  --text-lead--line-height: 1.5;
+  --text-h1: 2rem;
+  --text-h1--line-height: 1.125;
+  --text-h2: 1.75rem;
+  --text-h2--line-height: 1.15;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.175;
+  --text-h4: 1.25rem;
+  --text-h4--line-height: 1.2;
+  --text-h5: 1.125rem;
+  --text-h5--line-height: 1.225;
+  --text-h6: 1rem;
+  --text-h6--line-height: 1.25;
+  --text-code: 0.875em;
+
+  /* Pico: --pico-font-weight (body), h1…h6 700, thead/tfoot 600,
+   * b/strong: bolder. */
+  --font-weight-body: 400;
+  --font-weight-th: 600;
+  --font-weight-heading: 700;
+  --font-weight-strong: bolder;
+
+  /* ── Spacing rhythm ──────────────────────────────────────────────────────
+   * Pico: --pico-spacing (1rem) is the block/gutter rhythm, the form elements
+   * use 0.75rem × 1rem, nav links 0.5rem × 0.5rem, table cells
+   * calc(spacing / 2) and list items calc(typography-spacing × 0.25). */
+  --spacing-gutter: 1rem;
+  --spacing-block: 1rem;
+  --spacing-section: 1rem;
+  --spacing-control-y: 0.75rem;
+  --spacing-control-x: 1rem;
+  --spacing-nav-y: 0.5rem;
+  --spacing-nav-x: 0.5rem;
+  --spacing-nav-item-y: 1rem;
+  --spacing-nav-item-x: 0.5rem;
+  --spacing-table-y: 0.5rem;
+  --spacing-list-item: 0.25rem;
+
+  /* Pico: --pico-typography-spacing-top per heading level (margin above a
+   * heading that follows a block). */
+  --spacing-heading-1: 3rem;
+  --spacing-heading-2: 2.625rem;
+  --spacing-heading-3: 2.25rem;
+  --spacing-heading-4: 1.874rem;
+  --spacing-heading-5: 1.6875rem;
+  --spacing-heading-6: 1.5rem;
+
+  /* ── Radii, borders, focus ring ──────────────────────────────────────────
+   * Pico: --pico-border-radius 0.25rem, --pico-border-width 0.0625rem
+   * (0.1875rem for table heads), --pico-outline-width 0.125rem,
+   * [role=search] 5rem. The blockquote callout keeps the old page override
+   * `border-left: 5px solid var(--pico-primary)`. */
+  --radius-control: 0.25rem;
+  --radius-card: 0.25rem;
+  --radius-pill: 5rem;
+  --border-hairline: 0.0625rem;
+  --border-emphasis: 0.1875rem;
+  --border-callout: 0.3125rem;
+  --focus-ring-width: 0.125rem;
+
+  /* ── Motion ──────────────────────────────────────────────────────────────
+   * Pico: --pico-transition: 0.2s ease-in-out. */
+  --default-transition-duration: 0.2s;
+  --ease-standard: ease-in-out;
+
+  /* ── Breakpoints ─────────────────────────────────────────────────────────
+   * Pico container/root-size breakpoints; `xs` is the old page's logo
+   * breakpoint (`@media (max-width: 640px) { .logo img { height: 28px } }`). */
+  --breakpoint-xs: 640px;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* ── Container widths ────────────────────────────────────────────────────
+   * Pico `.container`: full width + 1rem padding, then max-width 510 / 700 /
+   * 950 / 1200 / 1450px at 576 / 768 / 1024 / 1280 / 1536px. `page` is the
+   * default content width (Pico at ≥1024px). */
+  --container-page: 950px;
+  --container-page-sm: 510px;
+  --container-page-md: 700px;
+  --container-page-lg: 950px;
+  --container-page-xl: 1200px;
+  --container-page-2xl: 1450px;
+
+  /* ── Palette ─────────────────────────────────────────────────────────────
+   * Each token is `light-dark(<Pico light value>, <Pico dark value>)`.
+   * Light block: `:root:not([data-theme=dark]), [data-theme=light]`,
+   * dark block: `[data-theme=dark]` + `@media (prefers-color-scheme: dark)`. */
+
+  /* --pico-background-color */
+  --color-canvas: light-dark(#fff, rgb(19, 22.5, 30.5));
+  /* --pico-card-background-color / --pico-dropdown-background-color */
+  --color-surface: light-dark(#fff, #181c25);
+  /* --pico-card-sectioning-background-color / --pico-form-element-background-color */
+  --color-surface-subtle: light-dark(rgb(251, 251.5, 252.25), rgb(26, 30.5, 40.25));
+  /* --pico-color */
+  --color-fg: light-dark(#373c44, #c2c7d0);
+  /* --pico-muted-color */
+  --color-fg-muted: light-dark(#646b79, #7b8495);
+  /* --pico-h1-color … --pico-h6-color */
+  --color-heading-1: light-dark(#2d3138, #f0f1f3);
+  --color-heading-2: light-dark(#373c44, #e0e3e7);
+  --color-heading-3: light-dark(#424751, #c2c7d0);
+  --color-heading-4: light-dark(#4d535e, #b3b9c5);
+  --color-heading-5: light-dark(#5c6370, #a4acba);
+  --color-heading-6: light-dark(#646b79, #8891a4);
+  /* --pico-muted-border-color */
+  --color-border: light-dark(rgb(231, 234, 239.5), #202632);
+
+  /* --pico-primary (links, outline button text) */
+  --color-primary: light-dark(#0172ad, #01aaff);
+  /* --pico-primary-hover */
+  --color-primary-hover: light-dark(#015887, #79c0ff);
+  /* --pico-primary-background (filled button background) */
+  --color-primary-bg: light-dark(#0172ad, #0172ad);
+  /* --pico-primary-hover-background */
+  --color-primary-bg-hover: light-dark(#02659a, #017fc0);
+  /* --pico-primary-inverse */
+  --color-primary-fg: light-dark(#fff, #fff);
+  /* --pico-primary-underline */
+  --color-primary-underline: light-dark(rgba(1, 114, 173, 0.5), rgba(1, 170, 255, 0.5));
+
+  /* --pico-secondary (outline-secondary button text) */
+  --color-secondary: light-dark(#5d6b89, #969eaf);
+  /* --pico-secondary-hover */
+  --color-secondary-hover: light-dark(#48536b, #b3b9c5);
+  /* --pico-secondary-focus */
+  --color-secondary-focus: light-dark(rgba(93, 107, 137, 0.25), rgba(144, 158, 190, 0.25));
+
+  /* --pico-contrast / -background / -inverse */
+  --color-contrast: light-dark(#181c25, #dfe3eb);
+  --color-contrast-bg: light-dark(#181c25, #eff1f4);
+  --color-contrast-fg: light-dark(#fff, #000);
+
+  /* --pico-primary-focus — the 2px ring Pico painted around :focus. */
+  --color-focus-ring: light-dark(rgba(2, 154, 232, 0.5), rgba(1, 170, 255, 0.375));
+  /* --pico-text-selection-color */
+  --color-selection: light-dark(rgba(2, 154, 232, 0.25), rgba(1, 170, 255, 0.1875));
+
+  /* --pico-code-background-color / --pico-code-color */
+  --color-code-bg: light-dark(rgb(243, 244.5, 246.75), rgb(26, 30.5, 40.25));
+  --color-code-fg: light-dark(#646b79, #8891a4);
+  /* --pico-mark-background-color / --pico-mark-color */
+  --color-mark-bg: light-dark(rgb(252.5, 230.5, 191.5), #014063);
+  --color-mark-fg: light-dark(#0f1114, #fff);
+  /* --pico-ins-color / --pico-del-color */
+  --color-ins: light-dark(rgb(28.5, 105.5, 84), #62af9a);
+  --color-del: light-dark(rgb(136, 56.5, 53), rgb(205.5, 126, 123));
+  /* --pico-table-row-stripped-background-color (identical in both themes) */
+  --color-table-stripe: rgba(111, 120, 135, 0.0375);
+
+  /* Base colour of Pico's box-shadow chain: rgba(129, 145, 181, …) in the light
+   * theme, rgba(7, 8.5, 12, …) in the dark one. The individual layers below mix
+   * it to transparent with the original alpha values, so one token covers both
+   * themes without duplicating the whole chain. */
+  --color-shadow: light-dark(rgb(129, 145, 181), rgb(7, 8.5, 12));
+
+  /* --pico-box-shadow (card elevation chain, 7 layers, alpha 1.7 % … 6 %). */
+  --shadow-card:
+    0 0.0145rem 0.029rem color-mix(in srgb, var(--color-shadow) 1.698%, transparent),
+    0.0335rem 0.067rem 0.402rem color-mix(in srgb, var(--color-shadow) 2.4%, transparent),
+    0.0625rem 0.125rem 0.75rem color-mix(in srgb, var(--color-shadow) 3%, transparent),
+    0.1125rem 0.225rem 1.35rem color-mix(in srgb, var(--color-shadow) 3.6%, transparent),
+    0.2085rem 0.417rem 2.502rem color-mix(in srgb, var(--color-shadow) 4.302%, transparent),
+    0.5rem 1rem 6rem color-mix(in srgb, var(--color-shadow) 6%, transparent),
+    0 0 0 0.0625rem color-mix(in srgb, var(--color-shadow) 1.5%, transparent);
+}
+
+/*
+ * Runtime theme switch. `data-theme` holds the *mode* the user picked, not the
+ * resolved palette: `auto` defers to `prefers-color-scheme`, `light`/`dark`
+ * pin it. Setting `color-scheme` (instead of re-declaring colours) makes every
+ * `light-dark()` pair above resolve to the right side; the inline script in
+ * index.html sets the attribute before the first paint.
+ */
+:root {
+  color-scheme: light dark;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}

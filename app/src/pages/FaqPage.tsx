@@ -1,10 +1,13 @@
+import { PageHeader, Prose } from '../components/ui'
 import type { PublicRoute } from '../routes'
 
 export function FaqPage({ route }: { route: PublicRoute }) {
   return (
     <>
-      <h1>{route.heading}</h1>
-      <p>Platzhalter für häufig gestellte Fragen.</p>
+      <PageHeader title={route.heading} />
+      <Prose>
+        <p>Platzhalter für häufig gestellte Fragen.</p>
+      </Prose>
     </>
   )
 }

@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="de">
+<html lang="de" data-theme="auto">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
     <meta
       name="description"
       content="KI-Kustodiat der Spengergasse — datenschutzkonforme KI-Infrastruktur für Unterricht und Coding."
@@ -11,6 +12,26 @@
     <title>KI-Kustodiat der Spengergasse</title>
     <!-- Kein externer Ladevorgang: Icon als Inline-Data-URL, Fonts aus dem System. -->
     <link rel="icon" href="data:," />
+    <!--
+      Farbschema vor dem ersten Paint setzen (kein Aufblitzen des falschen
+      Themes). `data-theme` hält den *Modus*: auto folgt prefers-color-scheme,
+      hell/dunkel sind fest. Muss synchron im <head> bleiben — dieselbe Logik
+      liegt in src/lib/theme.ts.
+    -->
+    <script>
+      ;(function () {
+        var mode = 'auto'
+        try {
+          mode = localStorage.getItem('kik-theme') || 'auto'
+        } catch (error) {
+          /* Speicher gesperrt: auto */
+        }
+        if (mode !== 'auto' && mode !== 'light' && mode !== 'dark') {
+          mode = 'auto'
+        }
+        document.documentElement.setAttribute('data-theme', mode)
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
