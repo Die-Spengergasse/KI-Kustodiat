@@ -3,6 +3,27 @@
 Stand: 2026-10-29 · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token statt Masterkey** · **Website + Token-Portal live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
 
 ## Gerade abgeschlossen
+- **2026-10-30 — Startseite als Kacheln, Anleitungen getrennt, `/portal` → `/tokens` (#57):**
+  Die Startseite hat keine Riesen-Buttons mehr: `website/content/index.md` gruppiert
+  die Links in vier Abschnitte (**Dienste, Tokens, Dokumentation, Diskussion**),
+  `src/pages/HomePage.tsx` splittet das Dokument an den `##`-Grenzen
+  (`splitMarkdownSections` in `src/lib/markdown.ts`, mit Fence-Erkennung) und rendert
+  je Abschnitt eine `Card` mit **normalen Links**; die Buttonify-Logik
+  (`linkButtons`/`linkOnlyAnchors`) ist entfernt. Die Anleitung ist nach Thema
+  getrennt — `/anleitung/tokens` („Anleitung Tokens", Inhalt unverändert) und
+  `/anleitung/openwebui` („Anleitung Open WebUI") liegen als
+  `website/content/anleitung/*.md`; `/anleitung` und `/openwebui-anleitung`
+  entfallen (harter Umzug, kein Redirect). Die Tokenverwaltung heißt jetzt `/tokens`
+  (`/tokens/keys`, `/tokens/usage`), Seitentitel „Tokenverwaltung", Nav „Übersicht /
+  API-Keys / Verbrauch / Hilfe"; Prerender-Artefakt `tokens.html`, Ausfallseite
+  `tokens-fallback.html`, `robots.txt` sperrt `/tokens`. **Intern unverändert:**
+  `kik-portal.service`, `/etc/portal/portal.env`, DB-Schema `portal`,
+  `src/lib/portalApi.ts`. nginx: `location ^~ /tokens` proxied, `/portal`-Block
+  ersatzlos gestrichen. Verifiziert: 174 Vitest + 50 Playwright grün (Startseite:
+  vier Kacheln, null `ui-button` im Inhalt; `/portal` → 404), Lint/Typecheck/Build
+  grün, Kachel-Optik in hell/dunkel/760px gesichtet. Doku: `app/README.md`,
+  `ARCHITECTURE.md`, `PITFALLS.md`, `DECISIONS.md`, intern `infra/nginx/*` +
+  `infra/hosts/kik.md`.
 - **2026-10-29 — Speech-to-Text über das Gateway (#55):** `whisper.kik…` zeigt
   nicht mehr auf gregor, sondern auf den Gateway (`127.0.0.1:4000`) — Clients
   ändern **nur den Token**, die URL bleibt:

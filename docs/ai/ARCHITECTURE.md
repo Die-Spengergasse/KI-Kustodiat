@@ -117,14 +117,14 @@ KI-Kustodiat-intern/  (private — alle Implementationsdetails)
 Seit 2026-10-29 (Issue #51) ist `https://kik.spengergasse.at` **die App** aus
 `app/` (Fastify 5 + React 19, build-time vorgerendert), nicht mehr die alte
 Shell in `website/`. Auslieferung ist **static-first**: nginx liest die
-öffentlichen Seiten als Dateien aus dem aktiven Release, nur `/portal` und die
+öffentlichen Seiten als Dateien aus dem aktiven Release, nur `/tokens` und die
 Portal-API (`/api/auth`, `/api/keys`, `/api/usage`) sprechen mit dem
 Node-Dienst. Die öffentliche Website überlebt damit einen Ausfall des Dienstes.
 
 | Artefakt | Quelle | Auslieferung |
 |---|---|---|
-| Öffentliche Seiten `kik.spengergasse.at` | `app/` — `src/routes.ts` (Routen), `website/content/*.md` (Text, per `?raw` importiert), Prerender nach `app/dist/` | `scripts/deploy-app.sh` → Release unter `/srv/kik-app/releases/<ts>/dist`, `current`-Symlink, nginx `root /srv/kik-app/current/dist` mit `try_files $uri $uri/index.html =404` |
-| Token-Portal `/portal`, API | `app/server/` (Fastify: LDAP-Login, Sessions, Keys, Usage) | `kik-portal.service` auf `127.0.0.1:8080`, nginx proxied die vier Pfade; 502/503/504 → statische Ausfallseite |
+| Öffentliche Seiten `kik.spengergasse.at` | `app/` — `src/routes.ts` (Routen), `website/content/` (Text, per `?raw` importiert), Prerender nach `app/dist/` | `scripts/deploy-app.sh` → Release unter `/srv/kik-app/releases/<ts>/dist`, `current`-Symlink, nginx `root /srv/kik-app/current/dist` mit `try_files $uri $uri/index.html =404` |
+| Tokenverwaltung `/tokens`, API | `app/server/` (Fastify: LDAP-Login, Sessions, Keys, Usage) | `kik-portal.service` auf `127.0.0.1:8080`, nginx proxied die vier Pfade; 502/503/504 → statische Ausfallseite |
 | GitHub Pages | `pages/index.html` — **nur** ein Button »Hier geht's zur offiziellen Website« + `<link rel="canonical">` (#38) | `.github/workflows/deploy-pages.yml` |
 | Angebots-Job | `scripts/run-offers-job.sh` + Skill `update-offers` | systemd-Timer auf kik, Mo 06:00 → `deploy-app.sh` |
 
