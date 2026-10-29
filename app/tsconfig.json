@@ -21,5 +21,13 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src", "server", "scripts", "tests", "vite.config.ts", "playwright.config.ts"]
+  "include": [
+    "src",
+    "server",
+    "scripts",
+    "tests",
+    "vite.config.ts",
+    "playwright.config.ts",
+    "drizzle.config.ts"
+  ]
 }

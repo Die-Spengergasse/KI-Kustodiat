@@ -678,6 +678,68 @@ tfoot td {
 }
 
 /* ==========================================================================
+ * Form controls (portal) — Pico styled `input`/`label` for the old site; the
+ * portal is the first part of the app that needs them, so the look is rebuilt
+ * from the same tokens (surface-subtle background, hairline border, 0.25rem
+ * radius) instead of reintroducing a second stylesheet.
+ * ========================================================================== */
+
+.ui-form {
+  display: grid;
+  gap: var(--spacing-gutter);
+  max-width: 26rem;
+}
+
+.ui-field {
+  display: grid;
+  gap: calc(var(--spacing-list-item) * 2);
+}
+
+.ui-field__label {
+  font-weight: var(--font-weight-th);
+}
+
+.ui-field__hint {
+  margin: 0;
+  color: var(--color-fg-muted);
+  font-size: var(--text-small);
+}
+
+.ui-input {
+  width: 100%;
+  padding: var(--spacing-control-y) var(--spacing-control-x);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background-color: var(--color-surface-subtle);
+  color: var(--color-fg);
+  font-family: inherit;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+}
+
+.ui-input:hover {
+  border-color: var(--color-fg-muted);
+}
+
+.ui-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-nav-x);
+  margin-top: var(--spacing-section);
+}
+
+/* Error notice: Pico's `[role=alert]` had no styling of its own, the callout
+ * border of the old blockquotes carries the emphasis here. */
+.ui-alert {
+  margin: 0;
+  padding: var(--spacing-control-y) var(--spacing-control-x);
+  border-left: var(--border-callout) solid var(--color-del);
+  border-radius: var(--radius-control);
+  background-color: var(--color-surface-subtle);
+  color: var(--color-fg);
+}
+
+/* ==========================================================================
  * Dev-only theme preview (used by `/_design`)
  * ========================================================================== */
 

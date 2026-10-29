@@ -4,7 +4,9 @@ import path from 'node:path'
 import middie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
 import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest } from 'fastify'
-import { createServer, type ViteDevServer } from 'vite'
+// `vite` is only needed by `registerDev`; importing it lazily keeps a production
+// install (`npm ci --omit=dev`) able to start the prerendered site.
+import type { ViteDevServer } from 'vite'
 import {
   NOT_FOUND_OUTPUT_FILE,
   PORTAL_OUTPUT_FILE,
@@ -14,6 +16,7 @@ import {
 import { findBotFile } from '../src/bots'
 import { isDesignRoute } from '../src/devRoutes'
 import { isPortalPath, matchPublicRoute, normalizeRoutePath, outputFilePath } from '../src/routes'
+import { registerAuthRoutes } from './routes/auth'
 
 export type AppMode = 'dev' | 'prod'
 
@@ -31,7 +34,15 @@ type PageHandler = (request: FastifyRequest, reply: FastifyReply) => Promise<Fas
  */
 export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
   const rootDir = options.rootDir ?? process.cwd()
-  const app = Fastify({ logger: { level: process.env.LOG_LEVEL ?? 'info' } })
+  const app = Fastify({
+    logger: { level: process.env.LOG_LEVEL ?? 'info' },
+    // nginx terminates TLS in front of the app, so the client IP for the login
+    // rate limit comes from `X-Forwarded-For`. Direct dev access still works.
+    trustProxy: process.env.PORTAL_TRUST_PROXY !== 'false',
+  })
+
+  // `/api/auth/*` — registered before the catch-all page route so static paths win.
+  await registerAuthRoutes(app)
 
   const handlePage =
     options.mode === 'dev'
@@ -44,6 +55,7 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
 }
 
 async function registerDev(app: FastifyInstance, rootDir: string): Promise<PageHandler> {
+  const { createServer } = await import('vite')
   const vite = await createServer({
     root: rootDir,
     server: { middlewareMode: true },

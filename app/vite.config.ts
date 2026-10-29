@@ -21,7 +21,10 @@ export default defineConfig({
   },
   test: {
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'server/**/*.test.ts'],
     exclude: ['dist/**', '.ssr/**', 'node_modules/**'],
+    // Integration tests (LDAP, PostgreSQL, LiteLLM) are opt-in: they need the
+    // school network and the host's `/etc/portal/portal.env`.
+    testTimeout: 30_000,
   },
 })

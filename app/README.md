@@ -6,12 +6,10 @@ Die neue App des KI-Kustodiats (Teil von #35): **eine** React-Anwendung für die
 `website/content/*.md`; `/portal/*` bleibt client-gerendert.
 
 Dieser Stand enthält alle sechs öffentlichen Seiten, die Bot-Artefakte
-(`sitemap.xml`, `robots.txt`, echte 404) — aber noch keine Portal-Logik und kein
-Deployment.
-
-## Voraussetzungen
-
-- Node 24 (lokal über nvm; `node -v` muss `v24.*` liefern)
+(`sitemap.xml`, `robots.txt`, echte 404) und den **Portal-Kern** aus Issue #47:
+LDAP-Login gegen das Schul-AD, serverseitige Sessions, CSRF, Login-Rate-Limit,
+Auto-Provisioning nach LiteLLM und Rollen aus dem Verzeichnis-DN. Key-Verwaltung
+und Verbrauchsanzeige folgen in #48/#49.
 
 ## Kommandos
 
@@ -23,10 +21,58 @@ Deployment.
 | `npm start`                 | gebaute App aus `dist/` ausliefern (Standard: `127.0.0.1:8080`)             |
 | `npm run lint`              | ESLint (flat config, TypeScript + React Hooks)                              |
 | `npm run typecheck`         | `tsc --noEmit`                                                              |
-| `npm test`                  | Vitest (Routen-Tabelle, Inhalte, Prerender- und Bot-Helfer)                 |
+| `npm test`                  | Vitest (Routen, Inhalte, Prerender, Server: Rollen/CSRF/Sessions)           |
 | `npx playwright test`       | Browser-Tests: Seiten-Parität gegen die Live-Screenshots, Metadaten, Theme  |
 | `npm run capture:reference` | Live-Seiten als Referenz nach `tests/reference/` aufnehmen                  |
+| `npm run db:generate`       | Drizzle-Migration aus `server/db/schema.ts` neu erzeugen                    |
+| `npm run db:migrate`        | Migrationen auf die Portal-DB anwenden (idempotent)                         |
+| `npm run db:seed`           | Admin-Konto sicherstellen (`grafg`, Rolle `admin`)                          |
 | `npm run format`            | Prettier über das Projekt                                                   |
+
+## Voraussetzungen
+
+- Node 24 (lokal über nvm; `node -v` muss `v24.*` liefern)
+- Für die Portal-API zusätzlich: PostgreSQL-Schema `portal` und
+  `/etc/portal/portal.env` (0600) — Aufbau und Inhalte stehen in
+  `KI-Kustodiat-intern:infra/hosts/kik.md`. Ohne diese Konfiguration läuft die
+  öffentliche Website unverändert, `/api/auth/*` antwortet `503` mit den
+  fehlenden Variablennamen.
+
+## Portal (#47)
+
+| Route                   | Verhalten                                                                                             |
+| ----------------------- | ----------------------------------------------------------------------------------------------------- |
+| `GET /api/auth/me`      | Session-Status + frisches CSRF-Token; ohne Session **401**                                            |
+| `POST /api/auth/login`  | Search-then-Bind gegen LDAP; falsche/fehlende Credentials **401**, ohne CSRF **403**, Lockout **429** |
+| `POST /api/auth/logout` | Session in der DB widerrufen, Cookies löschen (**204**)                                               |
+| `/portal`               | Client-gerenderte Login-/Statusseite, `noindex` (Meta + `x-robots-tag`)                               |
+
+Ablauf eines Logins (`server/routes/auth.ts`):
+
+1. CSRF (`kik_csrf`-Cookie signiert + `x-csrf-token`-Header) prüfen → sonst 403.
+2. Rate-Limit aus `portal.login_attempts` (pro Konto 5/15 min, pro IP 20/15 min)
+   → 429 mit `Retry-After`.
+3. Service-Bind, Suche nach `sAMAccountName`, dann **Bind als gefundener DN** mit
+   dem eingegebenen Passwort (leeres Passwort wird vorher abgewiesen).
+4. Rolle aus dem DN: `,OU=Lehrer,` → teacher, `,OU=Schueler,` → student (auch
+   unter `OU=<Abteilung>`), `,OU=Verwaltung,` → staff, sonst **kein Zugang**;
+   `admin` ist eine DB-Rolle und wird von einem Login nie überschrieben.
+5. User in `portal.users` upserten, LiteLLM-User beim ersten Login anlegen
+   (`POST /user/new`, `user_id` = `sam`, idempotent, nicht blockierend).
+6. Session in `portal.sessions` (nur der SHA-256 des Tokens), Cookie
+   `kik_session` (`HttpOnly`, `Secure` in Produktion, `SameSite=Lax`,
+   rollierend), Audit-Zeile in `portal.audit_log`.
+
+Konfiguration: `server/config.ts` liest `/etc/portal/portal.env` (oder
+`PORTAL_ENV_FILE`) und überschreibt nichts, was schon in der Umgebung steht.
+Secrets dürfen als Datei referenziert werden (`PORTAL_LDAP_BIND_PASSWORD_FILE`,
+`PORTAL_LITELLM_ADMIN_KEY_FILE`) oder per systemd `LoadCredential` im
+`$CREDENTIALS_DIRECTORY` liegen. Getestet wird ohne Host-Abhängigkeit; die
+Integrationstests sind opt-in:
+
+```bash
+PORTAL_DB_TEST=1 PORTAL_LDAP_TEST=1 PORTAL_LITELLM_TEST=1 npm test
+```
 
 Port und Bind-Adresse sind über `PORT` und `HOST` überschreibbar
 (Standard `8080` / `127.0.0.1` — bewusst kein privilegierter Port, kein `0.0.0.0`).
@@ -128,17 +174,34 @@ src/
   pages/HomePage       Startseite (Markdown, .home, Karten-Buttons)
   pages/               dazu Portal-Shell, 404 und die Dev-Seite /_design
 server/
-  app.ts               Fastify-App: Dev mit Vite-Middleware, Prod aus dist/
-  index.ts             Listener (127.0.0.1:8080)
+  app.ts               Fastify-App: Dev mit Vite-Middleware, Prod aus dist/, /api/auth/* zuerst
+  config.ts            Env-Datei + Secrets (Datei/systemd-Credential), Config-Objekt
+  routes/auth.ts       GET /api/auth/me, POST /api/auth/login, POST /api/auth/logout
+  auth/ldap.ts         Search-then-Bind gegen das Schul-AD (ldapts, TLS-Validierung an)
+  auth/roles.ts        Rollenableitung aus dem DN (Lehrer/Schueler/Verwaltung)
+  auth/sessions.ts     Sessions in Postgres, Cookie-Flags, rollierende Verlängerung
+  auth/csrf.ts         Double-Submit-Token (signiertes Cookie + Header)
+  auth/ratelimit.ts    Fehlversuchsfenster pro Konto und IP
+  auth/provisioning.ts LiteLLM-User anlegen/löschen (proxy-admin-Key, idempotent)
+  auth/users.ts        Upsert der Portal-User, `admin` bleibt erhalten
+  auth/audit.ts        portal.audit_log (ohne Passwörter/Tokens)
+  db/schema.ts         Drizzle-Schema `portal.*` (users, sessions, audit_log, login_attempts)
+  db/client.ts         pg-Pool + Drizzle, lazy (ohne DB startbar)
+  db/migrate.ts        Migrator für `npm run db:migrate`
 scripts/
   prerender.ts         Build-Schritt nach dem SSR-Build (Seiten + Bot-Artefakte)
   capture-reference.ts Referenz-Screenshots der Live-Seiten nach tests/reference/
+  db-migrate.ts        CLI-Wrapper für db/migrate.ts
+  db-seed.ts           Admin-Konto (grafg) sicherstellen
+drizzle/              generierte SQL-Migrationen + Journal
 tests/                 Playwright: Startseite und Unterseiten (Struktur + Pixel-Parität),
-                       Metadaten/Sitemap/robots/404, /_design-Screenshots, Theme
+                       Metadaten/Sitemap/robots/404, /_design-Screenshots, Theme,
+                       /portal (noindex + Login-Formular)
 public/assets/         Logos (hell/dunkel) — Kopie aus website/assets/
 ```
 
 ## Noch nicht enthalten
 
-Portal-Logik (LDAP, Keys, Verbrauch), Portal-Komponenten (Dialog, Menü, Tooltip),
-nginx/TLS, Deployment, Analytics.
+Key-Verwaltung und Verbrauchsanzeige (#48), Kontingent-Policy (#49),
+Portal-Komponenten für Dialoge/Menüs/Tooltips, nginx/TLS-Routing für `/portal`
+und `/api/auth/` (#51), Deployment, Analytics.
