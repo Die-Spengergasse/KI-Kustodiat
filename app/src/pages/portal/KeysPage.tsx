@@ -36,6 +36,7 @@ const INITIAL_VIEW: View = { status: 'loading', limit: 0, keys: [], message: nul
 export function KeysPage({ csrfToken, onSessionExpired }: KeysPageProps) {
   const [view, setView] = useState<View>(INITIAL_VIEW)
   const [label, setLabel] = useState('')
+  const [labelError, setLabelError] = useState<string | null>(null)
   const [revealed, setRevealed] = useState<CreatedKey | null>(null)
   const [pendingRevoke, setPendingRevoke] = useState<string | null>(null)
   const [busy, setBusy] = useState<string | null>(null)
@@ -72,12 +73,20 @@ export function KeysPage({ csrfToken, onSessionExpired }: KeysPageProps) {
   const onCreate = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (busy !== null) return
+    // The gateway enforces the same rule; checking here keeps the answer
+    // immediate and in German instead of a round trip.
+    if (label.trim() === '') {
+      setLabelError('Bitte gib eine Bezeichnung an — daran erkennst du den Schlüssel wieder.')
+      return
+    }
+    setLabelError(null)
     setBusy('create')
     setCopied(false)
     try {
       const created = await createKey(label, csrfToken)
       setRevealed(created)
       setLabel('')
+      setLabelError(null)
       await load()
     } catch (error) {
       setView((current) => ({ ...current, message: onError(error) }))
@@ -174,22 +183,42 @@ export function KeysPage({ csrfToken, onSessionExpired }: KeysPageProps) {
         <form className="ui-form" onSubmit={onCreate} noValidate>
           <div className="ui-field">
             <label className="ui-field__label" htmlFor="key-label">
-              Bezeichnung (optional)
+              Bezeichnung
             </label>
             <input
               className="ui-input"
               id="key-label"
               name="label"
               type="text"
+              required
+              aria-required="true"
+              aria-invalid={labelError !== null}
+              aria-describedby={labelError !== null ? 'key-label-error' : 'key-label-hint'}
               maxLength={64}
               placeholder="z. B. Laptop · opencode"
               value={label}
-              onChange={(event) => setLabel(event.target.value)}
+              onChange={(event) => {
+                setLabel(event.target.value)
+                if (labelError !== null && event.target.value.trim() !== '') setLabelError(null)
+              }}
+              onBlur={() => {
+                if (label.trim() === '') {
+                  setLabelError(
+                    'Bitte gib eine Bezeichnung an — daran erkennst du den Schlüssel wieder.',
+                  )
+                }
+              }}
             />
-            <p className="ui-field__hint">
-              Hilft dir, die Schlüssel auseinanderzuhalten. {active} von {view.limit} aktiven
-              Schlüsseln belegt.
-            </p>
+            {labelError !== null ? (
+              <p className="ui-field__error" id="key-label-error" role="alert">
+                {labelError}
+              </p>
+            ) : (
+              <p className="ui-field__hint" id="key-label-hint">
+                Pflichtfeld — daran erkennst du den Schlüssel in der Liste wieder. {active} von{' '}
+                {view.limit} aktiven Schlüsseln belegt.
+              </p>
+            )}
           </div>
           <div className="ui-form__actions">
             <Button type="submit" disabled={busy !== null || view.status === 'error'}>
@@ -256,6 +285,7 @@ export function KeysPage({ csrfToken, onSessionExpired }: KeysPageProps) {
                           onClick={() => void onRotate(key)}
                           disabled={busy !== null}
                           aria-label={`Schlüssel ${keyTitle(key)} rotieren`}
+                          title="Neuen Schlüssel mit derselben Bezeichnung erzeugen und den alten sofort widerrufen. Den neuen Schlüssel siehst du genau einmal."
                         >
                           {busy === `rotate:${key.token}` ? 'Rotiert …' : 'Rotieren'}
                         </Button>
@@ -264,6 +294,7 @@ export function KeysPage({ csrfToken, onSessionExpired }: KeysPageProps) {
                           onClick={() => setPendingRevoke(key.token)}
                           disabled={busy !== null}
                           aria-label={`Schlüssel ${keyTitle(key)} widerrufen`}
+                          title="Schlüssel endgültig sperren. Der Eintrag bleibt als Nachweis sichtbar, der Schlüssel funktioniert danach nicht mehr."
                         >
                           Widerrufen
                         </Button>

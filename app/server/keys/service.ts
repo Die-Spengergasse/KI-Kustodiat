@@ -67,7 +67,11 @@ export class KeyLimitError extends Error {
 }
 
 export class KeyValidationError extends Error {
-  constructor(message: string) {
+  constructor(
+    message: string,
+    /** Stable marker for the route, so the UI can answer in German. */
+    readonly code: 'label_required' | 'label_too_long' | 'user_not_provisioned' = 'label_required',
+  ) {
     super(message)
     this.name = 'KeyValidationError'
   }
@@ -95,12 +99,19 @@ function statusOf(key: LitellmKey, now: Date): KeyStatus {
   return 'active'
 }
 
-function normalizeLabel(raw: string | null | undefined): string | null {
-  if (raw === null || raw === undefined) return null
-  const label = raw.trim()
-  if (label === '') return null
+/**
+ * Labels are required: "Ohne Bezeichnung" made the key list unreadable — two
+ * keys you cannot tell apart are worse than no label field at all. Rotation
+ * keeps the existing label and therefore does not go through here.
+ */
+function normalizeLabel(raw: string | null | undefined): string {
+  const label = typeof raw === 'string' ? raw.trim() : ''
+  if (label === '') throw new KeyValidationError('label is required', 'label_required')
   if (label.length > KEY_LABEL_MAX_LENGTH) {
-    throw new KeyValidationError(`label is longer than ${KEY_LABEL_MAX_LENGTH} characters`)
+    throw new KeyValidationError(
+      `label is longer than ${KEY_LABEL_MAX_LENGTH} characters`,
+      'label_too_long',
+    )
   }
   return label
 }
@@ -186,7 +197,7 @@ export async function ensureUserBudget(
     user = await deps.client.getUser(owner.sam)
   }
   if (user === null) {
-    throw new KeyValidationError('gateway user is not provisioned')
+    throw new KeyValidationError('gateway user is not provisioned', 'user_not_provisioned')
   }
   if (user.maxBudgetUsd !== null) return
   await deps.client.setUserBudget({ userId: owner.sam, maxBudgetUsd: monthlyBudgetUsd })
@@ -212,7 +223,7 @@ export async function createKey(
     userId: owner.userId,
     label,
   })
-  await deps.audit('key_created', label === null ? 'ohne Bezeichnung' : `Bezeichnung ${label}`)
+  await deps.audit('key_created', `Bezeichnung ${label}`)
   return { ...generated, label }
 }
 

@@ -705,6 +705,24 @@ tfoot td {
   font-size: var(--text-small);
 }
 
+/* Inline validation message; the input keeps its own border so the hint and the
+ * error never fight for the same visual slot. */
+.ui-field__error {
+  margin: 0;
+  color: var(--color-del);
+  font-size: var(--text-small);
+  font-weight: var(--font-weight-th);
+}
+
+.ui-input[aria-invalid='true'] {
+  border-color: var(--color-del);
+}
+
+/* Native `title` is the tooltip: short, keyboard-free, no JS. */
+.ui-button[title] {
+  cursor: help;
+}
+
 .ui-input {
   width: 100%;
   padding: var(--spacing-control-y) var(--spacing-control-x);

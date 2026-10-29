@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const PORT = 8080
+// Dedicated port: since #51 the production service owns 127.0.0.1:8080 on kik,
+// and reusing it would silently run the suite against the deployed app.
+const PORT = Number(process.env.PLAYWRIGHT_PORT ?? 8099)
 const BASE_URL = `http://127.0.0.1:${PORT}`
 
 /**
@@ -32,9 +34,11 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev',
+    command: `PORT=${PORT} npm run dev`,
     url: BASE_URL,
-    reuseExistingServer: !process.env.CI,
+    // Never reuse: a stale or production server on the same port must not be
+    // mistaken for the one under test.
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 })

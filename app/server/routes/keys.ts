@@ -30,6 +30,18 @@ import {
 import { createKeyMetaStore } from '../keys/store'
 import { requireCsrf, requireSession, type PortalRequestContext } from './session'
 
+/** German wording for the validation cases the UI can actually trigger. */
+function validationMessage(error: KeyValidationError): string {
+  switch (error.code) {
+    case 'label_required':
+      return 'Bitte gib eine Bezeichnung an — daran erkennst du den Schlüssel später wieder.'
+    case 'label_too_long':
+      return 'Die Bezeichnung ist zu lang (höchstens 64 Zeichen).'
+    case 'user_not_provisioned':
+      return 'Dein Gateway-Zugang konnte nicht angelegt werden. Bitte melde dich neu an; bleibt es dabei, wende dich an die Kustodie.'
+  }
+}
+
 /** LiteLLM `token` is a SHA-256 hex digest; anything else is not a key id. */
 const TOKEN_PATTERN = /^[0-9a-f]{64}$/i
 
@@ -124,7 +136,10 @@ function fail(reply: FastifyReply, error: unknown, request: FastifyRequest): Fas
       .send({ error: 'key_not_found', message: 'Dieser Schlüssel existiert nicht.' })
   }
   if (error instanceof KeyValidationError) {
-    return reply.code(400).send({ error: 'invalid_request', message: error.message })
+    return reply.code(400).send({
+      error: error.code,
+      message: validationMessage(error),
+    })
   }
   request.log.error({ err: error }, 'key request failed')
   return reply.code(502).send({

@@ -115,13 +115,15 @@ test.describe('start page structure', () => {
     expect(html).not.toContain('Lade …')
   })
 
-  test('hydrates without console errors or external requests', async ({ page }) => {
+  test('hydrates without console errors or external requests', async ({ page, baseURL }) => {
     const externalRequests: string[] = []
     const consoleErrors: string[] = []
 
     page.on('request', (request) => {
       const url = request.url()
-      if (!url.startsWith('http://127.0.0.1:8080') && !url.startsWith('data:')) {
+      // Compare against the origin under test, not a hardcoded port: the suite
+      // runs on its own port so it never talks to a deployed instance.
+      if (!url.startsWith(new URL(baseURL ?? 'http://127.0.0.1').origin) && !url.startsWith('data:')) {
         externalRequests.push(url)
       }
     })

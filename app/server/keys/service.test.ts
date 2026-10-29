@@ -139,11 +139,21 @@ function setup() {
 }
 
 describe('createKey', () => {
+  it('rejects an empty label — "Ohne Bezeichnung" is not a key name', async () => {
+    const { deps } = setup()
+    await expect(createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })).rejects.toEqual(
+      new KeyValidationError('label is required', 'label_required'),
+    )
+    await expect(
+      createKey(deps, OWNER, { label: '   ', limit: 10, monthlyBudgetUsd: 5 }),
+    ).rejects.toEqual(new KeyValidationError('label is required', 'label_required'))
+  })
+
   it('provisions a missing gateway user instead of failing', async () => {
     const { client, deps, provisions } = setup()
     client.missingUsers.add(OWNER.sam)
 
-    const created = await createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })
+    const created = await createKey(deps, OWNER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 })
 
     expect(provisions).toEqual([OWNER.sam])
     expect(created.key.userId).toBe(OWNER.sam)
@@ -155,8 +165,10 @@ describe('createKey', () => {
     client.missingUsers.add(OWNER.sam)
     deps.provision = async () => undefined
 
-    await expect(createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })).rejects.toEqual(
-      new KeyValidationError('gateway user is not provisioned'),
+    await expect(
+      createKey(deps, OWNER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 }),
+    ).rejects.toEqual(
+      new KeyValidationError('gateway user is not provisioned', 'user_not_provisioned'),
     )
   })
 
@@ -185,8 +197,8 @@ describe('createKey', () => {
   it('applies the monthly allowance to the user once, never to the key', async () => {
     const { client, deps } = setup()
 
-    await createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })
-    await createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })
+    await createKey(deps, OWNER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 })
+    await createKey(deps, OWNER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 })
 
     // One user-level allowance; the key count does not multiply it.
     expect(client.monthlyBudgetUsd).toBe(5)
@@ -197,19 +209,19 @@ describe('createKey', () => {
     const { client, deps } = setup()
     client.monthlyBudgetUsd = 42
 
-    await createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })
+    await createKey(deps, OWNER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 })
     expect(client.monthlyBudgetUsd).toBe(42)
   })
 
   it('rejects the 11th active key with the configured limit', async () => {
     const { deps } = setup()
     for (let index = 0; index < 10; index += 1) {
-      await createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })
+      await createKey(deps, OWNER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 })
     }
 
-    await expect(createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })).rejects.toEqual(
-      new KeyLimitError(10),
-    )
+    await expect(
+      createKey(deps, OWNER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 }),
+    ).rejects.toEqual(new KeyLimitError(10))
   })
 
   it('rejects a label longer than 64 characters', async () => {
@@ -242,7 +254,7 @@ describe('rotateKey', () => {
     const { deps } = setup()
     const keys = []
     for (let index = 0; index < 2; index += 1) {
-      keys.push(await createKey(deps, OWNER, { limit: 2, monthlyBudgetUsd: 5 }))
+      keys.push(await createKey(deps, OWNER, { label: 'Test', limit: 2, monthlyBudgetUsd: 5 }))
     }
 
     await expect(rotateKey(deps, OWNER, keys[0]!.key.token)).resolves.toMatchObject({
@@ -252,7 +264,7 @@ describe('rotateKey', () => {
 
   it('refuses a key of another user', async () => {
     const { deps } = setup()
-    const foreign = await createKey(deps, OTHER, { limit: 10, monthlyBudgetUsd: 5 })
+    const foreign = await createKey(deps, OTHER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 })
 
     await expect(rotateKey(deps, OWNER, foreign.key.token)).rejects.toBeInstanceOf(KeyNotFoundError)
   })
@@ -281,7 +293,7 @@ describe('revokeKey', () => {
 
   it('refuses a key of another user (no existence leak)', async () => {
     const { deps } = setup()
-    const foreign = await createKey(deps, OTHER, { limit: 10, monthlyBudgetUsd: 5 })
+    const foreign = await createKey(deps, OTHER, { label: 'Test', limit: 10, monthlyBudgetUsd: 5 })
 
     await expect(revokeKey(deps, OWNER, foreign.key.token)).rejects.toBeInstanceOf(KeyNotFoundError)
   })
