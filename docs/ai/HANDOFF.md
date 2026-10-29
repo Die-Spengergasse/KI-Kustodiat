@@ -18,9 +18,9 @@ Stand: 2026-10-29 · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token 
   (`gregor:/opt/litellm/.env` + Open-WebUI-SQLite-Config, `/etc/litellm/litellm.env`); Open WebUI zieht
   seinen Key aus der SQLite-Config und bleibt am direkten Docker-Netz
   (bewusst ohne Abrechnung). Portal setzt neu `rpm_limit` je Key
-  (`PORTAL_RPM_LIMIT*`, Default 120/min — die einzige Fairness-Mechanik, weil
-  das Deployment mit `input_cost_per_second: 0` rechnet und das EUR-Budget
-  für Diktat nicht greift). Verifiziert: Transkription 200 inkl. `verbose_json`/
+  (`PORTAL_RPM_LIMIT*`, Default 120/min — nur Schleifenschutz; die Fairness
+  liegt beim Monatsbudget, weil Diktat über die Dauer abgerechnet wird:
+  Listenpreis 0,006 $/min, also 5 USD ≈ 14 h). Verifiziert: Transkription 200 inkl. `verbose_json`/
   `duration`, alter Key 401, `/docs` 404, 5 sequenzielle Aufrufe 200, Sturm →
   429 (JSON), Website/Portal/`api.kik`/Open WebUI unberührt. **Manuell offen:**
   Token in Polished Recognition + `aitranscribe` tauschen (Modell einmal neu

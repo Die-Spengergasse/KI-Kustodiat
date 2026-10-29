@@ -22,7 +22,8 @@ Geprüft werden: exponierte Routen (nur `/v1/audio/transcriptions` und
 Modus und Namensfilter, Transkription in `json`/`verbose_json`/`text` inkl.
 Wort-Zeitmarken, Client-Fehler (unbekanntes Modell, fehlende Datei,
 Nicht-Audio), Rate-Limits (pro Key und per nginx), Nebenläufigkeit und die
-Spend-Zeile.
+Buchhaltung — inklusive der Prüfung, dass der Spend **proportional zur
+Audiodauer** wächst (Listenpreis 0,006 USD/min) und nicht pro Request.
 
 ```bash
 node scripts/test-stt-api.mjs            # vollständig (~1 min, inkl. 20 s Wartezeit)
@@ -30,7 +31,7 @@ node scripts/test-stt-api.mjs --quick    # ohne Limits/Nebenläufigkeit/Buchhalt
 STT_BASE=http://127.0.0.1:4000 node scripts/test-stt-api.mjs --no-nginx
 ```
 
-Exit-Code 0 = alles grün. Der Admin-Key wird aus
+Aktuell **26 Checks**. Exit-Code 0 = alles grün. Der Admin-Key wird aus
 `/etc/litellm/proxy_admin.key` gelesen (`sudo -n`), überschreibbar per
 `PROXY_ADMIN_KEY` oder `PROXY_ADMIN_KEY_FILE`.
 

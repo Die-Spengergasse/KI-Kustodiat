@@ -79,9 +79,10 @@ verlassen die Schule nicht.
 - **Rate-Limit:** 120 Anfragen pro Minute und Schlüssel — gezählt über alle
   Modelle zusammen. Für normales Arbeiten reicht das deutlich; es bremst
   fehlerhafte Programme, die in einer Schleife Anfragen schicken.
-- **Diktat zählt nicht ins Monatskontingent.** Die Transkription läuft auf
-  einer eigenen Grafikkarte und kostet kein Geld — begrenzt wird sie nur durch
-  das Rate-Limit.
+- **Diktat zählt ins Monatskontingent — anteilig zur gesprochenen Zeit.**
+  Zehn Diktate à einer Minute kosten so viel wie ein Diktat à zehn Minuten
+  (abgerechnet wird der übliche Minutenpreis für Transkription). Stummes
+  Mitlaufen lassen kostet also mit.
 - Es gibt **eine** Grafikkarte für Sprache: wenn viele gleichzeitig diktieren,
   wartet die Anfrage, statt abzubrechen. Sehr lange Aufnahmen dauern
   entsprechend.

@@ -44,6 +44,8 @@ const MODEL = 'whisper-large-v3'
 /** Compatibility alias, removed once every client was migrated (2026-10-29). */
 const ALIAS = 'large-v3'
 const RUN_ID = Date.now().toString(36)
+/** Length of the generated probe file — the accounting check derives the price from it. */
+const AUDIO_SECONDS = 2
 
 // ---------------------------------------------------------------------------
 // tiny harness
@@ -146,6 +148,24 @@ async function admin(pathname, body) {
   return text === '' ? null : JSON.parse(text)
 }
 
+/** Current spend of one key, read through the admin API (admin endpoint). */
+async function keySpend(secret) {
+  const payload = await admin(`/key/info?key=${encodeURIComponent(secret)}`)
+  return Number(payload?.info?.spend ?? 0)
+}
+
+/** Spend is written asynchronously — poll instead of reading once. */
+async function waitForKeySpend(secret, timeoutMs = 30_000) {
+  const started = Date.now()
+  let spend = 0
+  while (Date.now() - started < timeoutMs) {
+    spend = await keySpend(secret)
+    if (spend > 0) return spend
+    await new Promise((resolve) => setTimeout(resolve, 1500))
+  }
+  return spend
+}
+
 async function makeKey({ rpmLimit } = {}) {
   const unique = `${RUN_ID}-${Math.random().toString(36).slice(2, 8)}`
   const userId = `kik-stt-test-${unique}`
@@ -213,7 +233,7 @@ async function models(key) {
 // the suite
 // ---------------------------------------------------------------------------
 
-const AUDIO = wavFile(2)
+const AUDIO = wavFile(AUDIO_SECONDS)
 const tmp = mkdtempSync(path.join(tmpdir(), 'kik-stt-'))
 let key = null
 
@@ -482,9 +502,33 @@ try {
 
     // -- 8. accounting ----------------------------------------------------
     group('8. accounting')
-    await check('spend row exists and costs 0', async () => {
+    await check('spend is proportional to the audio duration', async () => {
+      // List price for whisper-1: 0.0001 USD per audio second (0.006 USD/min).
+      // Two seconds of audio must therefore cost about 0.0002 USD — and the
+      // amount has to grow with the audio, not with the request count.
+      const probe = await makeKey()
+      try {
+        const before = await keySpend(probe.secret)
+        assert(before === 0, `fresh key already has spend ${before}`)
+        const response = await transcribe(probe.secret)
+        await expectStatus(response, 200, 'accounting probe')
+        await response.text()
+        const spend = await waitForKeySpend(probe.secret)
+        const expected = AUDIO_SECONDS * 0.0001
+        assert(spend > 0, 'no spend recorded — is input_cost_per_second overridden to 0?')
+        assert(
+          Math.abs(spend - expected) <= expected * 0.6,
+          `spend ${spend} USD for ${AUDIO_SECONDS}s deviates from ~${expected} USD (list price 0.006 USD/min)`,
+        )
+        return `${spend} USD für ${AUDIO_SECONDS}s (= ${(spend / AUDIO_SECONDS / 0.0001).toFixed(1)}× Listenpreis)`
+      } finally {
+        await dropKey(probe)
+      }
+    })
+
+    await check('SpendLogs row exists with a positive amount', async () => {
       const sql =
-        `SELECT count(*) FILTER (WHERE spend = 0) AS zero, count(*) AS total ` +
+        `SELECT count(*) FILTER (WHERE spend > 0) AS paid, count(*) AS total ` +
         `FROM "LiteLLM_SpendLogs" WHERE "call_type" = 'atranscription' ` +
         `AND "startTime" > (now() AT TIME ZONE 'UTC') - interval '10 minutes'`
       let out
@@ -493,12 +537,12 @@ try {
           encoding: 'utf8',
         }).trim()
       } catch {
-        throw new Error('cannot read SpendLogs (run on kik with sudo) — skipped')
+        throw new Error('cannot read SpendLogs (run on kik with sudo)')
       }
-      const [zero, total] = out.split('|').map((n) => Number.parseInt(n, 10))
+      const [paid, total] = out.split('|').map((n) => Number.parseInt(n, 10))
       assert(total > 0, 'no atranscription spend rows in the last 10 minutes')
-      assert(zero > 0, `no zero-cost row — pricing override missing? (${out})`)
-      return `${zero}/${total} rows with spend 0`
+      assert(paid > 0, `no row with a positive amount (${out})`)
+      return `${paid}/${total} rows with spend > 0`
     })
   }
 

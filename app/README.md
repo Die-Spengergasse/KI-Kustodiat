@@ -113,10 +113,10 @@ Regeln, die der Code durchsetzt:
   Schlüssel bedient Chat, Coding und Diktat, und agentisches Coding erzeugt
   leicht Dutzende Requests pro Minute — deshalb großzügig. Es begrenzt
   Runaway-Clients (Retry-Schleifen), nicht normale Arbeit; #49 verschärft es je
-  Rolle. Für Speech-to-Text ist es die **einzige** Fairness-Mechanik: das
-  Deployment rechnet mit `input_cost_per_second: 0` (eigene GPU), also bleibt
-  das EUR-Budget dort wirkungslos — ohne den Preis würde LiteLLM Listenpreis
-  buchen (siehe PITFALLS).
+  Rolle. Für Speech-to-Text ist es **nicht** die Fairness-Mechanik: Diktat
+  wird über die Dauer abgerechnet (LiteLLM-Listenpreis 0,006 $/min) und läuft
+  ins selbe Monatsbudget wie Chat — oft-kurz kostet so viel wie selten-lang
+  (siehe PITFALLS). `rpm_limit` begrenzt nur Schleifen.
 - **Alias ≠ Bezeichnung.** LiteLLM verlangt global eindeutige `key_alias`
   (verifiziert: „Key with alias '…' already exists. Unique key aliases across all
   keys are required"), ein Label wie „Laptop" wäre also pro Person nur einmal und
