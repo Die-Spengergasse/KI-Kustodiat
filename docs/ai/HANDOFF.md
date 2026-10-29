@@ -79,7 +79,7 @@ Stand: 2026-10-29 · **Website + Token-Portal live auf `https://kik.spengergasse
 
 ## Offen (nächste Session)
 0. [ ] **#49 AP7 — Kontingent-Policy, Anträge, Reconciliation:** `quota_policy`/`quota_request`, Admin-Entscheid, Anwendung per LiteLLM-API, `portal-reconcile.timer` als Drift-Sicherheitsnetz, Session-Cleanup-Timer. Voraussetzung ist erledigt (Portal, Keys, Usage live).
-0b. [ ] **#50 AP8 — Härtung + Tool-Call-Testmatrix:** `allowed_routes`-Presets tatsächlich zuweisen, Missbrauchs-Negativtests, 50-Läufe-Matrix je Harness×Modell×Provider mit `spend > 0` vor jedem Rollout und jedem LiteLLM-Upgrade.
+0f. [ ] **#50 AP8 — Härtung + Tool-Call-Testmatrix:** `allowed_routes`-Presets tatsächlich zuweisen, Missbrauchs-Negativtests, 50-Läufe-Matrix je Harness×Modell×Provider mit `spend > 0` vor jedem Rollout und jedem LiteLLM-Upgrade.
 0c. [ ] **#52 AP10 / #53 AP11 — Datenschutz-Gate und Rollout:** blockieren den Betrieb mit Minderjährigen bzw. den Klassen-Rollout, nicht den Bau.
 0d. [ ] **#54 — Altlasten auf gregor abbauen:** Operator-Entscheidung; **Open WebUI dort ist live** und darf nicht mit den gestoppten LiteLLM-Resten weggeräumt werden.
 0e. [ ] **AD-Lockout im Blick behalten (#48):** Ein Fehl-Bind-Test gegen das Produktions-AD hat den Service-Account kurzzeitig gesperrt (Code 775) — damit fällt auch der Open-WebUI-Login aus. Integrationstests mit Dummy-Passwort nie gegen das echte AD.
