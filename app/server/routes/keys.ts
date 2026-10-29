@@ -13,6 +13,7 @@
 
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { recordAudit } from '../auth/audit'
+import { provisionLitellmUser } from '../auth/provisioning'
 import { LitellmError, createLitellmClient } from '../litellm/client'
 import {
   KeyLimitError,
@@ -48,6 +49,12 @@ function depsFor(context: PortalRequestContext, request: FastifyRequest): KeySer
   return {
     client: createLitellmClient(context.config.litellm),
     store: createKeyMetaStore(context.db),
+    provision: (sam) =>
+      provisionLitellmUser(context.config.litellm, {
+        userId: sam,
+        alias: context.user.displayName,
+        mail: context.user.mail,
+      }),
     audit: async (event, detail) => {
       await recordAudit(
         context.db,

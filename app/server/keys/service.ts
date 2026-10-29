@@ -44,6 +44,8 @@ export type KeyAuditEvent = 'key_created' | 'key_rotated' | 'key_revoked' | 'bud
 export interface KeyServiceDeps {
   client: LitellmClient
   store: KeyMetaStore
+  /** Creates the gateway user if it is missing (`/user/new`, idempotent). */
+  provision: (sam: string) => Promise<unknown>
   /** Writes one audit row; failures must not abort the request (see the route). */
   audit: (event: KeyAuditEvent, detail: string) => Promise<void>
   /** Injectable clock, so the tests can pin "now". */
@@ -163,16 +165,27 @@ export interface CreateKeyInput {
   monthlyBudgetUsd: number
 }
 
-/** Applies the role's monthly allowance to the gateway user unless one is set. */
-async function ensureUserBudget(
+/**
+ * Makes sure the gateway user exists, then applies the role's monthly allowance
+ * unless one is already set.
+ *
+ * Provisioning at login is deliberately non-blocking (#47), so an account can
+ * end up without a gateway user — a failed provisioning call, a cleanup that
+ * removed it, a restored database. Refusing the key then leaves the user in a
+ * dead end with no way out; instead we provision on demand (`/user/new` is
+ * idempotent) and only fail if the gateway still does not know the user.
+ */
+export async function ensureUserBudget(
   deps: KeyServiceDeps,
   owner: KeyOwner,
   monthlyBudgetUsd: number,
 ): Promise<void> {
-  const user = await deps.client.getUser(owner.sam)
+  let user = await deps.client.getUser(owner.sam)
   if (user === null) {
-    // Provisioning failed at login (#47 is non-blocking) — the key would hang in
-    // the void, so refuse instead of creating an orphan credential.
+    await deps.provision(owner.sam)
+    user = await deps.client.getUser(owner.sam)
+  }
+  if (user === null) {
     throw new KeyValidationError('gateway user is not provisioned')
   }
   if (user.maxBudgetUsd !== null) return

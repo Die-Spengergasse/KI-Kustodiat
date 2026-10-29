@@ -66,7 +66,11 @@ class FakeClient implements LitellmClient {
     return this.keys.delete(token)
   }
 
+  /** Simulates a gateway user that was never provisioned. */
+  readonly missingUsers = new Set<string>()
+
   async getUser(userId: string): Promise<LitellmUser | null> {
+    if (this.missingUsers.has(userId)) return null
     return {
       userId,
       alias: null,
@@ -119,17 +123,43 @@ function setup() {
   const client = new FakeClient()
   const store = memoryStore()
   const events: Array<{ event: KeyAuditEvent; detail: string }> = []
+  const provisions: string[] = []
   const deps: KeyServiceDeps = {
     client,
     store,
+    provision: async (sam) => {
+      provisions.push(sam)
+      client.missingUsers.delete(sam)
+    },
     audit: async (event, detail) => {
       events.push({ event, detail })
     },
   }
-  return { client, store, deps, events }
+  return { client, store, deps, events, provisions }
 }
 
 describe('createKey', () => {
+  it('provisions a missing gateway user instead of failing', async () => {
+    const { client, deps, provisions } = setup()
+    client.missingUsers.add(OWNER.sam)
+
+    const created = await createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })
+
+    expect(provisions).toEqual([OWNER.sam])
+    expect(created.key.userId).toBe(OWNER.sam)
+    expect(client.monthlyBudgetUsd).toBe(5)
+  })
+
+  it('still refuses when the gateway stays unknown after provisioning', async () => {
+    const { client, deps } = setup()
+    client.missingUsers.add(OWNER.sam)
+    deps.provision = async () => undefined
+
+    await expect(createKey(deps, OWNER, { limit: 10, monthlyBudgetUsd: 5 })).rejects.toEqual(
+      new KeyValidationError('gateway user is not provisioned'),
+    )
+  })
+
   it('creates a key, stores metadata but no secret, and audits it', async () => {
     const { client, store, deps, events } = setup()
 
