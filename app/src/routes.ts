@@ -6,21 +6,26 @@
  * this list framework-free is what makes it unit-testable without a DOM.
  */
 
+/** Origin the public site is served from — canonical URLs and the sitemap use it. */
+export const SITE_ORIGIN = 'https://kik.spengergasse.at'
+
 interface RouteDefinition {
   /** URL path, no trailing slash except for the root. */
   path: string
   /** Document title used for the prerendered <title>. */
   title: string
-  /** Page heading; the <h1> is part of the prerendered markup. */
+  /** Page heading; must match the `<h1>` of the route's Markdown (see `lib/content.test.ts`). */
   heading: string
   /** Meta description for the prerendered document. */
   description: string
 }
 
 /**
- * The home entry renders `website/content/index.md`; its `heading` must stay in
- * sync with that file's `<h1>` (asserted in `lib/content.test.ts`). The other
- * entries are still placeholders until their Markdown is wired up (AP3b).
+ * The single owner of the public site's metadata: every route renders
+ * `website/content/<slug>.md` through `MarkdownContent`, and `title`, `heading`
+ * and `description` are what the prerender step writes into the document, the
+ * canonical/OpenGraph tags and the sitemap. The `heading` must stay in sync with
+ * the first line of that file (asserted in `lib/content.test.ts`).
  */
 export const PUBLIC_ROUTES = [
   {
@@ -51,12 +56,12 @@ export const PUBLIC_ROUTES = [
   {
     path: '/faq',
     title: 'FAQ — KI-Kustodiat',
-    heading: 'FAQ',
+    heading: 'FAQ — häufig gestellte Fragen',
     description: 'Häufig gestellte Fragen zum KI-Kustodiat der Spengergasse.',
   },
   {
     path: '/openwebui-anleitung',
-    title: 'Open WebUI — Anleitung',
+    title: 'Open WebUI — Anleitung — KI-Kustodiat',
     heading: 'Open WebUI — Anleitung',
     description: 'Anleitung zum Zugang zu Open WebUI und zum Einbinden eigener KI-Modelle.',
   },
@@ -82,6 +87,16 @@ export function normalizeRoutePath(input: string): string {
 export function matchPublicRoute(input: string): PublicRoute | undefined {
   const path = normalizeRoutePath(input)
   return PUBLIC_ROUTES.find((route) => route.path === path)
+}
+
+/**
+ * Absolute URL of a path on the public site: `/` → `https://kik.spengergasse.at/`,
+ * `/status` → `https://kik.spengergasse.at/status`. Used for `<link rel="canonical">`,
+ * the OpenGraph URL and the sitemap, so all three can never disagree.
+ */
+export function canonicalUrl(input: string): string {
+  const path = normalizeRoutePath(input)
+  return path === '/' ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${path}`
 }
 
 /** Everything under `/portal` is the client-rendered (noindex) authenticated area. */

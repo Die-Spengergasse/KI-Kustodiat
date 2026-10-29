@@ -4,13 +4,19 @@ import { App } from './App'
 import { legacyHashTarget, normalizeRoutePath } from './routes'
 import './styles/global.css'
 
-// Legacy hash URLs from the old static site: `/#/status` -> `/status`.
+// Legacy hash URLs from the old static site: `/#/status` -> `/status`, `/#/` -> `/`.
 // A full navigation is used on purpose — the target page already exists as
 // prerendered HTML, so hydrating the current document would be wasted work.
-const legacyTarget = legacyHashTarget(window.location.hash)
-if (legacyTarget !== null && legacyTarget !== normalizeRoutePath(window.location.pathname)) {
-  window.location.replace(legacyTarget)
+// The listener keeps old in-page links working after the document has loaded.
+function redirectLegacyHash(): void {
+  const target = legacyHashTarget(window.location.hash)
+  if (target !== null && target !== normalizeRoutePath(window.location.pathname)) {
+    window.location.replace(target)
+  }
 }
+
+redirectLegacyHash()
+window.addEventListener('hashchange', redirectLegacyHash)
 
 const container = document.getElementById('root')
 if (container === null) {

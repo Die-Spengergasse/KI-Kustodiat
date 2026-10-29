@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { BOT_FILES } from '../src/bots'
 import { prerenderTargets, renderDocument } from '../src/prerender'
 
 /** Input of `npm run build`: the bundled client template plus the SSR entry. */
@@ -34,6 +35,13 @@ async function main(): Promise<void> {
     await mkdir(path.dirname(outputFile), { recursive: true })
     await writeFile(outputFile, html, 'utf8')
     console.log(`prerendered ${target.outputPath}`)
+  }
+
+  // Bot artifacts come from the same route table, so a new route can never be
+  // missing from the sitemap.
+  for (const file of BOT_FILES) {
+    await writeFile(path.join(distDir, file.outputFile), file.render(), 'utf8')
+    console.log(`generated ${file.outputFile}`)
   }
 }
 

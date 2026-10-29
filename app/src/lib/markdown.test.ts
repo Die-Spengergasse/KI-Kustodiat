@@ -15,6 +15,11 @@ describe('resolveMarkdownHref', () => {
     ['mailto:office@spengergasse.at', 'mailto:office@spengergasse.at'],
     ['#abschnitt', '#abschnitt'],
     ['notes.txt', 'notes.txt'],
+    // Legacy hash routes of the old static site become real paths.
+    ['#/', '/'],
+    ['#/status', '/status'],
+    ['#/status/', '/status'],
+    ['#/openwebui-anleitung', '/openwebui-anleitung'],
   ]
 
   it.each(cases)('maps %j to %j', (href, expected) => {

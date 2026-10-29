@@ -11,6 +11,7 @@ import {
   documentMetaFor,
   renderDocument,
 } from '../src/prerender'
+import { findBotFile } from '../src/bots'
 import { isDesignRoute } from '../src/devRoutes'
 import { isPortalPath, matchPublicRoute, normalizeRoutePath, outputFilePath } from '../src/routes'
 
@@ -65,6 +66,13 @@ async function registerDev(app: FastifyInstance, rootDir: string): Promise<PageH
     const isKnownPath =
       isPortalPath(urlPath) || matchPublicRoute(urlPath) !== undefined || isDesignRoute(urlPath)
 
+    // sitemap.xml / robots.txt are generated from the route table; in dev they
+    // are rendered per request instead of being read from `dist/`.
+    const botFile = findBotFile(urlPath)
+    if (botFile !== undefined) {
+      return reply.type(botFile.contentType).send(botFile.render())
+    }
+
     try {
       const appHtml = isPortalPath(urlPath) ? '' : await renderWithVite(vite, urlPath)
       const html = renderDocument(
@@ -72,6 +80,10 @@ async function registerDev(app: FastifyInstance, rootDir: string): Promise<PageH
         documentMetaFor(urlPath),
         appHtml,
       )
+      if (isPortalPath(urlPath)) {
+        // Same header the production server sets on the authenticated area.
+        reply.header('x-robots-tag', 'noindex, nofollow')
+      }
       return reply
         .code(isKnownPath ? 200 : 404)
         .type('text/html; charset=utf-8')
@@ -122,6 +134,11 @@ async function registerProd(app: FastifyInstance, distDir: string): Promise<Page
         .header('x-robots-tag', 'noindex, nofollow')
         .type('text/html; charset=utf-8')
         .sendFile(PORTAL_OUTPUT_FILE)
+    }
+
+    const botFile = findBotFile(urlPath)
+    if (botFile !== undefined) {
+      return reply.type(botFile.contentType).sendFile(botFile.outputFile)
     }
 
     if (matchPublicRoute(urlPath) !== undefined) {

@@ -70,6 +70,21 @@ describe('MarkdownContent', () => {
     )
   })
 
+  it('keeps link-only paragraphs as written when linkButtons is false', () => {
+    const html = renderToStaticMarkup(
+      createElement(MarkdownContent, {
+        markdown:
+          '[Chat](https://openwebui.kik.spengergasse.at) [Anleitung](openwebui-anleitung.md)',
+        linkButtons: false,
+      }),
+    )
+
+    expect(html).toBe(
+      '<p><a href="https://openwebui.kik.spengergasse.at">Chat</a> ' +
+        '<a href="/openwebui-anleitung">Anleitung</a></p>',
+    )
+  })
+
   it('keeps normal paragraphs, including their inline links', () => {
     const html = render('Für den Chat ist ein **Login** nötig, siehe [Status](status.md).')
 

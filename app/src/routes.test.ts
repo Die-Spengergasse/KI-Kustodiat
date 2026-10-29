@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   NOT_FOUND_PAGE_PATH,
   PUBLIC_ROUTES,
+  canonicalUrl,
   isPortalPath,
   legacyHashTarget,
   matchPublicRoute,
@@ -49,6 +50,17 @@ describe('public route table', () => {
   it('keeps the 404 sentinel out of the public route table', () => {
     expect(matchPublicRoute(NOT_FOUND_PAGE_PATH)).toBeUndefined()
     expect(isPortalPath(NOT_FOUND_PAGE_PATH)).toBe(false)
+  })
+})
+
+describe('canonicalUrl', () => {
+  it('derives the absolute URL from the route path', () => {
+    expect(canonicalUrl('/')).toBe('https://kik.spengergasse.at/')
+    expect(canonicalUrl('/status')).toBe('https://kik.spengergasse.at/status')
+    expect(canonicalUrl('/status/')).toBe('https://kik.spengergasse.at/status')
+    expect(canonicalUrl('https://example.test/angebote?x=1')).toBe(
+      'https://kik.spengergasse.at/angebote',
+    )
   })
 })
 

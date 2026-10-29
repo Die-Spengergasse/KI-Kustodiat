@@ -16,9 +16,23 @@ const TEMPLATE = [
   '<title>Alt</title>',
   '<meta name="description" content="alt">',
   '<meta name="robots" content="index, follow">',
+  '<link rel="canonical" href="https://example.test/alt">',
+  '<meta property="og:type" content="website">',
+  '<meta property="og:title" content="Alt">',
+  '<meta property="og:description" content="alt">',
+  '<meta property="og:url" content="https://example.test/alt">',
   '</head><body><div id="root"></div>',
   '<script type="module" src="/assets/index-abc.js"></script>',
   '</body></html>',
+].join('\n')
+
+/** Template that predates the canonical/OpenGraph block. */
+const TEMPLATE_WITHOUT_SOCIAL_META = [
+  '<!doctype html><html lang="de"><head>',
+  '<title>Alt</title>',
+  '<meta name="description" content="alt">',
+  '<meta name="robots" content="index, follow">',
+  '</head><body><div id="root"></div></body></html>',
 ].join('\n')
 
 describe('renderDocument', () => {
@@ -39,7 +53,12 @@ describe('renderDocument', () => {
   it('sets title, description and robots per document', () => {
     const html = renderDocument(
       TEMPLATE,
-      { title: 'Status — KI-Kustodiat', description: 'Statusseite', noindex: false },
+      {
+        title: 'Status — KI-Kustodiat',
+        description: 'Statusseite',
+        path: '/status',
+        noindex: false,
+      },
       '',
     )
 
@@ -49,10 +68,37 @@ describe('renderDocument', () => {
     expect(html).not.toContain('<title>Alt</title>')
   })
 
+  it('writes canonical URL and OpenGraph tags for public routes', () => {
+    const html = renderDocument(
+      TEMPLATE,
+      {
+        title: 'Status — KI-Kustodiat',
+        description: 'Statusseite',
+        path: '/status',
+        noindex: false,
+      },
+      '',
+    )
+
+    expect(html).toContain('<link rel="canonical" href="https://kik.spengergasse.at/status">')
+    expect(html).toContain('<meta property="og:type" content="website">')
+    expect(html).toContain('<meta property="og:title" content="Status — KI-Kustodiat">')
+    expect(html).toContain('<meta property="og:description" content="Statusseite">')
+    expect(html).toContain('<meta property="og:url" content="https://kik.spengergasse.at/status">')
+    expect(html).not.toContain('https://example.test/alt')
+  })
+
+  it('drops canonical and OpenGraph for documents without a public URL', () => {
+    const html = renderDocument(TEMPLATE, NOT_FOUND_META, '')
+
+    expect(html).not.toContain('rel="canonical"')
+    expect(html).not.toContain('property="og:')
+  })
+
   it('marks noindex documents and escapes markup in metadata', () => {
     const html = renderDocument(
       TEMPLATE,
-      { title: '<script>alert(1)</script>', description: 'a "b" & c', noindex: true },
+      { title: '<script>alert(1)</script>', description: 'a "b" & c', path: null, noindex: true },
       '',
     )
 
@@ -60,6 +106,28 @@ describe('renderDocument', () => {
     expect(html).toContain('<meta name="description" content="a &quot;b&quot; &amp; c">')
     expect(html).toContain('<meta name="robots" content="noindex, nofollow">')
     expect(html).not.toContain('<script>alert(1)</script>')
+  })
+
+  it('escapes the canonical URL derived from the route path', () => {
+    const html = renderDocument(
+      TEMPLATE,
+      { title: 'x', description: 'y', path: '/a<b', noindex: false },
+      '',
+    )
+
+    expect(html).toContain('<link rel="canonical" href="https://kik.spengergasse.at/a&lt;b">')
+  })
+
+  it('fails loudly when the template misses a marker', () => {
+    const broken = '<!doctype html><html><head></head><body></body></html>'
+
+    expect(() => renderDocument(broken, NOT_FOUND_META, '')).toThrow(/marker/)
+  })
+
+  it('fails loudly when the template misses the social meta block', () => {
+    expect(() => renderDocument(TEMPLATE_WITHOUT_SOCIAL_META, NOT_FOUND_META, '')).toThrow(
+      /canonical|og:/,
+    )
   })
 
   it('fails loudly when the template misses a marker', () => {
@@ -117,12 +185,22 @@ describe('prerenderTargets', () => {
 
 describe('documentMetaFor', () => {
   it('uses the route metadata for public pages', () => {
-    expect(documentMetaFor('/angebote/').title).toBe('Angebote — KI-Kustodiat')
-    expect(documentMetaFor('/angebote/').noindex).toBe(false)
+    const meta = documentMetaFor('/angebote/')
+
+    expect(meta.title).toBe('Angebote — KI-Kustodiat')
+    expect(meta.path).toBe('/angebote')
+    expect(meta.noindex).toBe(false)
   })
 
-  it('marks the portal as noindex', () => {
+  it('gives every public route a canonical path', () => {
+    for (const route of PUBLIC_ROUTES) {
+      expect(documentMetaFor(route.path).path).toBe(route.path)
+    }
+  })
+
+  it('marks the portal as noindex and without a canonical URL', () => {
     expect(documentMetaFor('/portal/keys')).toEqual(PORTAL_META)
+    expect(documentMetaFor('/portal/keys').path).toBeNull()
   })
 
   it('falls back to the not-found metadata for unknown paths', () => {

@@ -147,28 +147,34 @@ h6 {
 }
 
 /* Pico only puts the large `--pico-typography-spacing-top` above a heading that
- * follows a block, so a heading at the top of a page keeps its tighter spacing. */
-:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h1 {
+ * follows a block. The original rule is a *general* sibling combinator over the
+ * whole list (`pico.min.css`):
+ *   :where(article,address,blockquote,dl,figure,form,ol,p,pre,table,ul)~:is(h1,…)
+ * so a heading keeps the large gap even when the element right before it is
+ * something else (a rendered Markdown table's `.table-scroll` wrapper, an `hr`).
+ * Using `+` here was wrong and shortened every table page by one spacing step
+ * per table. */
+:where(article, address, blockquote, dl, figure, form, ol, p, pre, table, ul) ~ h1 {
   margin-top: var(--spacing-heading-1);
 }
 
-:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h2 {
+:where(article, address, blockquote, dl, figure, form, ol, p, pre, table, ul) ~ h2 {
   margin-top: var(--spacing-heading-2);
 }
 
-:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h3 {
+:where(article, address, blockquote, dl, figure, form, ol, p, pre, table, ul) ~ h3 {
   margin-top: var(--spacing-heading-3);
 }
 
-:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h4 {
+:where(article, address, blockquote, dl, figure, form, ol, p, pre, table, ul) ~ h4 {
   margin-top: var(--spacing-heading-4);
 }
 
-:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h5 {
+:where(article, address, blockquote, dl, figure, form, ol, p, pre, table, ul) ~ h5 {
   margin-top: var(--spacing-heading-5);
 }
 
-:where(article, blockquote, dl, figure, form, ol, p, pre, table, ul) + h6 {
+:where(article, address, blockquote, dl, figure, form, ol, p, pre, table, ul) ~ h6 {
   margin-top: var(--spacing-heading-6);
 }
 
@@ -189,6 +195,13 @@ ol {
 
 ul {
   list-style: square;
+}
+
+/* Pico only restyles `ul` (`ul li{list-style:square}`) and leaves `ol` at the
+ * UA default. Tailwind's preflight would switch the ordered-list markers off,
+ * so they are restored explicitly. */
+ol {
+  list-style-type: decimal;
 }
 
 li {
@@ -333,14 +346,16 @@ tfoot td {
 }
 
 /* Horizontal scroll wrapper — the markup the old `website/app.js` injected
- * around every rendered markdown table. */
+ * around every rendered markdown table. Like the old stylesheet it carries no
+ * margin of its own: `overflow-x: auto` makes the wrapper a block formatting
+ * context, so the table's own bottom margin stays inside the wrapper box (which
+ * is what the live page measures) instead of collapsing with the next block. */
 .table-scroll {
-  margin-bottom: var(--spacing-section);
   overflow-x: auto;
 }
 
 .table-scroll > table {
-  margin-bottom: 0;
+  margin-bottom: var(--spacing-section);
 }
 
 /* ==========================================================================
@@ -607,8 +622,10 @@ tfoot td {
   margin-top: 0;
 }
 
-/* Old page: `.home > p:first-of-type { font-size: 1.05em }`. */
-.prose > p:first-of-type {
+/* Old page: `.home > p:first-of-type { font-size: 1.05em }` — the lead
+ * paragraph of the start page only. Subpages render their Markdown as written;
+ * their first paragraph is not a lead. */
+.prose.home > p:first-of-type {
   font-size: var(--text-lead);
 }
 

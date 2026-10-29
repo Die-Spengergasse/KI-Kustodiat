@@ -10,18 +10,25 @@
  */
 
 import type { Element, ElementContent } from 'hast'
+import { legacyHashTarget } from '../routes'
 
 /** Already a URL/route/anchor — never rewritten. */
 const NON_RELATIVE_HREF = /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i
 
 /**
- * `[Status](status.md)` → `/status`.
+ * `[Status](status.md)` → `/status` and the old hash routes (`[Startseite](#/)`,
+ * `[Status](#/status)`) → their real paths.
  *
  * The old page rewrote to `#/` hash routes; the app has real prerendered
  * documents per route, so the same Markdown link becomes a real path.
  * `index.md` (and an empty target) map to the site root.
  */
 export function resolveMarkdownHref(href: string): string {
+  const legacy = legacyHashTarget(href)
+  if (legacy !== null) {
+    return legacy
+  }
+
   if (!href.endsWith('.md') || NON_RELATIVE_HREF.test(href)) {
     return href
   }
