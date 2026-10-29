@@ -10,7 +10,15 @@ import {
   outputFilePath,
 } from './routes'
 
-const EXPECTED_PATHS = ['/', '/status', '/milestones', '/angebote', '/faq', '/openwebui-anleitung']
+const EXPECTED_PATHS = [
+  '/',
+  '/status',
+  '/milestones',
+  '/angebote',
+  '/faq',
+  '/anleitung',
+  '/openwebui-anleitung',
+]
 
 describe('public route table', () => {
   it('contains exactly the planned public routes in a stable order', () => {

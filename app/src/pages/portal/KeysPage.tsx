@@ -174,7 +174,8 @@ export function KeysPage({ csrfToken, onSessionExpired }: KeysPageProps) {
           </div>
           <p className="muted">
             Trage ihn jetzt in dein Werkzeug ein (z. B. opencode: <code>OPENAI_API_KEY</code>,{' '}
-            <code>OPENAI_BASE_URL</code> = Proxy-Adresse).
+            <code>OPENAI_BASE_URL</code> = Proxy-Adresse) — Beispiele für Chat und Diktat stehen in
+            der <a href="/anleitung">Anleitung</a>.
           </p>
         </Card>
       )}

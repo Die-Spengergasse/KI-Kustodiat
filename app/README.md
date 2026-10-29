@@ -24,8 +24,7 @@ widerrufen, Monatsverbrauch pro Modell). Kontingent-Policy und Anträge folgen i
 | `npm run lint`              | ESLint (flat config, TypeScript + React Hooks)                              |
 | `npm run typecheck`         | `tsc --noEmit`                                                              |
 | `npm test`                  | Vitest (Routen, Inhalte, Prerender, Server: Rollen/CSRF/Sessions)           |
-| `npx playwright test`       | Browser-Tests: Seiten-Parität gegen die Live-Screenshots, Metadaten, Theme  |
-| `npm run capture:reference` | Live-Seiten als Referenz nach `tests/reference/` aufnehmen                  |
+| `npx playwright test`       | Browser-Tests: Seitenstruktur, Metadaten, Theme, Portal-Abläufe            |
 | `npm run db:generate`       | Drizzle-Migration aus `server/db/schema.ts` neu erzeugen                    |
 | `npm run db:migrate`        | Migrationen auf die Portal-DB anwenden (idempotent)                         |
 | `npm run db:seed`           | Admin-Konto sicherstellen (`grafg`, Rolle `admin`)                          |
@@ -184,6 +183,7 @@ Fixture-Schema, `server/routes/keys.integration.test.ts` den HTTP-Vertrag
 | `/milestones`          | `dist/milestones/index.html`          |
 | `/angebote`            | `dist/angebote/index.html`            |
 | `/faq`                 | `dist/faq/index.html`                 |
+| `/anleitung`           | `dist/anleitung/index.html`           |
 | `/openwebui-anleitung` | `dist/openwebui-anleitung/index.html` |
 
 Dazu `dist/portal.html` (leere Shell, `noindex`, wird für `/portal/*` ausgeliefert)
@@ -246,8 +246,18 @@ src/lib/theme.ts        kik-theme (auto|light|dark), Zyklus, Storage, Labels
 - **Logos** liegen als Kopie der bisherigen Dateien unter `public/assets/`
   (hell/dunkel), damit `website/` nicht zur Laufzeit gebraucht wird.
 
-Die Screenshot-Baselines liegen in `tests/design.spec.ts-snapshots/` und werden
-mit `npx playwright test --update-snapshots` neu erzeugt.
+Die Screenshot-Baselines des Design-Systems liegen in
+`tests/design.spec.ts-snapshots/` und werden mit
+`npx playwright test --update-snapshots` neu erzeugt.
+
+**Zur Parität mit der alten Seite:** Der Umzug von Pico zu React wurde 2026-10-29
+mit einem Pixelvergleich gegen Screenshots der alten Live-Seite abgenommen. Dieser
+Vergleich ist **ausgemustert** (`tests/reference/`, `tests/png.ts`,
+`scripts/capture-reference.ts` entfernt): ein eingefrorener Schnappschuss einer
+abgelösten Seite blockiert jede Inhaltsänderung, ohne mehr zu finden als die
+Strukturtests (Überschriften, Linktexte, fehlende externe Requests). Was bleibt,
+sind die Snapshots des Design-Systems — die prüfen die Komponenten, nicht die
+Seiteninhalte.
 
 ## Verzeichnisse
 

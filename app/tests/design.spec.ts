@@ -1,5 +1,8 @@
 import { expect, test } from '@playwright/test'
 
+/** Dev-server origin — must follow `PLAYWRIGHT_PORT` (see playwright.config.ts). */
+const DEV_ORIGIN = `http://127.0.0.1:${process.env.PLAYWRIGHT_PORT ?? 8099}`
+
 const THEME_CASES = [
   { mode: 'light', label: 'Schema: Hell' },
   { mode: 'dark', label: 'Schema: Dunkel' },
@@ -10,7 +13,7 @@ for (const theme of THEME_CASES) {
     const externalRequests: string[] = []
     page.on('request', (request) => {
       const url = request.url()
-      if (!url.startsWith('http://127.0.0.1:8080') && !url.startsWith('data:')) {
+      if (!url.startsWith(DEV_ORIGIN) && !url.startsWith('data:')) {
         externalRequests.push(url)
       }
     })

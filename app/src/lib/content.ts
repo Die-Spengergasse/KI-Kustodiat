@@ -8,6 +8,7 @@
  * `src/routes.ts` fails the type check until its document is wired up here.
  */
 
+import anleitungMarkdown from '../../../website/content/anleitung.md?raw'
 import angeboteMarkdown from '../../../website/content/angebote.md?raw'
 import faqMarkdown from '../../../website/content/faq.md?raw'
 import homeMarkdown from '../../../website/content/index.md?raw'
@@ -22,6 +23,7 @@ export const CONTENT_MARKDOWN: Record<PublicRoutePath, string> = {
   '/milestones': milestonesMarkdown,
   '/angebote': angeboteMarkdown,
   '/faq': faqMarkdown,
+  '/anleitung': anleitungMarkdown,
   '/openwebui-anleitung': openWebUiMarkdown,
 }
 

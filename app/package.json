@@ -13,7 +13,6 @@
     "build:client": "vite build",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr",
     "prerender": "tsx scripts/prerender.ts",
-    "capture:reference": "tsx scripts/capture-reference.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/db-migrate.ts",
     "db:seed": "tsx scripts/db-seed.ts",

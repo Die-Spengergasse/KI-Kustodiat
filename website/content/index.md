@@ -13,6 +13,7 @@ Für den Chat ist ein **Spengergassen-Login** erforderlich: Benutzername = Teil 
 
 ## Überblick
 
+- [Anleitung](anleitung.md)
 - [Status](status.md)
 - [Milestones](milestones.md)
 - [Angebote](angebote.md)

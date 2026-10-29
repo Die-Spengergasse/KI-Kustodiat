@@ -170,6 +170,9 @@ export function PortalShell({ path }: PortalShellProps) {
               </Button>
             </div>
           </form>
+          <p className="muted">
+            Was das Portal ist und wofür du einen Schlüssel brauchst: <a href="/anleitung">Anleitung</a>.
+          </p>
         </Card>
       </>
     )
@@ -191,6 +194,10 @@ export function PortalShell({ path }: PortalShellProps) {
               </a>
             </li>
           ))}
+          {/* Öffentliche Seite, keine Portal-Route — deshalb nicht in PORTAL_PAGES. */}
+          <li>
+            <a href="/anleitung">Hilfe</a>
+          </li>
         </ul>
         <ul>
           <li>

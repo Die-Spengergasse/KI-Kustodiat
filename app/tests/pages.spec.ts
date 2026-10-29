@@ -1,21 +1,14 @@
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
 import { expect, test, type Page } from '@playwright/test'
-import { decodePng, diffImages } from './png'
 
 /**
- * Parity of the five Markdown subpages (`#45`).
+ * Structure of the five Markdown subpages (`#45`).
  *
- * The constants below are the structure of the *live* pages as captured from
- * `https://kik.spengergasse.at/#/<slug>` (same visit as
- * `npm run capture:reference`), and the PNGs in `tests/reference/` are the live
- * screenshots at 1280×900 and 390×844. The tests answer two questions per page:
- *  - does the app render the same document structure (h1, heading order, visible
- *    link labels) at the real path?
- *  - does it look the same, pixel for pixel?
+ * The constants below are the document structure of the pages as captured from
+ * the old live site (`https://kik.spengergasse.at/#/<slug>`). The pixel
+ * comparison against reference screenshots was retired on 2026-10-29 — it
+ * blocked content work without catching anything the assertions below would
+ * miss.
  */
-
-const REFERENCE_DIR = path.join(import.meta.dirname, 'reference')
 
 const PAGES = [
   {
@@ -164,11 +157,6 @@ const PAGES = [
   },
 ] as const
 
-const VIEWPORTS = [
-  { label: 'desktop', width: 1280, height: 900 },
-  { label: 'mobile', width: 390, height: 844 },
-] as const
-
 /** Headings and links a visitor actually sees — the hidden home markup of the
  *  old hash router must not be counted. */
 function visibleHeadings(page: Page, selector: string) {
@@ -273,38 +261,5 @@ test.describe('legacy hash routes', () => {
       await expect(page).toHaveTitle(pageDef.title)
       await expect(page.getByRole('heading', { level: 1 })).toHaveText(pageDef.headings[0].text)
     })
-  }
-})
-
-test.describe('subpage pixel parity with the live site', () => {
-  // Same media emulation as the reference capture: no transitions mid-shot.
-  test.use({ contextOptions: { reducedMotion: 'reduce' } })
-
-  for (const pageDef of PAGES) {
-    for (const viewport of VIEWPORTS) {
-      test(`looks like the live page — ${pageDef.slug} ${viewport.label}`, async ({ page }) => {
-        await page.setViewportSize({ width: viewport.width, height: viewport.height })
-        await page.addInitScript(() => window.localStorage.setItem('kik-theme', 'light'))
-
-        await page.goto(pageDef.path)
-        await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
-        await page.waitForLoadState('networkidle')
-
-        const reference = decodePng(
-          readFileSync(path.join(REFERENCE_DIR, `${pageDef.slug}-${viewport.label}-light.png`)),
-        )
-        const actual = decodePng(await page.screenshot({ fullPage: true }))
-        const diff = diffImages(reference, actual)
-
-        console.log(
-          `${pageDef.slug} ${viewport.label}: ${diff.differingPixels}/${diff.totalPixels} px ` +
-            `differ (${(diff.ratio * 100).toFixed(4)} %, max channel delta ${diff.maxChannelDelta})`,
-        )
-
-        expect(actual.width, 'viewport width').toBe(reference.width)
-        expect(actual.height, 'document height').toBe(reference.height)
-        expect(diff.ratio, 'pixel-diff ratio').toBeLessThan(0.002)
-      })
-    }
   }
 })

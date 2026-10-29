@@ -60,6 +60,13 @@ export const PUBLIC_ROUTES = [
     description: 'Häufig gestellte Fragen zum KI-Kustodiat der Spengergasse.',
   },
   {
+    path: '/anleitung',
+    title: 'Anleitung — KI-Kustodiat',
+    heading: 'Anleitung — Token und Diktat',
+    description:
+      'Wie du einen API-Token erzeugst, ihn in Coding-Werkzeugen und für Sprache-zu-Text einsetzt und was die Limits bedeuten.',
+  },
+  {
     path: '/openwebui-anleitung',
     title: 'Open WebUI — Anleitung — KI-Kustodiat',
     heading: 'Open WebUI — Anleitung',
