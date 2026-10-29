@@ -99,6 +99,34 @@ export const auditLog = portalSchema.table(
 )
 
 /**
+ * Portal-side extras of a gateway key (Issue #48).
+ *
+ * LiteLLM is the owner of keys: `token_hash` is LiteLLM's `token` field — the
+ * SHA-256 of the key, *not* the secret, which is never stored anywhere. LiteLLM
+ * deletes the key row on revocation, so this table keeps the label, the origin
+ * and the revocation trail for the portal's key list.
+ */
+export const keyMeta = portalSchema.table(
+  'key_meta',
+  {
+    /** LiteLLM `token` (hashed key id); primary key, never the secret. */
+    tokenHash: text('token_hash').primaryKey(),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    /** Label the user gave the key; LiteLLM carries the same value as `key_alias`. */
+    label: text('label'),
+    /** How the key came into existence: `portal` for self-service, later `admin`. */
+    createdVia: text('created_via').notNull().default('portal'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    revokedAt: timestamp('revoked_at', { withTimezone: true }),
+    /** `user`, `rotated`, `limit`, … — free text, no secrets. */
+    revokeReason: text('revoke_reason'),
+  },
+  (table) => [index('key_meta_user_id_idx').on(table.userId)],
+)
+
+/**
  * Login attempts — the source of the per-IP and per-account rate limit. Kept
  * separate from `audit_log` because it is queried on every login and pruned.
  */
@@ -119,4 +147,4 @@ export const loginAttempts = portalSchema.table(
   ],
 )
 
-export const schema = { users, sessions, auditLog, loginAttempts }
+export const schema = { users, sessions, auditLog, loginAttempts, keyMeta }

@@ -18,6 +18,11 @@ export type AuditEvent =
   | 'logout'
   | 'provisioning'
   | 'provisioning_failed'
+  /** Key self-service (#48): no label content that is a secret, never a key. */
+  | 'key_created'
+  | 'key_rotated'
+  | 'key_revoked'
+  | 'budget_set'
 
 export interface AuditEntry {
   event: AuditEvent

@@ -17,6 +17,8 @@ import { findBotFile } from '../src/bots'
 import { isDesignRoute } from '../src/devRoutes'
 import { isPortalPath, matchPublicRoute, normalizeRoutePath, outputFilePath } from '../src/routes'
 import { registerAuthRoutes } from './routes/auth'
+import { registerKeyRoutes } from './routes/keys'
+import { registerUsageRoutes } from './routes/usage'
 
 export type AppMode = 'dev' | 'prod'
 
@@ -43,6 +45,9 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
 
   // `/api/auth/*` — registered before the catch-all page route so static paths win.
   await registerAuthRoutes(app)
+  // Self-service keys and the read-only usage view (Issue #48).
+  await registerKeyRoutes(app)
+  await registerUsageRoutes(app)
 
   const handlePage =
     options.mode === 'dev'

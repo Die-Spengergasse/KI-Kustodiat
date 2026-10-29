@@ -23,7 +23,7 @@ export function App({ path }: { path: string }) {
   if (isPortalPath(path)) {
     return (
       <Shell>
-        <PortalShell />
+        <PortalShell path={path} />
       </Shell>
     )
   }

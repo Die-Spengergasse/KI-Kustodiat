@@ -39,9 +39,16 @@ export class PortalApiError extends Error {
   }
 }
 
-const JSON_HEADERS = { 'content-type': 'application/json', accept: 'application/json' }
+export const JSON_HEADERS = { 'content-type': 'application/json', accept: 'application/json' }
 
-async function call(path: string, init: RequestInit): Promise<{ status: number; body: unknown }> {
+/**
+ * One HTTP round-trip against the portal API. Exported for the key/usage clients,
+ * so the error and cookie handling stays identical everywhere.
+ */
+export async function requestPortal(
+  path: string,
+  init: RequestInit,
+): Promise<{ status: number; body: unknown }> {
   const response = await fetch(path, { credentials: 'same-origin', ...init })
   const text = await response.text()
   let body: unknown = null
@@ -55,13 +62,16 @@ async function call(path: string, init: RequestInit): Promise<{ status: number; 
   return { status: response.status, body }
 }
 
-function errorBody(body: unknown): ApiErrorBody {
+export function errorBody(body: unknown): ApiErrorBody {
   return typeof body === 'object' && body !== null ? (body as ApiErrorBody) : {}
 }
 
 /** Current session. A `401` is a normal answer (not logged in), not an error. */
 export async function fetchMe(): Promise<AuthState> {
-  const { status, body } = await call('/api/auth/me', { method: 'GET', headers: JSON_HEADERS })
+  const { status, body } = await requestPortal('/api/auth/me', {
+    method: 'GET',
+    headers: JSON_HEADERS,
+  })
   const payload = (typeof body === 'object' && body !== null ? body : {}) as {
     authenticated?: boolean
     user?: PortalUser
@@ -93,7 +103,7 @@ export async function login(
   password: string,
   csrfToken: string | null,
 ): Promise<AuthState> {
-  const { status, body } = await call('/api/auth/login', {
+  const { status, body } = await requestPortal('/api/auth/login', {
     method: 'POST',
     headers: csrfToken === null ? JSON_HEADERS : { ...JSON_HEADERS, 'x-csrf-token': csrfToken },
     body: JSON.stringify({ username, password }),
@@ -109,9 +119,12 @@ export async function login(
 }
 
 export async function logout(csrfToken: string | null): Promise<void> {
-  const { status, body } = await call('/api/auth/logout', {
+  // No body, so no `content-type` either — Fastify rejects an empty JSON body.
+  const headers: Record<string, string> = { accept: 'application/json' }
+  if (csrfToken !== null) headers['x-csrf-token'] = csrfToken
+  const { status, body } = await requestPortal('/api/auth/logout', {
     method: 'POST',
-    headers: csrfToken === null ? JSON_HEADERS : { ...JSON_HEADERS, 'x-csrf-token': csrfToken },
+    headers,
   })
   if (status !== 204) throw new PortalApiError(status, errorBody(body))
 }

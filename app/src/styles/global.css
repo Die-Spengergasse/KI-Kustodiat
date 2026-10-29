@@ -739,6 +739,138 @@ tfoot td {
   color: var(--color-fg);
 }
 
+/* Informational notice (e.g. "the key is shown once") — not an error. */
+.ui-alert--info {
+  border-left-color: var(--color-primary);
+}
+
+/* ==========================================================================
+ * Portal pages (Issue #48) — navigation, show-once secret, usage meter.
+ * Same tokens as everything else; no new palette.
+ * ========================================================================== */
+
+.portal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-gutter);
+  margin-bottom: var(--spacing-block);
+  padding-bottom: var(--spacing-nav-y);
+  border-bottom: var(--border-hairline) solid var(--color-border);
+}
+
+.portal-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-gutter);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.portal-nav li {
+  margin: 0;
+}
+
+.portal-nav a {
+  display: inline-block;
+  padding: var(--spacing-nav-y) 0;
+  border-bottom: 0.125rem solid transparent;
+  text-decoration: none;
+}
+
+.portal-nav a[aria-current='page'] {
+  border-bottom-color: var(--color-primary);
+  color: var(--color-fg);
+  font-weight: var(--font-weight-th);
+}
+
+/* The one-time secret: monospace block the user can select in one go. */
+.key-secret {
+  user-select: all;
+  overflow-wrap: anywhere;
+}
+
+.key-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-nav-x);
+}
+
+/* Status badge of a key: colour only reinforces the text. */
+.status-badge {
+  display: inline-block;
+  padding: 0 0.5rem;
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-small);
+}
+
+.status-badge--active {
+  border-color: var(--color-ins);
+  color: var(--color-ins);
+}
+
+.status-badge--revoked,
+.status-badge--expired,
+.status-badge--blocked {
+  color: var(--color-fg-muted);
+}
+
+/* Usage: the percentage is the headline, the bar only supports it. */
+.usage-meter {
+  margin-bottom: var(--spacing-section);
+}
+
+.usage-meter__value {
+  margin: 0;
+  font-size: var(--text-h2);
+  line-height: var(--text-h2--line-height);
+  color: var(--color-heading-1);
+  font-weight: var(--font-weight-heading);
+}
+
+.meter {
+  height: 0.75rem;
+  overflow: hidden;
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-subtle);
+}
+
+.meter__bar {
+  display: block;
+  height: 100%;
+  background-color: var(--color-primary);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--spacing-gutter);
+  margin: var(--spacing-section) 0;
+}
+
+.stat-grid div {
+  padding: var(--spacing-control-y) var(--spacing-control-x);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background-color: var(--color-surface-subtle);
+}
+
+.stat-grid dt {
+  color: var(--color-fg-muted);
+  font-size: var(--text-small);
+}
+
+.stat-grid dd {
+  margin: 0;
+  font-size: var(--text-h4);
+  font-weight: var(--font-weight-th);
+}
+
 /* ==========================================================================
  * Dev-only theme preview (used by `/_design`)
  * ========================================================================== */

@@ -35,3 +35,43 @@ test.describe('portal', () => {
     expect([403, 503]).toContain(response.status())
   })
 })
+
+/**
+ * `/portal/keys` and `/portal/usage` (Issue #48) are pages of the same noindex
+ * shell: without a session they must still render the login form, never a key or
+ * a number, and the API must answer without leaking anything.
+ */
+test.describe('portal pages', () => {
+  for (const path of ['/portal/keys', '/portal/usage'] as const) {
+    test(`${path} serves the noindex login shell`, async ({ page }) => {
+      const response = await page.goto(path)
+      expect(response?.status()).toBe(200)
+      expect(response?.headers()['x-robots-tag']).toContain('noindex')
+
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/)
+      await expect(page.locator('h1')).toHaveText('Portal')
+      await expect(page.getByLabel('Benutzername')).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Anmelden' })).toBeVisible()
+      // No secret and no usage number before login.
+      await expect(page.locator('.key-secret')).toHaveCount(0)
+      await expect(page.locator('.usage-meter')).toHaveCount(0)
+    })
+  }
+
+  test('the key and usage APIs answer 401 without a session', async ({ page }) => {
+    for (const path of ['/api/keys', '/api/usage/summary']) {
+      const response = await page.request.get(path)
+      // 401 = configured portal, 503 = deployment not configured (CI/fresh clone).
+      expect([401, 503]).toContain(response.status())
+      expect(response.headers()['cache-control']).toBe('no-store')
+    }
+  })
+
+  test('creating a key via the API needs a session and a CSRF token', async ({ page }) => {
+    const response = await page.request.post('/api/keys', {
+      data: { label: 'playwright' },
+      failOnStatusCode: false,
+    })
+    expect([401, 403, 503]).toContain(response.status())
+  })
+})

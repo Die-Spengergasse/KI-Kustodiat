@@ -9,6 +9,9 @@ import {
   type PortalUser,
 } from '../lib/portalApi'
 import { loginFailureMessage, roleLabel } from '../lib/portalMessages'
+import { PORTAL_PAGES, matchPortalPage } from '../routes'
+import { KeysPage } from './portal/KeysPage'
+import { UsagePage } from './portal/UsagePage'
 
 type View =
   | { kind: 'loading' }
@@ -16,13 +19,18 @@ type View =
   | { kind: 'authenticated'; user: PortalUser; csrfToken: string | null }
   | { kind: 'unavailable'; message: string }
 
+interface PortalShellProps {
+  /** Current path — resolved by the same route table the server uses. */
+  path: string
+}
+
 /**
- * The authenticated area (Issue #47): LDAP login, session display, logout.
- *
- * Deliberately client-rendered — `/portal` is served as an empty document and
- * marked `noindex`; key management and usage follow in Issue #48.
+ * The authenticated area (Issues #47/#48): LDAP login, navigation, key
+ * management and the usage view. Deliberately client-rendered — `/portal/*` is
+ * served as an empty document and marked `noindex`; every page starts with
+ * `GET /api/auth/me`, so a dead session immediately shows the login form again.
  */
-export function PortalShell() {
+export function PortalShell({ path }: PortalShellProps) {
   const [view, setView] = useState<View>({ kind: 'loading' })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -89,19 +97,33 @@ export function PortalShell() {
     }
   }
 
-  return (
-    <>
-      <PageHeader
-        title="Portal"
-        lead="Anmeldung mit dem Schulkonto. Hier entstehen später die persönlichen API-Keys und die Verbrauchsübersicht."
-      />
-      {view.kind === 'loading' && <p className="muted">Anmeldestatus wird geprüft …</p>}
-      {view.kind === 'unavailable' && (
+  if (view.kind === 'loading') {
+    return (
+      <>
+        <PageHeader title="Portal" />
+        <p className="muted">Anmeldestatus wird geprüft …</p>
+      </>
+    )
+  }
+
+  if (view.kind === 'unavailable') {
+    return (
+      <>
+        <PageHeader title="Portal" />
         <Card>
           <p role="alert">{view.message}</p>
         </Card>
-      )}
-      {view.kind === 'anonymous' && (
+      </>
+    )
+  }
+
+  if (view.kind === 'anonymous') {
+    return (
+      <>
+        <PageHeader
+          title="Portal"
+          lead="Anmeldung mit dem Schulkonto. Danach verwaltest du hier deine API-Keys und siehst deinen Verbrauch."
+        />
         <Card title="Anmelden">
           <form className="ui-form" onSubmit={onSubmit} noValidate>
             <div className="ui-field">
@@ -149,28 +171,85 @@ export function PortalShell() {
             </div>
           </form>
         </Card>
-      )}
-      {view.kind === 'authenticated' && (
-        <Card title="Angemeldet">
-          <Prose>
-            <p>
-              Angemeldet als <strong>{view.user.displayName}</strong> (<code>{view.user.sam}</code>)
-              — Rolle: <strong>{roleLabel(view.user.role)}</strong>.
-            </p>
-            {view.user.mail !== null && (
-              <p className="muted">
-                Hinterlegte Adresse: {view.user.mail}. Key-Verwaltung und Verbrauchsanzeige folgen
-                in Arbeitsschritt #48.
-              </p>
-            )}
-          </Prose>
-          <div className="ui-form__actions">
+      </>
+    )
+  }
+
+  const page = matchPortalPage(path)
+
+  return (
+    <>
+      <nav className="portal-nav" aria-label="Portal">
+        <ul>
+          {PORTAL_PAGES.map((entry) => (
+            <li key={entry.path}>
+              <a
+                href={entry.path}
+                aria-current={entry.path === (page ?? '/portal') ? 'page' : undefined}
+              >
+                {entry.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <ul>
+          <li>
+            <span className="muted">
+              {view.user.displayName} ({roleLabel(view.user.role)})
+            </span>
+          </li>
+          <li>
             <Button variant="outline" onClick={() => void onLogout()} disabled={busy}>
               Abmelden
             </Button>
-          </div>
-        </Card>
+          </li>
+        </ul>
+      </nav>
+
+      {page === null && (
+        <>
+          <PageHeader title="Seite nicht gefunden" />
+          <Card>
+            <p>Diese Portalseite gibt es nicht.</p>
+            <Prose>
+              <p>
+                Zurück zur <a href="/portal">Übersicht</a>.
+              </p>
+            </Prose>
+          </Card>
+        </>
       )}
+
+      {page === '/portal' && (
+        <>
+          <PageHeader
+            title="Portal"
+            lead={`Angemeldet als ${view.user.displayName} (${view.user.sam}).`}
+          />
+          <Card title="Was du hier tun kannst">
+            <Prose>
+              <ul>
+                <li>
+                  <a href="/portal/keys">API-Keys</a> — Schlüssel für den KI-Proxy erzeugen,
+                  rotieren und widerrufen. Der Schlüssel wird genau einmal angezeigt.
+                </li>
+                <li>
+                  <a href="/portal/usage">Verbrauch</a> — Tokens und Anteil am Monatskontingent,
+                  aufgeschlüsselt nach Modell.
+                </li>
+              </ul>
+            </Prose>
+            {view.user.mail !== null && (
+              <p className="muted">Hinterlegte Adresse: {view.user.mail}</p>
+            )}
+          </Card>
+        </>
+      )}
+
+      {page === '/portal/keys' && (
+        <KeysPage csrfToken={view.csrfToken} onSessionExpired={() => void load()} />
+      )}
+      {page === '/portal/usage' && <UsagePage onSessionExpired={() => void load()} />}
     </>
   )
 }

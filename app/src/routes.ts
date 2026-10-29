@@ -106,6 +106,25 @@ export function isPortalPath(input: string): boolean {
 }
 
 /**
+ * Portal pages (Issue #48). Everything else under `/portal` is served the same
+ * noindex shell but shows a "not found" note — the nav below is the single
+ * source for the authenticated area's navigation and its labels.
+ */
+export const PORTAL_PAGES = [
+  { path: '/portal', label: 'Übersicht' },
+  { path: '/portal/keys', label: 'API-Keys' },
+  { path: '/portal/usage', label: 'Verbrauch' },
+] as const
+
+export type PortalPagePath = (typeof PORTAL_PAGES)[number]['path']
+
+export function matchPortalPage(input: string): PortalPagePath | null {
+  const path = normalizeRoutePath(input)
+  const match = PORTAL_PAGES.find((page) => page.path === path)
+  return match === undefined ? null : match.path
+}
+
+/**
  * Output location of a route inside `dist/`:
  * `/` -> `index.html`, `/status` -> `status/index.html`.
  */

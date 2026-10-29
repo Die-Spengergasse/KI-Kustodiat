@@ -23,6 +23,10 @@ export function testConfig(overrides: Partial<PortalConfig> = {}): PortalConfig 
       timeoutMs: 1_000,
     },
     litellm: { baseUrl: 'http://127.0.0.1:4000', adminKey: 'sk-test', timeoutMs: 1_000 },
+    keys: {
+      maxActiveKeys: { student: 10, teacher: 10, staff: 10, admin: 10 },
+      monthlyBudgetUsd: { student: 5, teacher: 5, staff: 5, admin: 5 },
+    },
     ...overrides,
   }
 }

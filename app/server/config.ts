@@ -10,6 +10,7 @@
  */
 
 import { existsSync, readFileSync } from 'node:fs'
+import { ROLES, type Role } from './db/schema'
 
 /** Where the host keeps the portal environment file (see the internal repo). */
 export const DEFAULT_ENV_FILE = '/etc/portal/portal.env'
@@ -20,6 +21,15 @@ const DEFAULT_LDAP_BASE_DN =
   'OU=Automatisch gewartete Benutzer,OU=Benutzer,OU=SPG,DC=htl-wien5,DC=schule'
 const DEFAULT_LDAP_BIND_DN =
   'CN=LDAP Test 01 (GRG),OU=LDAP,OU=Service-Accounts,OU=Manuell gewartete Benutzer,OU=Benutzer,OU=SPG,DC=htl-wien5,DC=schule'
+
+/** Soft limit of active keys per user (Issue #48) — the architecture's default of 10. */
+const DEFAULT_KEY_LIMIT = 10
+
+/**
+ * Monthly allowance applied to a gateway user that has none yet. Provisional
+ * until #49 introduces `portal.quota_policy`; the gateway stays the enforcer.
+ */
+const DEFAULT_MONTHLY_BUDGET_USD = 5
 
 export interface PortalRateLimitConfig {
   /** Window the failure counters are counted over, in seconds. */
@@ -46,6 +56,18 @@ export interface PortalLitellmConfig {
   timeoutMs: number
 }
 
+/**
+ * Key and budget policy (Issue #48). Both are per role so that students and
+ * teachers can be treated differently without a schema change; #49 replaces the
+ * monthly allowance with `portal.quota_policy`.
+ */
+export interface PortalKeysConfig {
+  /** Soft limit of active keys per user and role. */
+  maxActiveKeys: Record<Role, number>
+  /** Monthly allowance in USD applied to the gateway user when it has none. */
+  monthlyBudgetUsd: Record<Role, number>
+}
+
 export interface PortalConfig {
   databaseUrl: string
   /** HMAC key for the session and CSRF cookies. */
@@ -62,6 +84,7 @@ export interface PortalConfig {
   rateLimit: PortalRateLimitConfig
   ldap: PortalLdapConfig
   litellm: PortalLitellmConfig
+  keys: PortalKeysConfig
 }
 
 export type PortalConfigResult =
@@ -195,6 +218,30 @@ function boolEnv(name: string, fallback: boolean): boolean {
   return fallback
 }
 
+/** Non-negative money amount (USD). Rounded to cents, invalid input → fallback. */
+function moneyEnv(name: string, fallback: number, maximum: number): number {
+  const raw = process.env[name]
+  if (raw === undefined || raw === '') return fallback
+  const parsed = Number.parseFloat(raw)
+  if (!Number.isFinite(parsed) || parsed < 0) return fallback
+  return Math.min(maximum, Math.round(parsed * 100) / 100)
+}
+
+/** `PORTAL_KEY_LIMIT_<ROLE>` / `PORTAL_MONTHLY_BUDGET_USD_<ROLE>` with a shared default. */
+function perRole(
+  baseName: string,
+  fallbackName: string,
+  fallback: number,
+  parse: (name: string, fallback: number) => number,
+): Record<Role, number> {
+  const shared = parse(fallbackName, fallback)
+  const result = {} as Record<Role, number>
+  for (const role of ROLES) {
+    result[role] = parse(`${baseName}_${role.toUpperCase()}`, shared)
+  }
+  return result
+}
+
 /** Cookie `Secure` flag: on in production, off elsewhere unless forced. */
 export function resolveCookieSecure(env: NodeJS.ProcessEnv = process.env): boolean {
   const raw = env.PORTAL_COOKIE_SECURE?.toLowerCase()
@@ -264,6 +311,20 @@ export function loadPortalConfig(): PortalConfigResult {
         baseUrl: stringEnv('PORTAL_LITELLM_URL', 'http://127.0.0.1:4000').replace(/\/+$/, ''),
         adminKey: readSecret(LITELLM_ADMIN_KEY) ?? '',
         timeoutMs: intEnv('PORTAL_LITELLM_TIMEOUT_MS', 10_000, 500, 120_000),
+      },
+      keys: {
+        maxActiveKeys: perRole(
+          'PORTAL_KEY_LIMIT',
+          'PORTAL_KEY_LIMIT_DEFAULT',
+          DEFAULT_KEY_LIMIT,
+          (name, fallback) => intEnv(name, fallback, 1, 1000),
+        ),
+        monthlyBudgetUsd: perRole(
+          'PORTAL_MONTHLY_BUDGET_USD',
+          'PORTAL_MONTHLY_BUDGET_USD_DEFAULT',
+          DEFAULT_MONTHLY_BUDGET_USD,
+          (name, fallback) => moneyEnv(name, fallback, 100_000),
+        ),
       },
     },
   }

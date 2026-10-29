@@ -75,6 +75,9 @@ export async function provisionLitellmUser(
     user_id: input.userId,
     user_alias: input.alias,
     metadata: { source: 'kik-portal' },
+    // Keys are created through the portal (#48), never as a side effect of the
+    // user creation — otherwise every account would carry a secret nobody saw.
+    auto_create_key: false,
   }
   if (input.mail !== null && input.mail !== '') body.user_email = input.mail
 
