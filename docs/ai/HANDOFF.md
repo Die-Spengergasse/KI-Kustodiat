@@ -13,8 +13,8 @@ Stand: 2026-10-29 · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token 
   Recognition darauf filtert und sonst auf **alle** Modelle zurückfällt.
   VHost nur `/v1/audio/transcriptions` + `/v1/models` (alles andere 404, JSON-
   Fehler für 429/502–504), `limit_req` 60 r/min + `limit_conn` 8 pro IP,
-  `proxy_pass` **ohne** URI. **Masterkey rotiert** und nur noch in
-  `gregor:/opt/litellm/.env` + `/etc/litellm/litellm.env`; Open WebUI zieht
+  `proxy_pass` **ohne** URI. **Masterkey rotiert** und nur noch auf den beiden Servern
+  (`gregor:/opt/litellm/.env` + Open-WebUI-SQLite-Config, `/etc/litellm/litellm.env`); Open WebUI zieht
   seinen Key aus der SQLite-Config und bleibt am direkten Docker-Netz
   (bewusst ohne Abrechnung). Portal setzt neu `rpm_limit` je Key
   (`PORTAL_RPM_LIMIT*`, Default 120/min — STT-Spend ist 0, das ist die einzige
