@@ -174,6 +174,7 @@ export async function registerKeyRoutes(app: FastifyInstance): Promise<void> {
         label: labelFromBody(request.body),
         limit: context.config.keys.maxActiveKeys[context.user.role],
         monthlyBudgetUsd: context.config.keys.monthlyBudgetUsd[context.user.role],
+        rpmLimit: context.config.keys.rpmLimit[context.user.role],
       })
       // The only response that ever carries the clear-text key.
       return reply
@@ -201,7 +202,12 @@ export async function registerKeyRoutes(app: FastifyInstance): Promise<void> {
     }
 
     try {
-      const result = await rotateKey(depsFor(context, request), ownerOf(context), token)
+      const result = await rotateKey(
+        depsFor(context, request),
+        ownerOf(context),
+        token,
+        context.config.keys.rpmLimit[context.user.role],
+      )
       return reply
         .code(201)
         .header('cache-control', 'no-store')

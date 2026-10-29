@@ -106,8 +106,19 @@ describe('litellm client', () => {
     expect(JSON.parse(captured?.body ?? '{}')).toEqual({ user_id: 'graf', key_alias: 'Laptop' })
   })
 
-  it('refuses a generate response that has no key or no token', async () => {
-    responder = () => ({ status: 200, body: { key: 'sk-cleartext' } })
+  it('sends the rpm limit when one is given (Issue #55)', async () => {
+    responder = () => ({ status: 200, body: { key: 'sk-cleartext', ...KEY_ROW } })
+
+    await client().generateKey({ userId: 'graf', alias: 'Laptop', rpmLimit: 120 })
+
+    expect(JSON.parse(captured?.body ?? '{}')).toEqual({
+      user_id: 'graf',
+      key_alias: 'Laptop',
+      rpm_limit: 120,
+    })
+  })
+
+  it('refuses a generate response that has no key or no token', async () => {    responder = () => ({ status: 200, body: { key: 'sk-cleartext' } })
     await expect(client().generateKey({ userId: 'graf', alias: null })).rejects.toBeInstanceOf(
       LitellmError,
     )

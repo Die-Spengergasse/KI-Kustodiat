@@ -31,6 +31,18 @@ const DEFAULT_KEY_LIMIT = 10
  */
 const DEFAULT_MONTHLY_BUDGET_USD = 5
 
+/**
+ * Requests per minute a key may make across all models (Issue #55).
+ *
+ * Deliberately generous: one key is meant to serve chat *and* dictation, and
+ * agentic coding in opencode easily produces dozens of requests per minute. The
+ * value bounds a runaway client (a retry loop would otherwise queue the single
+ * speech-to-text GPU forever) without throttling normal work; #49 tightens it
+ * per role. Speech-to-text costs no money, so this is the only fairness knob
+ * for dictation — the monthly budget does not apply there.
+ */
+const DEFAULT_RPM_LIMIT = 120
+
 export interface PortalRateLimitConfig {
   /** Window the failure counters are counted over, in seconds. */
   windowSeconds: number
@@ -66,6 +78,8 @@ export interface PortalKeysConfig {
   maxActiveKeys: Record<Role, number>
   /** Monthly allowance in USD applied to the gateway user when it has none. */
   monthlyBudgetUsd: Record<Role, number>
+  /** Requests per minute a key may make, across all models. */
+  rpmLimit: Record<Role, number>
 }
 
 export interface PortalConfig {
@@ -324,6 +338,9 @@ export function loadPortalConfig(): PortalConfigResult {
           'PORTAL_MONTHLY_BUDGET_USD_DEFAULT',
           DEFAULT_MONTHLY_BUDGET_USD,
           (name, fallback) => moneyEnv(name, fallback, 100_000),
+        ),
+        rpmLimit: perRole('PORTAL_RPM_LIMIT', 'PORTAL_RPM_LIMIT_DEFAULT', DEFAULT_RPM_LIMIT, (name, fallback) =>
+          intEnv(name, fallback, 1, 100_000),
         ),
       },
     },

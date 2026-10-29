@@ -56,7 +56,12 @@ export class LitellmError extends Error {
 
 export interface LitellmClient {
   listKeys(userId: string): Promise<LitellmKey[]>
-  generateKey(input: { userId: string; alias: string | null }): Promise<GeneratedKey>
+  generateKey(input: {
+    userId: string
+    alias: string | null
+    /** Requests per minute for the new key, across all models (Issue #55). */
+    rpmLimit?: number | null
+  }): Promise<GeneratedKey>
   /** `true` when the gateway deleted the key, `false` when it was already gone. */
   deleteKey(token: string): Promise<boolean>
   getUser(userId: string): Promise<LitellmUser | null>
@@ -173,6 +178,7 @@ export function createLitellmClient(
     async generateKey(input): Promise<GeneratedKey> {
       const body: Record<string, unknown> = { user_id: input.userId }
       if (input.alias !== null) body.key_alias = input.alias
+      if (input.rpmLimit !== undefined && input.rpmLimit !== null) body.rpm_limit = input.rpmLimit
       const { status, payload, text } = await request('/key/generate', { method: 'POST', body })
       if (status < 200 || status >= 300 || payload === null) {
         throw fail('LiteLLM /key/generate', status, text)

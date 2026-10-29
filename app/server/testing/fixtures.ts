@@ -26,6 +26,7 @@ export function testConfig(overrides: Partial<PortalConfig> = {}): PortalConfig 
     keys: {
       maxActiveKeys: { student: 10, teacher: 10, staff: 10, admin: 10 },
       monthlyBudgetUsd: { student: 5, teacher: 5, staff: 5, admin: 5 },
+    rpmLimit: { student: 120, teacher: 120, staff: 120, admin: 120 },
     },
     ...overrides,
   }

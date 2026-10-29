@@ -36,7 +36,7 @@ const CREATED_AT = '2026-10-20T10:00:00.000000Z'
 
 class FakeClient implements LitellmClient {
   readonly keys = new Map<string, LitellmKey>()
-  readonly generateCalls: Array<{ userId: string; alias: string | null }> = []
+  readonly generateCalls: Array<{ userId: string; alias: string | null; rpmLimit?: number | null }> = []
   monthlyBudgetUsd: number | null = null
   private counter = 0
 
@@ -44,7 +44,11 @@ class FakeClient implements LitellmClient {
     return [...this.keys.values()].filter((key) => key.userId === userId)
   }
 
-  async generateKey(input: { userId: string; alias: string | null }): Promise<GeneratedKey> {
+  async generateKey(input: {
+    userId: string
+    alias: string | null
+    rpmLimit?: number | null
+  }): Promise<GeneratedKey> {
     this.generateCalls.push(input)
     this.counter += 1
     const token = this.counter.toString(16).padStart(64, '0')
@@ -170,6 +174,19 @@ describe('createKey', () => {
     ).rejects.toEqual(
       new KeyValidationError('gateway user is not provisioned', 'user_not_provisioned'),
     )
+  })
+
+  it('hands the role rate limit to the gateway (Issue #55)', async () => {
+    const { client, deps } = setup()
+
+    await createKey(deps, OWNER, {
+      label: 'Test',
+      limit: 10,
+      monthlyBudgetUsd: 5,
+      rpmLimit: 60,
+    })
+
+    expect(client.generateCalls.at(-1)?.rpmLimit).toBe(60)
   })
 
   it('creates a key, stores metadata but no secret, and audits it', async () => {

@@ -174,6 +174,8 @@ export interface CreateKeyInput {
   limit: number
   /** Monthly allowance in USD, applied to the gateway user when it has none. */
   monthlyBudgetUsd: number
+  /** Requests per minute for the new key, across all models (Issue #55). */
+  rpmLimit?: number
 }
 
 /**
@@ -217,7 +219,11 @@ export async function createKey(
   }
 
   await ensureUserBudget(deps, owner, input.monthlyBudgetUsd)
-  const generated = await deps.client.generateKey({ userId: owner.sam, alias: portalAlias(owner) })
+  const generated = await deps.client.generateKey({
+    userId: owner.sam,
+    alias: portalAlias(owner),
+    ...(input.rpmLimit === undefined ? {} : { rpmLimit: input.rpmLimit }),
+  })
   await deps.store.insert({
     tokenHash: generated.key.token,
     userId: owner.userId,
@@ -241,12 +247,18 @@ export async function rotateKey(
   deps: KeyServiceDeps,
   owner: KeyOwner,
   token: string,
+  /** Requests per minute for the replacement key (Issue #55). */
+  rpmLimit?: number,
 ): Promise<RotateResult> {
   const keys = await listKeys(deps, owner)
   const old = keys.find((key) => key.token === token && key.status === 'active')
   if (old === undefined) throw new KeyNotFoundError()
 
-  const generated = await deps.client.generateKey({ userId: owner.sam, alias: portalAlias(owner) })
+  const generated = await deps.client.generateKey({
+    userId: owner.sam,
+    alias: portalAlias(owner),
+    ...(rpmLimit === undefined ? {} : { rpmLimit }),
+  })
   await deps.store.insert({
     tokenHash: generated.key.token,
     userId: owner.userId,

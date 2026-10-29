@@ -108,6 +108,14 @@ Regeln, die der Code durchsetzt:
   `Europe/Vienna` (`server/usage/repository.ts`).
 - **Weiches Limit pro Rolle** (Default 10 aktive Keys). Rotieren ist auch am Limit
   erlaubt, weil dabei ein Key wegfällt.
+- **Rate-Limit am Key (Issue #55).** Jeder erzeugte Key bekommt `rpm_limit`
+  (`PORTAL_RPM_LIMIT_DEFAULT`, Default **120/min**, je Rolle überschreibbar wie
+  die übrigen Knöpfe). Das Limit gilt **pro Key über alle Modelle**: derselbe
+  Schlüssel bedient Chat, Coding und Diktat, und agentisches Coding erzeugt
+  leicht Dutzende Requests pro Minute — deshalb großzügig. Es begrenzt
+  Runaway-Clients (Retry-Schleifen), nicht normale Arbeit; #49 verschärft es je
+  Rolle. Für Speech-to-Text ist es die **einzige** Fairness-Mechanik, weil dort
+  kein Geld fließt (Spend ≈ 0, siehe PITFALLS).
 - **Alias ≠ Bezeichnung.** LiteLLM verlangt global eindeutige `key_alias`
   (verifiziert: „Key with alias '…' already exists. Unique key aliases across all
   keys are required"), ein Label wie „Laptop" wäre also pro Person nur einmal und
@@ -149,7 +157,8 @@ Datenquelle berührt nur diese Datei.
 `PORTAL_KEY_LIMIT_DEFAULT` (10) und je Rolle `PORTAL_KEY_LIMIT_STUDENT` /
 `_TEACHER` / `_STAFF` / `_ADMIN`; `PORTAL_MONTHLY_BUDGET_USD_DEFAULT` (5, vorläufig
 bis #49) und je Rolle `PORTAL_MONTHLY_BUDGET_USD_STUDENT` / `_TEACHER` / `_STAFF` /
-`_ADMIN`.
+`_ADMIN`; `PORTAL_RPM_LIMIT_DEFAULT` (120) und je Rolle `PORTAL_RPM_LIMIT_STUDENT` /
+`_TEACHER` / `_STAFF` / `_ADMIN`.
 
 ### Verifikation
 

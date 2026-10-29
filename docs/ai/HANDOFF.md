@@ -1,8 +1,29 @@
 # HANDOFF — KI-Kustodiat
 
-Stand: 2026-10-29 · **Website + Token-Portal live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
+Stand: 2026-10-29 · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token statt Masterkey** · **Website + Token-Portal live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
 
 ## Gerade abgeschlossen
+- **2026-10-29 — Speech-to-Text über das Gateway (#55):** `whisper.kik…` zeigt
+  nicht mehr auf gregor, sondern auf den Gateway (`127.0.0.1:4000`) — Clients
+  ändern **nur den Token**, die URL bleibt:
+  `https://whisper.kik.spengergasse.at/v1/`. Modell **`whisper-large-v3`**
+  (+ Alias `large-v3`, auslaufend) in `LiteLLM_ProxyModelTable`
+  (`mode: audio_transcription`, `api_base http://gregor.kik:11437/v1`); der
+  Name enthält bewusst „whisper", weil die STT-Discovery in Polished
+  Recognition darauf filtert und sonst auf **alle** Modelle zurückfällt.
+  VHost nur `/v1/audio/transcriptions` + `/v1/models` (alles andere 404, JSON-
+  Fehler für 429/502–504), `limit_req` 60 r/min + `limit_conn` 8 pro IP,
+  `proxy_pass` **ohne** URI. **Masterkey rotiert** und nur noch in
+  `gregor:/opt/litellm/.env` + `/etc/litellm/litellm.env`; Open WebUI zieht
+  seinen Key aus der SQLite-Config und bleibt am direkten Docker-Netz
+  (bewusst ohne Abrechnung). Portal setzt neu `rpm_limit` je Key
+  (`PORTAL_RPM_LIMIT*`, Default 120/min — STT-Spend ist 0, das ist die einzige
+  Fairness-Mechanik). Verifiziert: Transkription 200 inkl. `verbose_json`/
+  `duration`, alter Key 401, `/docs` 404, 5 sequenzielle Aufrufe 200, Sturm →
+  429 (JSON), Website/Portal/`api.kik`/Open WebUI unberührt. **Manuell offen:**
+  Token in Polished Recognition + `aitranscribe` tauschen (Modell einmal neu
+  wählen), danach Alias `large-v3` entfernen. Details:
+  `KI-Kustodiat-intern:whisper/README.md`, `infra/hosts/kik.md`.
 - **2026-10-29 — Website-Ausrollung + Portal live (#51, AP9):**
   `https://kik.spengergasse.at` liefert die vorgerenderte App aus dem Release-Symlink
   `/srv/kik-app/current/dist` (`/srv/kik-app/releases/<ts>/dist`, 5 Releases Vorhalt,
