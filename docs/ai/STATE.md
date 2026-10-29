@@ -4,8 +4,7 @@
 2026-10-29 (spät): **Speech-to-Text hängt am Gateway (#55)** — `whisper.kik…`
 liefert nur noch mit Portal-Token (`whisper-large-v3`, Alias `large-v3`), der
 geteilte Masterkey ist rotiert und aus allen Clients verschwunden; Open WebUI
-bleibt am direkten Backend. Portal setzt `rpm_limit` je Key mit. Manuell offen:
-Token in Polished Recognition/`aitranscribe` tauschen.
+bleibt am direkten Backend. Portal setzt `rpm_limit` je Key mit. Clients migriert, Alias `large-v3` entfernt (Suite `scripts/test-stt-api.mjs` prüft, dass er nicht zurückkommt).
 Davor 2026-10-29: **Website und Portal sind live (AP9, #51)** — `https://kik.spengergasse.at`
 wird static-first aus einem Release-Symlink (`/srv/kik-app/current/dist`) bedient, `/portal`
 und die Portal-API laufen über `kik-portal.service` (`User=kik-app`, systemweites Node 24),

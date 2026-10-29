@@ -41,6 +41,7 @@ const BASE = (process.env.STT_BASE ?? 'https://whisper.kik.spengergasse.at').rep
 const GATEWAY = (process.env.LITELLM_INTERNAL ?? 'http://127.0.0.1:4000').replace(/\/+$/, '')
 const ADMIN_KEY_FILE = process.env.PROXY_ADMIN_KEY_FILE ?? '/etc/litellm/proxy_admin.key'
 const MODEL = 'whisper-large-v3'
+/** Compatibility alias, removed once every client was migrated (2026-10-29). */
 const ALIAS = 'large-v3'
 const RUN_ID = Date.now().toString(36)
 
@@ -272,7 +273,10 @@ try {
     const payload = await response.json()
     const ids = payload.data.map((m) => m.id)
     assert(ids.includes(MODEL), `missing ${MODEL} in ${ids.join(', ')}`)
-    assert(ids.includes(ALIAS), `missing alias ${ALIAS} (until clients are migrated)`)
+    assert(
+      !ids.includes(ALIAS),
+      `alias ${ALIAS} is back — the migration is finished, the alias must stay gone`,
+    )
     const modes = payload.data.filter((m) => m.mode === 'audio_transcription').map((m) => m.id)
     assert(modes.includes(MODEL), `${MODEL} has no mode audio_transcription`)
     return ids.join(', ')
@@ -344,10 +348,12 @@ try {
     return 'JSON {text} (not plain text)'
   })
 
-  await check(`alias ${ALIAS} → 200`, async () => {
+  await check(`removed alias ${ALIAS} → 4xx`, async () => {
     const response = await transcribe(key.secret, { model: ALIAS })
-    await expectStatus(response, 200, ALIAS)
-    return 'alias works'
+    const status = response.status
+    await response.text()
+    assert(status >= 400 && status < 500, `expected 4xx for the removed alias, got ${status}`)
+    return `HTTP ${status}`
   })
 
   // -- 5. errors ----------------------------------------------------------

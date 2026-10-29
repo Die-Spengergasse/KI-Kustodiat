@@ -7,7 +7,8 @@ Stand: 2026-10-29 · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token 
   nicht mehr auf gregor, sondern auf den Gateway (`127.0.0.1:4000`) — Clients
   ändern **nur den Token**, die URL bleibt:
   `https://whisper.kik.spengergasse.at/v1/`. Modell **`whisper-large-v3`**
-  (+ Alias `large-v3`, auslaufend) in `LiteLLM_ProxyModelTable`
+  (Alias `large-v3` ebenfalls, am selben Abend nach der Client-Migration
+  entfernt) in `LiteLLM_ProxyModelTable`
   (`mode: audio_transcription`, `api_base http://gregor.kik:11437/v1`); der
   Name enthält bewusst „whisper", weil die STT-Discovery in Polished
   Recognition darauf filtert und sonst auf **alle** Modelle zurückfällt.
