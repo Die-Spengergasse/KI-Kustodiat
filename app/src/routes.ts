@@ -1,0 +1,114 @@
+/**
+ * Single source of truth for the public route table.
+ *
+ * Shared by the client (link + render decisions), the Fastify server (which file to
+ * serve, real 404 handling) and the prerender script (which files to write). Keeping
+ * this list framework-free is what makes it unit-testable without a DOM.
+ */
+
+interface RouteDefinition {
+  /** URL path, no trailing slash except for the root. */
+  path: string
+  /** Document title used for the prerendered <title>. */
+  title: string
+  /** Page heading; the <h1> is part of the prerendered markup. */
+  heading: string
+  /** Meta description for the prerendered document. */
+  description: string
+}
+
+/** Placeholder content until the Markdown pipeline from `website/content/` is wired up. */
+export const PUBLIC_ROUTES = [
+  {
+    path: '/',
+    title: 'KI-Kustodiat der Spengergasse',
+    heading: 'KI-Kustodiat der Spengergasse',
+    description:
+      'KI-Kustodiat der Spengergasse — datenschutzkonforme KI-Infrastruktur für Unterricht und Coding.',
+  },
+  {
+    path: '/status',
+    title: 'Status — KI-Kustodiat',
+    heading: 'Status des Projekts',
+    description: 'Aktueller Betriebsstatus des KI-Kustodiats der Spengergasse.',
+  },
+  {
+    path: '/milestones',
+    title: 'Milestones — KI-Kustodiat',
+    heading: 'Milestones',
+    description: 'Meilensteine und Projektfortschritt des KI-Kustodiats.',
+  },
+  {
+    path: '/angebote',
+    title: 'Angebote — KI-Kustodiat',
+    heading: 'Angebote',
+    description: 'Token-Preise, Gratis- und Bildungsangebote sowie Hardware-Optionen.',
+  },
+  {
+    path: '/faq',
+    title: 'FAQ — KI-Kustodiat',
+    heading: 'FAQ',
+    description: 'Häufig gestellte Fragen zum KI-Kustodiat der Spengergasse.',
+  },
+  {
+    path: '/openwebui-anleitung',
+    title: 'Open WebUI — Anleitung',
+    heading: 'Open WebUI — Anleitung',
+    description: 'Anleitung zum Zugang zu Open WebUI und zum Einbinden eigener KI-Modelle.',
+  },
+] as const satisfies readonly RouteDefinition[]
+
+/** Literal-typed view of a route, used to keep the page registry exhaustive. */
+export type PublicRoute = (typeof PUBLIC_ROUTES)[number]
+export type PublicRoutePath = PublicRoute['path']
+
+/**
+ * Normalizes an arbitrary request target (`/status/`, `/status?x=1`, a full URL)
+ * to the canonical route path form used by the route table.
+ */
+export function normalizeRoutePath(input: string): string {
+  const withoutOrigin = input.replace(/^[a-z][a-z0-9+.-]*:\/\/[^/]*/i, '')
+  const pathOnly = withoutOrigin.split(/[?#]/)[0] ?? '/'
+  const withLeadingSlash = pathOnly.startsWith('/') ? pathOnly : `/${pathOnly}`
+  const collapsed = withLeadingSlash.replace(/\/{2,}/g, '/')
+  const trimmed = collapsed.length > 1 ? collapsed.replace(/\/+$/, '') : collapsed
+  return trimmed === '' ? '/' : trimmed
+}
+
+export function matchPublicRoute(input: string): PublicRoute | undefined {
+  const path = normalizeRoutePath(input)
+  return PUBLIC_ROUTES.find((route) => route.path === path)
+}
+
+/** Everything under `/portal` is the client-rendered (noindex) authenticated area. */
+export function isPortalPath(input: string): boolean {
+  const path = normalizeRoutePath(input)
+  return path === '/portal' || path.startsWith('/portal/')
+}
+
+/**
+ * Output location of a route inside `dist/`:
+ * `/` -> `index.html`, `/status` -> `status/index.html`.
+ */
+export function outputFilePath(input: string): string {
+  const path = normalizeRoutePath(input)
+  return path === '/' ? 'index.html' : `${path.slice(1)}/index.html`
+}
+
+/**
+ * Legacy hash URLs (`/#/status`) still exist in the wild. Returns the path to
+ * redirect to, or `null` when the hash is not a legacy route.
+ */
+export function legacyHashTarget(hash: string): string | null {
+  if (!hash.startsWith('#/')) {
+    return null
+  }
+  return normalizeRoutePath(hash.slice(1))
+}
+
+/**
+ * Sentinel path used to prerender the 404 document with the regular layout. It is
+ * intentionally not part of {@link PUBLIC_ROUTES}, so it always resolves to the
+ * not-found page.
+ */
+export const NOT_FOUND_PAGE_PATH = '/404'

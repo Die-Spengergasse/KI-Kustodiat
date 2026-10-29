@@ -1,0 +1,36 @@
+/* Minimal-Basis ohne Design-Tokens — bewusst noch keine Gestaltung (Issue #42). */
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+.site-header,
+main,
+.site-footer {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.site-header {
+  padding-top: 1.5rem;
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer {
+  padding-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
