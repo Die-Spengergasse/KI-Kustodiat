@@ -13,6 +13,7 @@
     "build:client": "vite build",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr",
     "prerender": "tsx scripts/prerender.ts",
+    "capture:reference": "tsx scripts/capture-reference.ts",
     "start": "tsx server/index.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -26,6 +27,8 @@
     "fastify": "^5.12.7",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "tsx": "^4.23.15"
   },
   "devDependencies": {

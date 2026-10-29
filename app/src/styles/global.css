@@ -20,11 +20,11 @@ html {
   background-color: var(--color-canvas);
 }
 
+/* No sticky footer on purpose: the old site's document ends right after the
+ * footer, so a short page (like the start page) leaves the rest of the viewport
+ * empty. A forced `min-height: 100vh` would push the footer to the bottom edge
+ * and change the rendered page height. */
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  min-height: 100dvh;
   margin: 0;
   background-color: var(--color-canvas);
   color: var(--color-fg);
@@ -71,8 +71,12 @@ b {
   font-weight: var(--font-weight-strong);
 }
 
+/* The old page rendered `<small>` at the browser default `smaller`
+ * (0.8333em → 11.67px at the 87.5% root); Pico's own `--pico-font-size` on
+ * `small` is never consumed by a rule. Matching the rendered size keeps the
+ * footer text width identical. */
 small {
-  font-size: var(--text-small);
+  font-size: smaller;
 }
 
 mark {
@@ -172,10 +176,15 @@ p {
   margin: 0 0 var(--spacing-section);
 }
 
+/* ---------------------------------------------------------------------------
+ * List indent: the old page never set one, so the browser default (40px)
+ * applied — see `--spacing-list-indent`.
+ * ------------------------------------------------------------------------- */
+
 ul,
 ol {
   margin: 0 0 var(--spacing-section);
-  padding-inline-start: 1.5rem;
+  padding-inline-start: var(--spacing-list-indent);
 }
 
 ul {
@@ -254,6 +263,9 @@ pre {
   border-radius: var(--radius-control);
   background-color: var(--color-code-bg);
   color: var(--color-code-fg);
+  /* Pico resets the weight here, so `code` inside `<strong>` stays regular. */
+  font-weight: var(--font-weight-body);
+  line-height: initial;
 }
 
 code,
@@ -395,68 +407,54 @@ tfoot td {
   padding-block: var(--spacing-block);
 }
 
-.site-header__bar {
+/* Header bar: the old site's `<nav>` — brand on the left, theme toggle and the
+ * light/dark logo on the right, both groups as `<ul>` lists. The spacing values
+ * are Pico's `nav` rules (li padding 1rem/0.5rem, link padding 0.5rem pulled
+ * back by a negative margin), because those are what the live page renders. */
+.site-header__nav {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-gutter);
 }
 
-.site-header__brand {
-  color: var(--color-fg);
-  text-decoration: none;
-}
-
-.site-header__brand:hover {
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-.site-header__actions {
+.site-header__nav ul {
   display: flex;
   align-items: center;
-  gap: var(--spacing-nav-x);
-}
-
-.site-nav ul {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-nav-x);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.site-nav li {
-  margin-bottom: 0;
+.site-header__nav ul:first-of-type {
+  margin-inline-start: calc(var(--spacing-nav-x) * -1);
 }
 
-.site-nav a {
+.site-header__nav ul:last-of-type {
+  margin-inline-end: calc(var(--spacing-nav-x) * -1);
+}
+
+.site-header__nav li {
+  display: block;
+  margin: 0;
+  padding: var(--spacing-nav-item-y) var(--spacing-nav-x);
+}
+
+.site-header__nav li :where(a) {
   display: inline-block;
+  margin: calc(var(--spacing-nav-y) * -1);
   padding: var(--spacing-nav-y) var(--spacing-nav-x);
   border-radius: var(--radius-control);
-  color: var(--color-fg);
+}
+
+.site-header__nav li :where(a):not(:hover) {
   text-decoration: none;
 }
 
-.site-nav a:hover,
-.site-nav a[aria-current='page'] {
-  color: var(--color-primary);
-  text-decoration: underline;
-  text-decoration-color: var(--color-primary-underline);
-}
+/* Nav buttons in the header drop one border width of vertical padding — Pico's
+ * `nav li button` rule; `.ui-button--nav` below carries the same values. */
 
 /* Logo: two files, one per theme. Per CONVENTIONS the show/hide rules must keep
  * the same specificity as the base rule (`.logo img`), otherwise the dark logo
- * leaks through in the light theme. The media query is the `auto` fallback for
- * browsers with JS disabled. */
-.logo {
-  display: block;
-  line-height: 0;
-}
-
+ * leaks through in the light theme. */
 .logo img {
   width: auto;
   height: 38px;
@@ -496,13 +494,11 @@ tfoot td {
 }
 
 .site-main {
-  flex: 1 0 auto;
   padding-block: var(--spacing-block);
 }
 
 .site-footer {
   padding-block: var(--spacing-block);
-  font-size: var(--text-small);
 }
 
 /* ==========================================================================
@@ -566,6 +562,22 @@ tfoot td {
   --ui-button-fg-hover: var(--color-primary-hover);
 }
 
+/* Pico's `.outline.secondary` — the muted header button (theme toggle). */
+.ui-button--secondary {
+  --ui-button-bg: transparent;
+  --ui-button-bg-hover: transparent;
+  --ui-button-border: var(--color-secondary);
+  --ui-button-border-hover: var(--color-secondary-hover);
+  --ui-button-fg: var(--color-secondary);
+  --ui-button-fg-hover: var(--color-secondary-hover);
+}
+
+/* Buttons inside the header nav: Pico shrinks their padding to the nav link
+ * spacing minus the border width, which is why the old toggle is 33.5px tall. */
+.ui-button--nav {
+  padding: calc(var(--spacing-nav-y) - var(--border-hairline) * 2) var(--spacing-nav-x);
+}
+
 /* Card — Pico `article`: surface, radius, elevation. */
 .ui-card {
   padding: var(--spacing-block);
@@ -598,6 +610,11 @@ tfoot td {
 /* Old page: `.home > p:first-of-type { font-size: 1.05em }`. */
 .prose > p:first-of-type {
   font-size: var(--text-lead);
+}
+
+/* Old page: `.home h1 { margin-bottom: 2.5rem }`. */
+.home h1 {
+  margin-bottom: var(--spacing-home-h1);
 }
 
 /* Old page: `.muted { color: var(--pico-muted-color); font-size: 0.9em }`. */

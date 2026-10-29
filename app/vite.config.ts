@@ -1,3 +1,4 @@
+import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitest/config'
@@ -7,6 +8,12 @@ import { defineConfig } from 'vitest/config'
 //   vite build --ssr src/entry-server   -> .ssr/entry-server.js for the prerender step
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    // Page text stays in the old static site: `src/lib/content.ts` imports
+    // `website/content/index.md` with `?raw`, one directory above the app root.
+    // The dev server has to be allowed to read that directory.
+    fs: { allow: [import.meta.dirname, path.resolve(import.meta.dirname, '..')] },
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,

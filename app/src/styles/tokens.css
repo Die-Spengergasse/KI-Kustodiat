@@ -82,6 +82,15 @@
   --spacing-table-y: 0.5rem;
   --spacing-list-item: 0.25rem;
 
+  /* The old page never styled lists, so the browser's `padding-inline-start`
+   * applied: an absolute 40px (not a font-relative value), which is the indent
+   * the live page renders. */
+  --spacing-list-indent: 40px;
+
+  /* Old page: `.home h1 { margin-bottom: 2.5rem }` (larger gap under the start
+   * page headline than the generic `--spacing-section`). */
+  --spacing-home-h1: 2.5rem;
+
   /* Pico: --pico-typography-spacing-top per heading level (margin above a
    * heading that follows a block). */
   --spacing-heading-1: 3rem;

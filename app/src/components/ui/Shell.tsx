@@ -1,10 +1,7 @@
 import type { ReactNode } from 'react'
-import { PUBLIC_ROUTES } from '../../routes'
 import { ThemeToggle } from './ThemeToggle'
 
 export interface ShellProps {
-  /** Current route path, used for `aria-current` in the navigation. */
-  path: string
   children: ReactNode
 }
 
@@ -13,10 +10,14 @@ const LOGO_DARK = '/assets/spengergasse-logo-dark.png'
 
 /**
  * Page frame shared by the public site and the portal: skip link, header with
- * brand, route navigation, theme toggle and the light/dark logo, the main
- * region and the footer of the old site.
+ * brand, theme toggle and the light/dark logo, the main region and the footer.
+ *
+ * The header deliberately carries no route navigation: the old site had none
+ * either — every page is reached through the links inside the page content
+ * (`website/content/*.md`). Keeping the frame that way is what makes the
+ * prerendered start page look exactly like the live one.
  */
-export function Shell({ path, children }: ShellProps) {
+export function Shell({ children }: ShellProps) {
   return (
     <>
       <a className="skip-link" href="#main">
@@ -24,30 +25,22 @@ export function Shell({ path, children }: ShellProps) {
       </a>
       <header className="site-header">
         <div className="container">
-          <div className="site-header__bar">
-            <a className="site-header__brand" href="/">
-              <strong>KI-Kustodiat</strong>
-            </a>
-            <div className="site-header__actions">
-              <ThemeToggle />
-              <a className="logo" href="/" aria-label="HTL Spengergasse — Startseite">
-                <img className="logo-light" src={LOGO_LIGHT} alt="HTL Spengergasse" />
-                <img className="logo-dark" src={LOGO_DARK} alt="" aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-          <nav className="site-nav" aria-label="Hauptnavigation">
+          <nav className="site-header__nav">
             <ul>
-              {PUBLIC_ROUTES.map((route) => (
-                <li key={route.path}>
-                  <a href={route.path} aria-current={route.path === path ? 'page' : undefined}>
-                    {route.heading}
-                  </a>
-                </li>
-              ))}
               <li>
-                <a href="/portal" aria-current={path.startsWith('/portal') ? 'page' : undefined}>
-                  Portal
+                <a className="site-header__brand" href="/">
+                  <strong>KI-Kustodiat</strong>
+                </a>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <ThemeToggle />
+              </li>
+              <li>
+                <a className="logo" href="/" aria-label="HTL Spengergasse — Startseite">
+                  <img className="logo-light" src={LOGO_LIGHT} alt="HTL Spengergasse" />
+                  <img className="logo-dark" src={LOGO_DARK} alt="" aria-hidden="true" />
                 </a>
               </li>
             </ul>

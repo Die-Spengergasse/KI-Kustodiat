@@ -17,7 +17,11 @@ interface RouteDefinition {
   description: string
 }
 
-/** Placeholder content until the Markdown pipeline from `website/content/` is wired up. */
+/**
+ * The home entry renders `website/content/index.md`; its `heading` must stay in
+ * sync with that file's `<h1>` (asserted in `lib/content.test.ts`). The other
+ * entries are still placeholders until their Markdown is wired up (AP3b).
+ */
 export const PUBLIC_ROUTES = [
   {
     path: '/',

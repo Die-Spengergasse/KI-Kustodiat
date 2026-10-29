@@ -14,7 +14,7 @@ export function App({ path }: { path: string }) {
   // the page nor its components survive in a production build.
   if (import.meta.env.DEV && isDesignRoute(path)) {
     return (
-      <Shell path={path}>
+      <Shell>
         <DesignPage />
       </Shell>
     )
@@ -22,7 +22,7 @@ export function App({ path }: { path: string }) {
 
   if (isPortalPath(path)) {
     return (
-      <Shell path={path}>
+      <Shell>
         <PortalShell />
       </Shell>
     )
@@ -32,7 +32,7 @@ export function App({ path }: { path: string }) {
   const Page = route === undefined ? undefined : PUBLIC_PAGE_COMPONENTS[route.path]
 
   return (
-    <Shell path={route?.path ?? path}>
+    <Shell>
       {route === undefined || Page === undefined ? <NotFoundPage /> : <Page route={route} />}
     </Shell>
   )

@@ -1,16 +1,16 @@
-import { PageHeader, Prose } from '../components/ui'
-import type { PublicRoute } from '../routes'
+import { MarkdownContent } from '../components/MarkdownContent'
+import { Prose } from '../components/ui'
+import { HOME_MARKDOWN } from '../lib/content'
 
-export function HomePage({ route }: { route: PublicRoute }) {
+/**
+ * Start page. The text, the headline and the link collection all come from
+ * `website/content/index.md`; the Markdown supplies the `<h1>`, so no
+ * `PageHeader` is rendered here.
+ */
+export function HomePage() {
   return (
-    <>
-      <PageHeader title={route.heading} />
-      <Prose>
-        <p>
-          Platzhalter der Startseite. Die echten Inhalte werden später aus{' '}
-          <code>website/content/index.md</code> vorgerendert.
-        </p>
-      </Prose>
-    </>
+    <Prose className="home">
+      <MarkdownContent markdown={HOME_MARKDOWN} />
+    </Prose>
   )
 }

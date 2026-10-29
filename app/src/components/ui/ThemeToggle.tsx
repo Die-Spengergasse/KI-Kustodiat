@@ -36,7 +36,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className="ui-button ui-button--outline"
+      className="ui-button ui-button--secondary ui-button--nav"
       aria-label="Farbschema wechseln"
       onClick={handleClick}
     >
