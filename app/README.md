@@ -33,7 +33,9 @@ widerrufen, Monatsverbrauch pro Modell). Kontingent-Policy und Anträge folgen i
 
 ## Voraussetzungen
 
-- Node 24 (lokal über nvm; `node -v` muss `v24.*` liefern)
+- Node 24 — auf kik **systemweit** unter `/usr/local/node24` (Tarball-Release,
+  `/usr/local/bin`-Symlinks), in der Entwicklung egal ob systemweit oder per nvm;
+  `node -v` muss `v24.*` liefern (das Deploy-Skript bricht sonst ab).
 - Für die Portal-API zusätzlich: PostgreSQL-Schema `portal` und
   `/etc/portal/portal.env` (0600) — Aufbau und Inhalte stehen in
   `KI-Kustodiat-intern:infra/hosts/kik.md`. Ohne diese Konfiguration läuft die
@@ -296,7 +298,44 @@ tests/                 Playwright: Startseite und Unterseiten (Struktur + Pixel-
 public/assets/         Logos (hell/dunkel) — Kopie aus website/assets/
 ```
 
+## Deployment (#51)
+
+Ausgerollt wird **nicht** aus dem Repo-Verzeichnis, sondern als unveränderliches
+Release; Regie führt `scripts/deploy-app.sh` im Repo-Wurzelverzeichnis (auf kik,
+als `grafg`, passwortloses `sudo`):
+
+```
+scripts/deploy-app.sh            # build → release → switch → restart → health → prune
+scripts/deploy-app.sh --force    # neues Release auch bei unverändertem dist/
+scripts/deploy-app.sh --skip-health
+KIK_NGINX_SRC=<datei> scripts/deploy-app.sh   # optional VHost installieren + reload
+```
+
+Layout auf dem Host (`/srv/kik-app/`):
+
+```
+releases/<ts>/dist      nur Build-Artefakte (kein node_modules) — nginx-`root`
+current -> releases/…   Symlink, atomar getauscht (ln -sfn + mv -T)
+app/                    Produktions-Install des Servers (npm ci --omit=dev)
+app/dist -> ../current/dist   damit /portal.html aus dem aktiven Release kommt
+```
+
+- **Statisch zuerst:** Die öffentlichen Routen liefert nginx direkt aus
+  `current/dist` (`try_files $uri $uri/index.html =404`), nur `/portal`,
+  `/api/auth`, `/api/keys`, `/api/usage` gehen an `127.0.0.1:8080`. Ein Ausfall
+  des Dienstes lässt die Website stehen; `/portal` zeigt dann die statische
+  Ausfallseite (`public/portal-fallback.html` → `dist/portal-fallback.html`,
+  per nginx `error_page 502 503 504`).
+- **Produktionsstart ist `tsx`, nicht `node server/index.js`** — das Repo hat
+  keinen Server-Bundler; `tsx` ist reguläre Runtime-Dependency. `vite` fehlt im
+  Produktions-Install bewusst (nur der Dev-Modus lädt es dynamisch).
+- Der Health-Check ruft `http://127.0.0.1:8080/api/auth/me` und erwartet `401`;
+  scheitert er, wird auf das vorherige Release zurückgerollt (Exit ≠ 0).
+- Rollback von Hand: `ln -sfn` + `mv -T` auf `current` (kein nginx-Reload nötig,
+  `root` zeigt auf den Symlink). Vollständige Kommandos in
+  `KI-Kustodiat-intern:infra/hosts/kik.md`.
+
 ## Noch nicht enthalten
 
 Kontingent-Policy und Anträge (#49), Portal-Komponenten für Dialoge/Menüs/Tooltips,
-nginx/TLS-Routing für `/portal` und `/api/auth/` (#51), Deployment, Analytics.
+Analytics.

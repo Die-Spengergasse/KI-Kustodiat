@@ -114,14 +114,28 @@ KI-Kustodiat-intern/  (private — alle Implementationsdetails)
 
 ## Website & Veröffentlichung
 
+Seit 2026-10-29 (Issue #51) ist `https://kik.spengergasse.at` **die App** aus
+`app/` (Fastify 5 + React 19, build-time vorgerendert), nicht mehr die alte
+Shell in `website/`. Auslieferung ist **static-first**: nginx liest die
+öffentlichen Seiten als Dateien aus dem aktiven Release, nur `/portal` und die
+Portal-API (`/api/auth`, `/api/keys`, `/api/usage`) sprechen mit dem
+Node-Dienst. Die öffentliche Website überlebt damit einen Ausfall des Dienstes.
+
 | Artefakt | Quelle | Auslieferung |
 |---|---|---|
-| Offizielle Website `https://kik.spengergasse.at` | `website/` (Shell + `content/*.md` via Hash-Router, Pico/marked lokal vendored) | `rsync` auf kik → `/var/www/kik` (nginx, statisch) |
+| Öffentliche Seiten `kik.spengergasse.at` | `app/` — `src/routes.ts` (Routen), `website/content/*.md` (Text, per `?raw` importiert), Prerender nach `app/dist/` | `scripts/deploy-app.sh` → Release unter `/srv/kik-app/releases/<ts>/dist`, `current`-Symlink, nginx `root /srv/kik-app/current/dist` mit `try_files $uri $uri/index.html =404` |
+| Token-Portal `/portal`, API | `app/server/` (Fastify: LDAP-Login, Sessions, Keys, Usage) | `kik-portal.service` auf `127.0.0.1:8080`, nginx proxied die vier Pfade; 502/503/504 → statische Ausfallseite |
 | GitHub Pages | `pages/index.html` — **nur** ein Button »Hier geht's zur offiziellen Website« + `<link rel="canonical">` (#38) | `.github/workflows/deploy-pages.yml` |
-| Angebots-Job | `scripts/run-offers-job.sh` + Skill `update-offers` | systemd-Timer auf kik, Mo 06:00 |
+| Angebots-Job | `scripts/run-offers-job.sh` + Skill `update-offers` | systemd-Timer auf kik, Mo 06:00 → `deploy-app.sh` |
 
-Deploy-Rezept und kik-Zugang (SSH nur über den gregor-Jump-Host):
-`KI-Kustodiat-intern:infra/hosts/kik.md`.
+Deploy-Rezept (`scripts/deploy-app.sh`): Build → `dist/` prüfen → neues Release
+über `<ts>.tmp` + `mv -T` → `current` atomar umhängen → `kik-portal` neu starten
+(nur bei Änderung) → Health-Check mit automatischem Rollback → die letzten 5
+Releases behalten. Ein Lauf mit unverändertem `dist/` ist ein No-op. Rollback:
+`current` von Hand auf das vorherige Release zeigen lassen (kein nginx-Reload
+nötig). Release-Layout, Unit, VHost und Rollback-Kommandos:
+`KI-Kustodiat-intern:infra/hosts/kik.md` („Website-Release und Portal-Dienst").
+kik-Zugang (SSH nur über den gregor-Jump-Host) ebendort.
 
 ## Knowledge Files (`docs/ai/`)
 

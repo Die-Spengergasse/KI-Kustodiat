@@ -1,9 +1,25 @@
 # HANDOFF — KI-Kustodiat
 
-Stand: 2026-10-29 · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login,
-Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40): privater Operator-Rechner + Infra-IPs aus der Public-Doku, VPN-Ausnahme nur intern · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · docs-Ordnung nachgezogen (`a875d69`) · Config-Doku ins interne Repo übersiedelt (#37); Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
+Stand: 2026-10-29 · **Website + Token-Portal live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
 
 ## Gerade abgeschlossen
+- **2026-10-29 — Website-Ausrollung + Portal live (#51, AP9):**
+  `https://kik.spengergasse.at` liefert die vorgerenderte App aus dem Release-Symlink
+  `/srv/kik-app/current/dist` (`/srv/kik-app/releases/<ts>/dist`, 5 Releases Vorhalt,
+  atomarer Wechsel ohne nginx-Reload); Server-Code liegt getrennt unter
+  `/srv/kik-app/app` (`npm ci --omit=dev`, kein `node_modules` im Release). Node 24
+  **systemweit** in `/usr/local/node24` (Tarball, SHA-256 geprüft) +
+  `/usr/local/bin`-Symlinks. `kik-portal.service` aktiv (`User=kik-app`,
+  `Restart=always`, `ProtectSystem=strict`, Secrets nur per `LoadCredential`,
+  Start über `tsx` — es gibt kein `server/index.js`). nginx static-first: nur
+  `/portal`, `/api/auth`, `/api/keys`, `/api/usage` → `127.0.0.1:8080`, `/api/`
+  bleibt LiteLLM, 502/503/504 → statische Ausfallseite. Deploy
+  `scripts/deploy-app.sh` (Build → Release → Switch → Health-Check mit
+  Auto-Rollback → Prune), idempotent; `scripts/run-offers-job.sh` ruft es statt
+  `rsync` auf. Verifiziert: alle öffentlichen Routen 200, 404, Sitemap/Robots,
+  `/portal` mit Login-Formular (headless), `/api/auth/me` 401,
+  `/api/health/liveliness` 200, Dienst-Stopp lässt die Website online, Rollback
+  vor/zurück. Details: `KI-Kustodiat-intern:infra/hosts/kik.md`, `app/README.md`.
 - **2026-10-29 — Portal-Kern: LDAP-Login, Sessions, Provisioning, CN-Rollen (#47, AP5):**
   `app/server/auth/*` + `/api/auth/{login,logout,me}` + `/portal`-Loginseite. Rollenregel
   am echten Verzeichnis verifiziert (`CN=pranz,OU=Lehrer,…` → teacher,
@@ -12,9 +28,9 @@ Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/I
   Sessions serverseitig in Postgres (`portal.*` in der `litellm`-DB, eigene Rolle
   `portal`), CSRF per signiertem Double-Submit-Token, Rate-Limit in der DB,
   LiteLLM-Provisioning idempotent und nicht blockierend. **Nicht verifiziert:** der
-  erfolgreiche Login (kein Nutzerpasswort verfügbar) und das nginx-Routing für
-  `/api/auth/` + `/portal` (AP9/#51). Details: `KI-Kustodiat-intern:infra/hosts/kik.md`,
-  `app/README.md`.
+  erfolgreiche Login (kein Nutzerpasswort verfügbar). Das nginx-Routing für
+  `/api/auth/` + `/portal` ist mit AP9/#51 nachgezogen (siehe oben). Details:
+  `KI-Kustodiat-intern:infra/hosts/kik.md`, `app/README.md`.
 - **2026-10-26 — Public/Intern-Trennung nachgezogen (#40, intern #9):** Der private Operator-Rechner kommt in der Public-Doku nicht mehr vor — privater Suchinstanz-Hostname, private Client-Matrix (Operator-Hostnamen) und privater VHost neutralisiert zu „private Operator-Instanz/-Hosts (extern)"; Infra-IPs durch Platzhalter `<WG_IP_GREGOR>`/`<LAN_IP_GREGOR>`/`<TOTE_VPN_IP_2026-07>` ersetzt (Werte nur in `KI-Kustodiat-intern:infra/hosts/secrets.local.md`). Neue Konvention: **private Operator-Hardware bleibt im öffentlichen Repo namenlos** (CONVENTIONS.md). Intern: VPN auf gregor als bewusst geduldete Dauerausnahme **ohne Exit-Ziel** dokumentiert (`KI-Kustodiat-intern:docs/ai/CONVENTIONS.md` + `infra/hosts/gregor.md`), nur Admin-Zugriff, ohne Benennung der Gegenseite.
 - **2026-10-26 — BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`):** Der Skill transportiert jetzt einen festen, datierten BBG-Block; der Job recherchiert ihn **nicht** — bewusst, weil das Vergabeportal eine Captcha-SPA ist und ein Zusatzschritt am Runner-Sicherheitsnetz (nur eine Datei erlaubt) und am 30-Minuten-Timeout hängen würde. Belegt: SSN 2026-3 hat nur die Lose Palo Alto/Cisco, in Vertrag **und** Preisblatt keine GPU-Position; das Preisblatt von SSN 2026-2 (Supermicro-Los) ist nach Fristablauf nicht mehr abrufbar. **GPU ab 256 GB ist über die BBG derzeit nicht nachweisbar** — frühestens ab 2026-11-20 im e-Shop prüfbar.
 - **2026-10-22 — BBG-Recherche + SSN-Terminplan (public #34 / intern #7, `286c8be`):** Wie weit die BBG ohne e-Shop-Login Auskunft gibt, ist jetzt belegt: Vertragsliste (126 Einträge), Ausschreibungsliste (93 Verfahren, 28 IT), Produktfamilien, Themenwelten, Preisblatt (V-Charge bis 3 %/10 %) und TED-Bekanntmachungen sind öffentlich — **Katalog, Geräte und Preise nicht** (die e-Shop-API leitet ohne Session auf `meine.bbg.gv.at` um). Für 256 GB+ relevant: Server-RV `GZ 3401.03804` läuft aus, Nachfolge **SSN 2026-2** (ab 2026-11-20) und **SSN 2026-3** (ab 2027-01-22). Alles in `KI-Kustodiat-intern:docs/extern/provider-anfragen.md`; der BBG-Draft fragt jetzt zusätzlich, ob SSN GPU-Hardware mit 256 GB+ umfasst. **Offen:** e-Shop-Zugang der Schule aktivieren.
@@ -64,8 +80,8 @@ Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/I
 ## Offen (nächste Session)
 0. [ ] **#35 AP4 — Gateway auf kik:** *erledigt 2026-10-29* (siehe STATE/SearXNG-freier Eintrag „AP4: Gateway läuft auf kik"). Offen bleibt **#54** (Rückbau der Altlasten auf gregor — Operator-Entscheidung, Open WebUI dort ist live).
 0a. [ ] **#35 AP5 — Portal-Kern: BLOCKER vor dem Start.** Es fehlen (a) die LDAP-Service-Account-Zugangsdaten für den search-then-bind auf `ldap.spengergasse.at:636` (liegen derzeit nur in der Open-WebUI-Config auf gregor) und (b) zwei Testkonten (Schüler:in, Lehrkraft) samt deren CN-Beispiele, damit die Rollenableitung belegt statt geraten ist. Ohne beides ist nur der Mock-LDAP-Pfad testbar.
-0a. [ ] **`app/`-Deploy steht noch aus (#51):** Website läuft weiter statisch aus `website/`; die SPA ist bisher nur auf `127.0.0.1:8080` verifiziert.
-0b. [ ] **Node-Pfad-Stolperstein:** Node 24 liegt nur unter nvm (`~/.nvm/versions/node/v24.21.0/bin`); nicht-interaktive Shells (Job-Runner, systemd, Subagenten) müssen den PATH explizit setzen.
+0a. [x] **`app/`-Deploy (AP9, #51) — erledigt 2026-10-29:** `https://kik.spengergasse.at` liefert die vorgerenderte App aus `/srv/kik-app/current/dist` (Release-Symlink, atomarer Wechsel, 5 Releases Vorhalt), `/portal` + Portal-API über `kik-portal.service` (`User=kik-app`), ausgerollt mit `scripts/deploy-app.sh` (Health-Check + Auto-Rollback), Angebots-Job ruft es auf. Node 24 liegt jetzt **systemweit** in `/usr/local/node24`. Verifiziert live inkl. Dienst-Stopp (Website bleibt online, `/portal` → Ausfallseite) und Rollback. Details: `KI-Kustodiat-intern:infra/hosts/kik.md`.
+0b. [x] **Node-Pfad-Stolperstein (gelöst 2026-10-29, #51):** Node 24 liegt zusätzlich systemweit unter `/usr/local/node24` mit Symlinks in `/usr/local/bin` — systemd/Job-Runner brauchen kein nvm-PATH mehr. Für interaktive Dev-Läufe bleibt nvm (`v24.21.0`) unverändert nutzbar.
 1. [ ] **SearXNG-Instanz-Trennung: Nachzieh-Punkte (Issue #36, neu 2026-10-19):** (a) **private Operator-Hosts** auf Ziel-Config umstellen — Details nur intern (`KI-Kustodiat-intern:docs/ai/HANDOFF.md`; Host war offline); (b) **dell** (offline) prüfen, ob dort ein searxng-Overlay existiert und auf die Matrix bringen (`SEARXNG_PRIMARY=http://gregor.kik`, strict, kein cred/Fallback); (c) **schuleigener Brave-Search-Key** beschaffen (extern — Brave-Account der Schule; bis dahin bleibt gregors braveapi keylos disabled und die Schul-Kette endet bei bing/yahoo); (d) nach Key-Beschaffung braveapi in `KI-Kustodiat-intern:searxng/settings.yml` auf gregor aktivieren + Engine-Matrix messen. **Erledigt in der Session:** kik (Overlay auf `gregor.kik` + strict, Skill-Pull, E2E grün als grafg, via SSH-Hop gregor→kik).
 2. [ ] **Suchkapazität für den Breitbandbetrieb (neu 2026-10-18, noch kein Issue):** Die toten Engines sind am 2026-10-29 bereinigt (`google`/`brave`/`searchmysite` entfernt, `mojeek` neu — #41); SearXNG liefert wieder ohne `unresponsive_engines` (12–17 Treffer über `bing`/`yahoo`/`mwmbl`/`mojeek`), der frühere Befund „`bing` tot" hat sich nicht bestätigt. Vor dem Breitband-Rollout bleibt zu klären: Ergebnis-Cache, Such-Quota je Schüler im Proxy, mehrere Instanzen mit diversifiziertem Egress, bezahlte Such-API als Rückgrat. Entscheidung über Issue vs. Einordnung in #35 steht aus.
 3. [ ] **Provider-Follow-up zur Suche:** bei ACOmarket nachfragen (a) welches Such-Backend, (b) abschaltbar, (c) Umleitung auf eigene Instanz — relevant, weil bei `u:ai` Internetsuche (Perplexity) und Mistral die EU-Verarbeitung verlassen. Für 05 BBG als Lastenheft-Zeile erwogen (Suchkomponente optional/abschaltbar, Backend offengelegt).

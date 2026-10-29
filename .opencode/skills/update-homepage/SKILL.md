@@ -81,14 +81,22 @@ Nicht anfassen: `website/content/openwebui-anleitung.md`, `website/index.html`,
 
 ## Deploy
 
-Die Website wird **nicht** über GitHub Pages, sondern aus dem Schulserver bedient:
+Die Website wird **nicht** über GitHub Pages, sondern aus dem Schulserver bedient
+und ist seit Issue #51 die **App** (`app/`, prerendert nach `dist/`): eine Änderung
+an `website/content/*.md` wird erst beim Build sichtbar.
+
 ```bash
-rsync -a --delete --exclude='*.rsync' website/ kik:/var/www/kik/
+# aus dem public Repo, auf kik ausführen (baut + rollt als Release aus):
+scripts/deploy-app.sh
 ```
-(`kik` ist die Management-VM; Docroot laut `KI-Kustodiat-intern:infra/nginx/sites-available/kik.spengergasse.at`.)
+
+Der Docroot ist `/srv/kik-app/current/dist` (Symlink auf das aktive Release, s.
+`KI-Kustodiat-intern:infra/hosts/kik.md`). Das alte `rsync … website/ /var/www/kik`
+ist **überholt** und würde die Live-Seite nicht mehr ändern.
 
 ## Neue Seite ergänzen
 
 Soll eine weitere Markdown-Seite dazukommen: Datei `website/content/<slug>.md`
-anlegen **und** den Slug in `PAGES` in `website/app.js` eintragen, sonst liefert die
-Route „Seite nicht gefunden".
+anlegen **und** die Route in `app/src/routes.ts` (`PUBLIC_ROUTES`: Pfad, Titel, H1,
+Description) eintragen — Prerender, Sitemap, 404 und Navigation hängen alle an
+dieser Tabelle. `website/app.js` (alte Hash-Router-SPA) ist nur noch historisch.

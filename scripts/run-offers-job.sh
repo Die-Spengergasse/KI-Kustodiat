@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 # Wöchentlicher Angebots-Job (Issue #32):
 #   opencode-Websuche (Skill update-offers) → website/content/angebote.md
-#   → Commit/Push → Deploy auf die Management-VM.
+#   → Commit/Push → App neu bauen und als Release ausrollen (Issue #51).
 # Läuft per systemd-Timer `update-offers.timer` als User grafg.
 set -euo pipefail
 
 REPO="/home/grafg/repos/Die-Spengergasse/KI-Kustodiat"
-DOCROOT="/var/www/kik"
 BRANCH="main"
 TARGET="website/content/angebote.md"
 
@@ -57,8 +56,12 @@ git add "${TARGET}"
 git commit -m "web: Angebots-Übersicht aktualisiert ($(date +%F)) (#32)"
 git push origin "${BRANCH}"
 
-# 6. Deploy (rsync auf die Management-VM; hier lokal = kik).
-sudo -n rsync -a website/ "${DOCROOT}/"
-sudo -n chown -R www-data:www-data "${DOCROOT}"
+# 6. Deploy: App neu bauen und als Release ausrollen (Issue #51). Die
+#    öffentliche Website kommt aus /srv/kik-app/current/dist, nicht mehr aus
+#    /var/www/kik; der Prerender liest website/content/angebote.md beim Build.
+#    Das Deploy-Skript bringt sein eigenes PATH (systemweites Node) mit und
+#    nutzt `sudo -n` selbst — deshalb hier NICHT mit sudo starten (sonst legt
+#    der Build root-eigene Dateien in app/dist ab).
+"${REPO}/scripts/deploy-app.sh"
 
 echo "[offers] $(date -Is) fertig"

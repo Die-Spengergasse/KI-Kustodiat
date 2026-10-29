@@ -40,5 +40,21 @@
 - **Stand 2026-10-07 (Ollama aus, LiteLLM gestoppt):** Die Ollama/LiteLLM-Regeln oben (Zeilen `api_base`, opencode-Provider, Models-proxy-Kette, Guard-429) sind suspendiert, nicht gelöscht — sie gelten wieder bei Reaktivierung (`KI-Kustodiat-intern:whisper/README.md`). Solange gilt: STT direkt (`http://whisper:9000/v1` per Container-DNS, `WHISPER_API_KEY`), Chat per BYOK (`direct.enable=true`), `:3000` Klartext (TLS extern).
 - **Implementationsdetails immer ins private Repo (#37):** Compose-Files, systemd-Units, nginx-vhosts, Modelfiles, Env-Templates und Host-Inventare leben ausschließlich in `KI-Kustodiat-intern` (`infra/`, `litellm/`, `ollama/`, `openwebui/`, `searxng/`, `whisper/`). Dieses Repo dokumentiert das *Konzept* und verweist mit der Notation `KI-Kustodiat-intern:<pfad>` — nie Dateien duplizieren, nie Configs hier neu anlegen.
 - **Private Operator-Hardware bleibt hier namenlos (2026-10-26, #40):** Eigene Rechner des Kustoden (privates VPN, private Suchinstanz, private Clients) werden im öffentlichen Repo weder beim Namen noch per URL/IP geführt — nur neutral als „private Operator-Instanz / private Operator-Hosts (extern)". Hostnamen, IPs und Credentials leben ausschließlich intern (`KI-Kustodiat-intern:infra/hosts/secrets.local.md`) oder im persönlichen SVN. IPs von Schul-Hosts ebenso: hier nur Hostname/Platzhalter (`<WG_IP_GREGOR>`, `<LAN_IP_GREGOR>`), den Wert zur Task-Zeit aus `secrets.local.md` auflösen.
-- **Website-Deploy auf kik braucht das sudo-rsync-Rezept (#39/intern #5):** `rsync -az --rsync-path="sudo -n rsync" -e ssh website/ kik:/var/www/kik/`, danach `ssh kik 'sudo -n chown -R www-data:www-data /var/www/kik'`. `vendor/` gehört `www-data`, ohne das Flag bricht rsync bei diesen Dateien ab und lässt den Rest halb ausgerollt. Die Seite ist statisch → Rollout ist sofort live (Browser ggf. Hard-Reload).
+- **Website-Deploy auf kik ist seit #51 der Release-Deploy (nicht mehr rsync):**
+  `scripts/deploy-app.sh` (auf kik, aus dem Repo) baut die App, legt ein neues
+  Release unter `/srv/kik-app/releases/<ts>/dist` an, hängt `current` atomar um,
+  startet `kik-portal` nur bei echter Änderung neu, prüft `/api/auth/me` (401)
+  und rollt bei Fehlschlag automatisch zurück; die letzten 5 Releases bleiben.
+  nginx liest `/srv/kik-app/current/dist` → **kein nginx-Reload nötig**, der
+  Wechsel ist sofort live (Browser ggf. Hard-Reload). Der zweite Lauf mit
+  unverändertem `dist/` ist ein No-op (`--force` erzwingt ein Release).
+  **Nie mehr** `rsync … website/ kik:/var/www/kik` benutzen: `/var/www/kik` ist
+  nur noch Altbestand für einen Notfall-Rollback (`root /var/www/kik;` + Reload).
+  Release-Layout, Unit und die Rollback-Kommandos (`ln -sfn` + `mv -T`):
+  `KI-Kustodiat-intern:infra/hosts/kik.md`.
+- **Seiteninhalt ändern heißt `website/content/*.md` + neuer Build:** die Texte
+  werden beim Prerender eingebacken; eine geänderte Markdown-Datei ohne
+  `deploy-app.sh` ändert die Live-Seite **nicht**. Neue Routen gehören in
+  `app/src/routes.ts` (`PUBLIC_ROUTES`) — von dort kommen Prerender, Sitemap,
+  404 und Navigation.
 - **CSS-Sichtbarkeit von Varianten immer mit gleicher Spezifität setzen:** Bei mehreren Varianten desselben Elements (z. B. Logo hell/dunkel) `display`-Regeln als `<container> <element>.<variante>` schreiben — eine bloße `.variante { display:none }` verliert gegen eine Basisregel wie `.logo img { display:block }`, weil die Basis spezifischer ist.
