@@ -64,11 +64,6 @@ curl https://whisper.kik.spengergasse.at/v1/audio/transcriptions \
 `verbose_json` liefert zusätzlich `duration`, `language` und — mit
 `timestamp_granularities[]=word` — Zeitmarken pro Wort.
 
-**Bestehende Konfiguration?** Es ändert sich nur der Token, nicht die Adresse:
-Base-URL bleibt `https://whisper.kik.spengergasse.at/v1/`, Modell heißt
-`whisper-large-v3`. Ältere Konfigurationen mit `large-v3` funktionieren
-weiterhin.
-
 Das Diktat läuft **vollständig auf schuleigener Hardware** — Audiodaten
 verlassen die Schule nicht.
 

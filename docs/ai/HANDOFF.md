@@ -1,8 +1,17 @@
 # HANDOFF — KI-Kustodiat
 
-Stand: 2026-10-30 · **Startseite mit vier Kachel-Gruppen, Anleitungen getrennt, Tokenverwaltung unter `/tokens` (#57) — live** · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token statt Masterkey** · **Website + Tokenverwaltung live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
+Stand: 2026-10-30 · **Anleitung beschreibt nur noch die Neueinrichtung — `large-v3`-Migrationshinweis entfernt (Defekt zu #55/#56)** · **Startseite mit vier Kachel-Gruppen, Anleitungen getrennt, Tokenverwaltung unter `/tokens` (#57) — live** · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token statt Masterkey** · **Website + Tokenverwaltung live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
 
 ## Gerade abgeschlossen
+- **2026-10-30 — Defekt zu #55/#56: `large-v3`-Migrationshinweis aus der Anleitung entfernt:**
+  `website/content/anleitung/tokens.md` behauptete, ältere Konfigurationen mit
+  `large-v3` funktionierten weiterhin, und „es ändert sich nur der Token". Beides
+  falsch — der Alias wurde am 2026-10-29 nach der Client-Migration entfernt
+  (`GET /v1/models` live: nur `['whisper-large-v3']`; `model=large-v3` → 4xx,
+  festgenagelt in `scripts/test-stt-api.mjs`). Der Absatz ist **ersatzlos**
+  gelöscht: die Seite beschreibt nur die Neueinrichtung. Kein neues Ticket —
+  Defekt-Kommentare auf den geschlossenen #55/#56. Gates + Deploy +
+  Live-Gegenprobe; Regel in `PITFALLS.md`.
 - **2026-10-30 — Startseite als Kacheln, Anleitungen getrennt, `/portal` → `/tokens` (#57):**
   Die Startseite hat keine Riesen-Buttons mehr: `website/content/index.md` gruppiert
   die Links in vier Abschnitte (**Dienste, Tokens, Dokumentation, Diskussion**),
@@ -43,9 +52,10 @@ Stand: 2026-10-30 · **Startseite mit vier Kachel-Gruppen, Anleitungen getrennt,
   liegt beim Monatsbudget, weil Diktat über die Dauer abgerechnet wird:
   Listenpreis 0,006 $/min, also 5 USD ≈ 14 h). Verifiziert: Transkription 200 inkl. `verbose_json`/
   `duration`, alter Key 401, `/docs` 404, 5 sequenzielle Aufrufe 200, Sturm →
-  429 (JSON), Website/Portal/`api.kik`/Open WebUI unberührt. **Manuell offen:**
-  Token in Polished Recognition + `aitranscribe` tauschen (Modell einmal neu
-  wählen), danach Alias `large-v3` entfernen. Details:
+  429 (JSON), Website/Portal/`api.kik`/Open WebUI unberührt. **Manuell erledigt
+  (2026-10-29 abends):** Token in Polished Recognition + `aitranscribe` getauscht
+  (Modell einmal neu gewählt), Alias `large-v3` danach entfernt — `GET /v1/models`
+  liefert nur `whisper-large-v3`. Details:
   `KI-Kustodiat-intern:whisper/README.md`, `infra/hosts/kik.md`.
 - **2026-10-29 — Website-Ausrollung + Portal live (#51, AP9):**
   `https://kik.spengergasse.at` liefert die vorgerenderte App aus dem Release-Symlink
