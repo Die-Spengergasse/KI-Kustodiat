@@ -3,6 +3,18 @@
 Stand: 2026-10-30 · **Anleitung beschreibt nur noch die Neueinrichtung — `large-v3`-Migrationshinweis entfernt (Defekt zu #55/#56)** · **Startseite mit vier Kachel-Gruppen, Anleitungen getrennt, Tokenverwaltung unter `/tokens` (#57) — live** · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token statt Masterkey** · **Website + Tokenverwaltung live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
 
 ## Gerade abgeschlossen
+- **2026-11-02 — BBG e-Shop: Datenexport recherchiert (#34):** Ein Ein-Klick-Vollexport
+  aller Produkte ist **nicht** dokumentiert, ein vollständiger Export aber möglich:
+  BMEcat 1.2 / veenion-Staging je Katalog (inkl. Multimedia-ZIP), „Alle Kataloge
+  exportieren" (Katalogliste → Excel), Such-Exporte `/search/export/{catalog,lot,
+  tender,supplier,productgroup,themeworld}` und `POST /print/list/exportpro?catId=…`
+  (Produktliste eines Katalogs). Der Shop ist eine Angular-SPA unter
+  `e-shop.gv.at/e-shopx/` mit JSONP-API `e-shop.gv.at/e-shop/jax/ux` (veenion
+  impact ordering); `meine.bbg.gv.at` ist nur das Power-Pages-Portal. Ohne Session
+  antwortet die API mit `authErrors` (HTTP 200). Die **Hersteller-Hilfe
+  `e-shop.gv.at/e-shop/help/de/…` ist öffentlich lesbar** — Foren tragen zu dem
+  Thema nichts bei. Alles in `docs/Recherche/bbg-eshop-datenexport.md`; nächster
+  Schritt: BBG um maschinenlesbaren Export bitten, dann Session-Discovery.
 - **2026-10-30 — Defekt zu #55/#56: `large-v3`-Migrationshinweis aus der Anleitung entfernt:**
   `website/content/anleitung/tokens.md` behauptete, ältere Konfigurationen mit
   `large-v3` funktionierten weiterhin, und „es ändert sich nur der Token". Beides
