@@ -1,3 +1,13 @@
+---
+type: Pitfalls
+title: Pitfalls
+description: Bekannte Fallstricke, subtile Bugs und nicht-offensichtliche Constraints aus bisherigen Sessions.
+tags: [ki-kustodiat, pitfalls]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # PITFALLS — KI-Kustodiat
 
 ## Bekannte Fallstricke

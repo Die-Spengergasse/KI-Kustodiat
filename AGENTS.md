@@ -24,7 +24,17 @@ SearXNG und vLLM auf schuleigenen Servern.
 
 ## Knowledge Bootstrap
 
-Before starting any task, read the following files in order:
+The knowledge base in `docs/ai/` is an **OKF v0.2 bundle** (Open Knowledge
+Format; spec: `skills/knowledge-persistence/OKF-SPEC.md` in the
+opencode-helpers repo). Files without YAML frontmatter are legacy-but-
+tolerated and migrate on their next touch.
+
+Before starting any task, read the knowledge entry point first:
+
+0. `docs/ai/index.md` (OKF index; if missing, fall back to the list
+   below) ← **start here**
+
+Then, in order (skip files the index says are absent):
 
 1. `docs/ai/HANDOFF.md` ← **read first, act on it**
 2. `docs/ai/CONVENTIONS.md`

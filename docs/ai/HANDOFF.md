@@ -1,3 +1,13 @@
+---
+type: Handoff
+title: Handoff
+description: Offene Aufgaben und Übergabestand für die nächste Agent-Session.
+tags: [ki-kustodiat, handoff]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # HANDOFF — KI-Kustodiat
 
 Stand: 2026-10-30 · **Anleitung beschreibt nur noch die Neueinrichtung — `large-v3`-Migrationshinweis entfernt (Defekt zu #55/#56)** · **Startseite mit vier Kachel-Gruppen, Anleitungen getrennt, Tokenverwaltung unter `/tokens` (#57) — live** · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token statt Masterkey** · **Website + Tokenverwaltung live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).

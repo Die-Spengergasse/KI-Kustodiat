@@ -1,3 +1,13 @@
+---
+type: Conventions
+title: Conventions
+description: Verbindliche Konventionen zu Sprache, Git, LLM-Stack, Deploy und Public/Intern-Trennung.
+tags: [ki-kustodiat, conventions]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # CONVENTIONS — KI-Kustodiat
 
 ## Sprache

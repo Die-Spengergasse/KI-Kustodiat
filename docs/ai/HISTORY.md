@@ -1,3 +1,12 @@
+---
+type: History Archive
+title: History
+description: Append-only Archiv supersedter Entscheidungen und aussortierter Einträge.
+tags: [ki-kustodiat, history]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # History
 
 Chronological archive of superseded decisions and pruned entries.

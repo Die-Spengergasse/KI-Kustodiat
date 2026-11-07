@@ -1,3 +1,13 @@
+---
+type: Decisions
+title: Decisions
+description: Aktive Architektur- und Technologie-Entscheidungen noch in Kraft, mit Status und Begründung.
+tags: [ki-kustodiat, decisions]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # DECISIONS — KI-Kustodiat
 
 ## Beschlossen

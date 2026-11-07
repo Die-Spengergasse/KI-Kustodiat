@@ -1,3 +1,13 @@
+---
+type: Tips
+title: Tips
+description: Admin-Tipps zu Open WebUI, LiteLLM-DB-Operationen und bekannten Konfigurationsmustern.
+tags: [ki-kustodiat, tips]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # TIPS — KI-Kustodiat
 
 Tips & Tricks for Open WebUI administration, database operations, and

@@ -1,3 +1,13 @@
+---
+type: State
+title: State
+description: Aktueller Projektstatus mit Fokus, abgeschlossenen und offenen Aufgaben.
+tags: [ki-kustodiat, state]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # STATE — KI-Kustodiat
 
 ## Current Focus

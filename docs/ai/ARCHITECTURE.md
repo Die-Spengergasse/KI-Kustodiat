@@ -1,3 +1,13 @@
+---
+type: Architecture
+title: Architecture
+description: Living structural map der On-Premise-Infrastruktur (gregor, kik, App, Wissensbasis).
+tags: [ki-kustodiat, architecture]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # Architecture
 
 Living structural map of the system as of 2026-10-07.

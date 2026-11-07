@@ -1,3 +1,13 @@
+---
+type: Domain Notes
+title: Domain Knowledge
+description: Schulkontext, Preise, Benchmarks und Nutzungsmodell der Spengergasse-KI-Infrastruktur.
+tags: [ki-kustodiat, domain]
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+status: stable
+---
+
 # DOMAIN — KI-Kustodiat
 
 ## Schulkontext
