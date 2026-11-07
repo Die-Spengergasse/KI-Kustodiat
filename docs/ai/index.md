@@ -17,6 +17,9 @@ im knowledge-persistence-Skill des opencode-helpers-Repos).
 * [TIPS.md](TIPS.md) - Admin-Tipps zu Open WebUI, LiteLLM-DB-Operationen und bekannten Konfigurationsmustern.
 * [DOMAIN.md](DOMAIN.md) - Schulkontext, Preise, Benchmarks und Nutzungsmodell der Spengergasse-KI-Infrastruktur.
 
+## Concept Directories
+* [decisions/](decisions/index.md) - Eine Datei je Entscheidung (52 Concepts)
+
 ## Reference
 * [HISTORY.md](HISTORY.md) - Append-only Archiv supersedter Entscheidungen und aussortierter Einträge (append-only)
 * [log.md](log.md) - Per-run persistence log (kein Frontmatter, OKF §9)
