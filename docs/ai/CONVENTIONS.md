@@ -3,8 +3,8 @@ type: Conventions
 title: Conventions
 description: Verbindliche Konventionen zu Sprache, Git, LLM-Stack, Deploy und Public/Intern-Trennung.
 tags: [ki-kustodiat, conventions]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
-verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
 status: stable
 ---
 
@@ -68,3 +68,11 @@ status: stable
   `app/src/routes.ts` (`PUBLIC_ROUTES`) — von dort kommen Prerender, Sitemap,
   404 und Navigation.
 - **CSS-Sichtbarkeit von Varianten immer mit gleicher Spezifität setzen:** Bei mehreren Varianten desselben Elements (z. B. Logo hell/dunkel) `display`-Regeln als `<container> <element>.<variante>` schreiben — eine bloße `.variante { display:none }` verliert gegen eine Basisregel wie `.logo img { display:block }`, weil die Basis spezifischer ist.
+
+## Wissensbasis (`docs/ai/`)
+
+- **`docs/ai/` ist ein OKF-v0.2-Bundle:** Jedes Concept-File trägt YAML-Frontmatter mit `type` (Pflicht) plus `title`, `description`, `tags`, `generated`, `verified`, `status` (Spec: `skills/knowledge-persistence/OKF-SPEC.md` im opencode-helpers-Repo; erzeugt/gepflegt vom `knowledge-persistence`-Skill).
+- **Reservierte Namen:** `index.md` (Bundle-Index, progressive disclosure; einzige erlaubte Frontmatter ist `okf_version`) und `log.md` (Per-Run-Persistence-Log, ISO-Datum-Header, komplett ohne Frontmatter). Diese Namen nie für Concept-Dokumente verwenden.
+- **Beim Bearbeiten eines Concept-Files** `generated.at` bumpen und — nach Verifikation gegen Code/Config — `verified: { by: opencode/knowledge-persistence, at }` setzen (machine-confirmed tier). `human:<id>` unter `verified` nie selbst schreiben; das bleibt einem Menschen vorbehalten.
+- **Legacy-Files ohne Frontmatter sind toleriert** und migrieren beim nächsten Touch (kein Big-Bang). Nicht „zur Sicherheit" alle Files umschreiben.
+- **Neu erzeugte Files in `docs/ai/` nach dem Anlegen auf `chmod 644` setzen**, sofern sie nicht bewusst sensibel sind — die Session-umask erzeugt sonst 600 (Git trackt nur das Executable-Bit; der Modus ist host-lokal).

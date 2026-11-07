@@ -3,8 +3,8 @@ type: Architecture
 title: Architecture
 description: Living structural map der On-Premise-Infrastruktur (gregor, kik, App, Wissensbasis).
 tags: [ki-kustodiat, architecture]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
-verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
 status: stable
 ---
 
@@ -149,16 +149,25 @@ kik-Zugang (SSH nur über den gregor-Jump-Host) ebendort.
 
 ## Knowledge Files (`docs/ai/`)
 
-| File | Purpose | Update mode |
-|------|---------|-------------|
-| HANDOFF.md | Offene Aufgaben für nächste Sitzung | Overwrite |
-| DECISIONS.md | Aktive Entscheidungen | Append; superseded → HISTORY.md |
-| ARCHITECTURE.md | Living structural map | Overwrite |
-| CONVENTIONS.md | Laufende Regeln zur Befolgung | Append |
-| PITFALLS.md | Fallstricke und nicht-offensichtliche Fehler | Append |
-| DOMAIN.md | Domänenregeln (Schule + Modell-Spezifika) | Append |
-| STATE.md | Aktueller Projektstatus | Overwrite |
-| HISTORY.md | Archiv superseded Einträge (append-only) | Append-only |
+`docs/ai/` ist seit 2026-11-07 ein **OKF-v0.2-Bundle** (Open Knowledge
+Format, Spec: `skills/knowledge-persistence/OKF-SPEC.md` im
+opencode-helpers-Repo): jedes Concept-File trägt YAML-Frontmatter mit
+`type`; `index.md` (Progressive-Disclosure-Einstieg, `okf_version:
+"0.2"`) und `log.md` (Per-Run-Log) sind reservierte Filenames. Gepflegt
+vom globalen `knowledge-persistence`-Skill.
+
+| File | OKF type | Purpose | Update mode |
+|------|----------|---------|-------------|
+| index.md | *(reserved, §8)* | Einstieg/Progressive Disclosure | Regenerate each run |
+| log.md | *(reserved, §9)* | Per-Run-Persistence-Log | Append each run |
+| HANDOFF.md | Handoff | Offene Aufgaben für nächste Sitzung | Overwrite |
+| DECISIONS.md | Decisions | Aktive Entscheidungen | Append; superseded → HISTORY.md |
+| ARCHITECTURE.md | Architecture | Living structural map | Overwrite |
+| CONVENTIONS.md | Conventions | Laufende Regeln zur Befolgung | Append |
+| PITFALLS.md | Pitfalls | Fallstricke und nicht-offensichtliche Fehler | Append |
+| DOMAIN.md | Domain Notes | Domänenregeln (Schule + Modell-Spezifika) | Append |
+| STATE.md | State | Aktueller Projektstatus | Overwrite |
+| HISTORY.md | History Archive | Archiv superseded Einträge (append-only) | Append-only |
 
 ## Data Flows
 

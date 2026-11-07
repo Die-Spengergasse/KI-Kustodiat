@@ -3,8 +3,8 @@ type: Pitfalls
 title: Pitfalls
 description: Bekannte Fallstricke, subtile Bugs und nicht-offensichtliche Constraints aus bisherigen Sessions.
 tags: [ki-kustodiat, pitfalls]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
-verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
 status: stable
 ---
 
@@ -121,3 +121,5 @@ status: stable
 - **`response_format=text` wird am Gateway zu JSON (verifiziert 2026-10-29, #55, durch `scripts/test-stt-api.mjs`):** Direkt am whisper-backend liefert `text` reinen Text; über LiteLLM kommt immer `{"text": …}` zurück, weil der Proxy die Antwort parst. Kein Fehler, aber ein Vertragsunterschied: Clients lesen `text` aus dem JSON. `Polished Recognition` und `aitranscribe` nutzen `verbose_json` und sind nicht betroffen.
 - **`LiteLLM_SpendLogs.startTime` ist naive UTC, `now()` liefert Wiener Zeit (2026-10-29, #55):** Ein Filter `startTime > now() - interval '10 minutes'` liefert **null** Zeilen, obwohl gerade Requests liefen — `now()` kommt als `23:36+02` zurück, `startTime` als `22:35`. Für Zeitfenster-Queries immer `(now() AT TIME ZONE 'UTC')` verwenden. Gleiche Klasse von Fehler wie beim Budget-Reset (oben).
 - **Diktat-Clients schicken nicht einen Request, sondern viele (verifiziert 2026-10-29, #55):** Polished Recognition nimmt in ~21-s-Fragmenten auf und überträgt **pro Fragment** einen Request, noch während diktiert wird (Live-Pipelining — auf langsamen Endpunkten die Voraussetzung für ein schnelles Ergebnis, im Betrieb bewährt). Ein 10-Minuten-Diktat sind also ~29 Requests, nicht einer. Konsequenzen: (a) Limits müssen dieses Muster aushalten, sonst bricht die ganze Sitzung an einem einzigen 429; (b) die nginx-Limits zählen pro **IP**, eine Klasse hinter einem NAT erzeugt ~87 r/min und liegt damit über den heutigen 60 — für den Klassen-Rollout (#53) neu kalibrieren, Fairness bleibt am Key (`rpm_limit`).
+- **`git push` nach parallelem Remote-Commit wird rejected — erst `git pull --rebase`, dann pushen (2026-11-07, opencode-helpers#127):** Während der Session hatte ein anderer Host die Trunk-Linie bewegt; der Push scheiterte mit `fetch first`. Ein Rebase auf `origin/main` löst das kollisionsfrei (keine gemeinsamen Dateien), Force-Push ist nicht nötig. Trunk-Regel bleibt: direkt auf `main`, keine Feature-Branches.
+- **Neue Files erben die Session-umask (oft 600) — `index.md`/`log.md` brauchen 644 (2026-11-07, #58):** Im selben Verzeichnis liegen teils bewusst sensible Files mit mode 600; neu erzeugte OKF-Files erbten beim Anlegen dennoch nur die umask. Git trackt nur das Executable-Bit — der Modus bleibt host-lokal und ist auf anderen Hosts anders. Nach dem Anlegen bewusst setzen (`chmod 644`), damit der Index für alle Leser der Wissensbank öffnet.

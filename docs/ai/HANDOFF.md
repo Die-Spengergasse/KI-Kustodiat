@@ -3,16 +3,17 @@ type: Handoff
 title: Handoff
 description: Offene Aufgaben und Übergabestand für die nächste Agent-Session.
 tags: [ki-kustodiat, handoff]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
-verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
 status: stable
 ---
 
 # HANDOFF — KI-Kustodiat
 
-Stand: 2026-10-30 · **Anleitung beschreibt nur noch die Neueinrichtung — `large-v3`-Migrationshinweis entfernt (Defekt zu #55/#56)** · **Startseite mit vier Kachel-Gruppen, Anleitungen getrennt, Tokenverwaltung unter `/tokens` (#57) — live** · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token statt Masterkey** · **Website + Tokenverwaltung live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
+Stand: 2026-11-07 · **Wissensbasis `docs/ai/` auf OKF v0.2 umgestellt (#58)** · Anleitung beschreibt nur noch die Neueinrichtung — `large-v3`-Migrationshinweis entfernt (Defekt zu #55/#56) · **Startseite mit vier Kachel-Gruppen, Anleitungen getrennt, Tokenverwaltung unter `/tokens` (#57) — live** · **Whisper hängt am Gateway (#55): Diktat mit Portal-Token statt Masterkey** · **Website + Tokenverwaltung live auf `https://kik.spengergasse.at` (AP9/#51)**: Release-Layout mit atomarem Symlink-Wechsel, systemweites Node 24, `kik-portal.service`, nginx static-first mit Ausfallseite, Deploy `scripts/deploy-app.sh` · Portal-Kern (AP5/#47) auf kik verifiziert: LDAP-Login, Postgres-Sessions, CSRF, Rate-Limit, LiteLLM-Provisioning, CN-Rollen · Public/Intern-Trennung nachgezogen (#40) · BBG-Beschaffungsweg auf der Angebotsseite (#32/#34, `0654606`) · Außenkommunikation ins interne Repo übersiedelt (#34/#24, intern #6) · Website-Fixes (#38 Pages-Minimalindex, #39 doppeltes Radl) live auf kik; SearXNG-Instanz-Trennung (#36) umgesetzt. Provider-Rundmail: 01/02/04 gesendet, 03/05/06 offen (06 versandfertig).
 
 ## Gerade abgeschlossen
+- **2026-11-07 — Wissensbasis auf OKF v0.2 umgestellt (#58, `49a6cd7`):** Alle 9 Concept-Files in `docs/ai/` tragen den Frontmatter-Envelope (`type`/`generated`/`verified`/`status`, Bodys byte-identisch); neu `index.md` (OKF §8, `okf_version: "0.2"`) und `log.md` (OKF §9); beide mode 644. `AGENTS.md`-Bootstrap liest zuerst `docs/ai/index.md`. Werkzeug: der global umgeschriebene `knowledge-persistence`-Skill (opencode-helpers#127/#128, `0e04b1a`/`45f2be7`) — Spec-Beilage `OKF-SPEC.md`, Envelope-Templates, Legacy-on-touch-Migration, Confirmation nur für berührte Files. **Stufe 2 (ein Konzept je Eintrag) bewusst zurückgestellt** — erst bei konkret sichtbarer Retrieval-Friction (DECISIONS 2026-11-07).
 - **2026-11-02 — BBG e-Shop: Datenexport recherchiert (#34):** Ein Ein-Klick-Vollexport
   aller Produkte ist **nicht** dokumentiert, ein vollständiger Export aber möglich:
   BMEcat 1.2 / veenion-Staging je Katalog (inkl. Multimedia-ZIP), „Alle Kataloge
