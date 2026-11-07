@@ -3,8 +3,8 @@ type: Conventions
 title: Conventions
 description: Verbindliche Konventionen zu Sprache, Git, LLM-Stack, Deploy und Public/Intern-Trennung.
 tags: [ki-kustodiat, conventions]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
-verified: { by: opencode/knowledge-persistence, at: 2026-11-07T19:43:29Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-07T20:53:00Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-07T20:53:00Z }
 status: stable
 ---
 
@@ -76,3 +76,5 @@ status: stable
 - **Beim Bearbeiten eines Concept-Files** `generated.at` bumpen und — nach Verifikation gegen Code/Config — `verified: { by: opencode/knowledge-persistence, at }` setzen (machine-confirmed tier). `human:<id>` unter `verified` nie selbst schreiben; das bleibt einem Menschen vorbehalten.
 - **Legacy-Files ohne Frontmatter sind toleriert** und migrieren beim nächsten Touch (kein Big-Bang). Nicht „zur Sicherheit" alle Files umschreiben.
 - **Neu erzeugte Files in `docs/ai/` nach dem Anlegen auf `chmod 644` setzen**, sofern sie nicht bewusst sensibel sind — die Session-umask erzeugt sonst 600 (Git trackt nur das Executable-Bit; der Modus ist host-lokal).
+- **Split-Kriterien folgen dem Skill** (`FILE-TEMPLATES.md`, „Concept Boundaries and Splitting", opencode-helpers#129): Neues Concept-File, wenn ein Eintrag eigenes `status`/`stale_after`/`verified`/`sources` braucht oder eigenständig verlinkbar sein muss; narrative Übersichten (STATE, HANDOFF, ARCHITECTURE) bleiben ein File. Nie nach Größe oder in willkürlichen Chunks splitten.
+- **Weiche Größenmarke (Praxis, nicht Spec):** Bootstrap-geladene Sammeldateien über ~700 Zeilen / ~30 KB (aktuell STATE, PITFALLS, DECISIONS) sind Kandidaten für Stufe 2 — Split erst bei konkretem Bedarf, dann entlang der Concept-Achse, mit Overview-Links im Original und `log.md`-Eintrag.
