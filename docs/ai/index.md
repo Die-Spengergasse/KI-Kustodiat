@@ -21,6 +21,7 @@ im knowledge-persistence-Skill des opencode-helpers-Repos).
 * [decisions/](decisions/index.md) - Eine Datei je Entscheidung (52 Concepts)
 * [pitfalls/](pitfalls/index.md) - Fallstricke nach Themen (10 Buckets)
 * [state/](state/completed-2026.md) - Archiv der abgeschlossenen Arbeiten
+* [tips/](tips/index.md) - Admin-Tipps nach Themen (6 Buckets)
 
 ## Reference
 * [HISTORY.md](HISTORY.md) - Append-only Archiv supersedter Entscheidungen und aussortierter Einträge (append-only)

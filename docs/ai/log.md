@@ -1,6 +1,7 @@
 # Persistence Log
 
 ## 2026-11-07
+* **Creation**: [tips/](tips/index.md) — [TIPS.md](TIPS.md) in 6 Themen-Buckets gruppiert (317 Zeilen wortgleich, Schnitt an Abschnittsgrenzen); TIPS.md ist jetzt Overview (#61).
 * **Creation**: [state/completed-2026.md](state/completed-2026.md) — 85 Completed-Bullets unverändert aus [STATE.md](STATE.md) ausgelagert; STATE bleibt narrativ (Focus/Pending/Blockers/Next) und verweist aufs Archiv (Stufe 2, Phase 3, #60).
 * **Creation**: [pitfalls/](pitfalls/index.md) — 95 Fallstricke in 10 Themen-Buckets verteilt (Bullets wortgleich); [PITFALLS.md](PITFALLS.md) ist jetzt Overview (Stufe 2, Phase 2, #60).
 * **Creation**: [decisions/](decisions/index.md) — 52 Entscheidungen als je eigenes Concept (`type: Decision`, Datum-Slug, Issue-Sources); [DECISIONS.md](DECISIONS.md) ist jetzt Overview mit Datums-Links, „In Evaluierung" bleibt dort (Stufe 2, Phase 1, #60).
