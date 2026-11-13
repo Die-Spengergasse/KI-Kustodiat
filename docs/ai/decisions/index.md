@@ -55,3 +55,4 @@ Aktive Entscheidungen als je eigenes Concept (OKF §10.1); Übersicht: [DECISION
 * [Tokenverwaltung unter `/tokens`, Anleitungen unter `/anleitung/…`, Startseite als Kacheln (Issue #57)](2026-10-30-tokenverwaltung-unter-tokens-anleitungen-unter-anleitung.md) - 2026-10-30
 * [Die Wissensbasis folgt dem Open Knowledge Format (OKF) v0.2 (Issues #58, opencode-helpers#127)](2026-11-07-die-wissensbasis-folgt-dem-open-knowledge.md) - 2026-11-07
 * [OKF-Migration progressiv „on touch", Stufe 2 (Konzept-Granularität) zurückgestellt (Issues #58, opencode-helpers#127)](2026-11-07-okf-migration-progressiv-on-touch-stufe.md) - 2026-11-07
+* [Angebotsseite zeigt Speicherbandbreite und Parallelität je Hardware (Issue #62)](2026-11-13-angebotsseite-zeigt-bandbreite-und-parallelitaet.md) - 2026-11-13

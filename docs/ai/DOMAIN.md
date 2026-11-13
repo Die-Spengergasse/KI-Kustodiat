@@ -3,8 +3,8 @@ type: Domain Notes
 title: Domain Knowledge
 description: Schulkontext, Preise, Benchmarks und Nutzungsmodell der Spengergasse-KI-Infrastruktur.
 tags: [ki-kustodiat, domain]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
-verified: { by: opencode/knowledge-persistence, at: 2026-11-07T10:27:15Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-13T09:20:00Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-13T09:20:00Z }
 status: stable
 ---
 
@@ -20,20 +20,32 @@ status: stable
 - **Datenschutz**: DSGVO-kritisch – Verarbeitung personenbezogener Daten von Minderjährigen
 - **Pädagogisches Ziel**: KI-Kompetenz vermitteln, KI als Werkzeug im Unterricht, Coding-Assistenz in Projekten
 
-## Preise (Stand 2026-06-24)
+## Preise
 
-### Hardware Einmalig
+### Hardware Einmalig — Kompaktklasse (Stand 2026-11-13)
+
+Maßgeblich ist die öffentliche Angebotsseite
+([website/content/angebote.md](../../website/content/angebote.md), wöchentlich vom Skill
+`update-offers` erzeugt); diese Tabelle ist die Kurzfassung für den Agenten-Kontext.
+
 | Gerät | Speicher | Bandbreite | Preis |
 |-------|----------|-----------|-------|
-| AMD Strix Halo Mini PC | 96 GB unified | ~256 GB/s | ab $1.479 |
-| Mac Mini M4 Pro | 48 GB unified | 273 GB/s | $1.799 |
-| Mac Mini M4 Pro | 64 GB unified | 273 GB/s | ~$2.000 |
-| Mac Studio M4 Max | 128 GB unified | 400–546 GB/s | ~€4.500 |
-| Mac Studio M3 Ultra | 96 GB unified | 800 GB/s | ~€4.300 |
-| Mac Studio M3 Ultra | 192 GB unified | 800 GB/s | ~€7.000 |
-| AMD Strix Halo Dev Kit | 128 GB unified | ~256 GB/s | $3.999 |
-| NVIDIA DGX Spark | 128 GB unified | 273 GB/s | ~€4.950 |
-| 4× Mac Mini Pro (EXO) | 192 GB pooled | ~273 GB/s | ~$7.200 |
+| AMD Ryzen AI Halo (Ryzen AI Max+ PRO 495) | 192 GB unified | 273 GB/s | 7.299,99 $ |
+| GMKtec EVO-X5 Pro (PRO 495) | 192 GB unified | 273 GB/s | 6.799 $ |
+| GMKtec EVO-X3 (Ryzen AI Max+ 395) | 128 GB unified | 256 GB/s | 3.799,99 $ |
+| Minisforum MS-S1 Max (395) | 128 GB unified | 256 GB/s | 2.919,90 $ |
+| NVIDIA DGX Spark (GB10) | 64 / 128 GB unified | 273 GB/s | 6.950 $ (128 GB) |
+| Apple Mac Studio M5 Max | 36–128 GB unified | 614 GB/s (40-Core-GPU), 460 GB/s (32-Core) | ab 2.499 $ |
+| Apple Mac Studio M5 Ultra | 256 / 512 GB unified | 1,2 TB/s | 9.499 $ (256 GB) |
+
+**Parallelität** ist keine Preisfrage, sondern eine Bandbreitenfrage: pro generiertem Token
+wird das Modell einmal durch den Speicher gelesen, und parallele Sessions teilen sich
+denselben Bandbreiten-Topf. Höchste Bandbreite = meiste gleichzeitige Sessions; Kapazität
+kauft Modellgröße, nicht Nebenläufigkeit. Ein dichtes 70B-Modell in Q4 (~40 GB pro Token)
+ergibt auf 256–273 GB/s rund 4–7 tok/s für *alle* Sessions zusammen; MoE-Modelle mit 3–5B
+aktiven Parametern laufen um ein Vielfaches schneller. Kein System der Kompaktklasse trägt
+eine Schulklasse (25 Sessions) — dafür braucht es diskrete GPUs ab ~1,6 TB/s. Herleitung:
+[on-premise-vs-api-kalkulation.md](../Recherche/on-premise-vs-api-kalkulation.md).
 
 ### GPU-Miete (laufend)
 | Anbieter | GPU | Preis |

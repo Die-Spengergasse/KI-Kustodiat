@@ -1,5 +1,10 @@
 # Persistence Log
 
+## 2026-11-13
+* **Creation**: [decisions/2026-11-13-angebotsseite-zeigt-bandbreite-und-parallelitaet.md](decisions/2026-11-13-angebotsseite-zeigt-bandbreite-und-parallelitaet.md) — Bandbreiten-Spalte und fester Parallelitäts-Block liegen im Generator (`.opencode/skills/update-offers/SKILL.md`), nicht in der wöchentlich neu erzeugten Seite (#62).
+* **Update**: [DOMAIN.md](DOMAIN.md) — Hardware-Tabelle von 2026-06-24 (Strix Halo 96 GB, M4 Pro, M3 Ultra, 4× Mac Mini) auf den Stand der Angebotsseite 2026-11-13 gezogen (PRO 495, EVO-X3, MS-S1 Max, DGX Spark, M5 Max, M5 Ultra) plus Parallelitäts-Regel; `generated`/`verified` gebumpt.
+* **Update**: [decisions/index.md](decisions/index.md), [DECISIONS.md](DECISIONS.md) (Datums-Link), [state/completed-2026.md](state/completed-2026.md) (Abschluss-Eintrag).
+
 ## 2026-11-07
 * **Creation**: [tips/](tips/index.md) — [TIPS.md](TIPS.md) in 6 Themen-Buckets gruppiert (317 Zeilen wortgleich, Schnitt an Abschnittsgrenzen); TIPS.md ist jetzt Overview (#61).
 * **Creation**: [state/completed-2026.md](state/completed-2026.md) — 85 Completed-Bullets unverändert aus [STATE.md](STATE.md) ausgelagert; STATE bleibt narrativ (Focus/Pending/Blockers/Next) und verweist aufs Archiv (Stufe 2, Phase 3, #60).

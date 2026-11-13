@@ -3,7 +3,7 @@ type: State
 title: State
 description: Aktueller Projektstatus mit Fokus, abgeschlossenen und offenen Aufgaben.
 tags: [ki-kustodiat, state]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T21:13:47Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-13T09:20:00Z }
 verified: { by: opencode/knowledge-persistence, at: 2026-11-07T21:13:47Z }
 status: stable
 ---
@@ -11,7 +11,7 @@ status: stable
 # STATE — KI-Kustodiat
 
 ## Current Focus
-2026-11-07: **Wissensbasis auf Open Knowledge Format v0.2 umgestellt (#58)** — alle 9 Concept-Files in `docs/ai/` tragen YAML-Frontmatter (`type`/`generated`/`verified`/`status`), neue reservierte Files `index.md` (progressive disclosure, `okf_version: "0.2"`) und `log.md` (Per-Run-Log); Body-Inhalte byte-identisch. Der globale `knowledge-persistence`-Skill wurde dafür umgeschrieben (opencode-helpers#127/#128, Commits `0e04b1a`/`45f2be7`): Spec-Beilage `OKF-SPEC.md`, Frontmatter-Envelope in `FILE-TEMPLATES.md`, Legacy-on-touch-Migration ohne Big-Bang, Confirmation nur für berührte Files. Davor 2026-10-30 (Defekt zu #55/#56): Die Anleitung behauptete „Ältere Konfigurationen mit
+2026-11-13: **Angebotsseite zeigt Speicherbandbreite und Parallelität (#62)** — beide Hardware-Tabellen auf `#/angebote` führen die Spalte `Bandbreite` (M5 Max 614 GB/s … EVO-X3/MS-S1 Max 256 GB/s; Server-Klasse M5 Ultra 1,2 TB/s … 8× B300 64 TB/s), je eine abgeleitete Zeile und der feste Block „Was Parallelität begrenzt". Die Änderung liegt im Generator `.opencode/skills/update-offers/SKILL.md`, nicht in der wöchentlich neu erzeugten Markdown-Datei; deployt als Release `20261113T090529Z`. Offen daraus: die „32 tok/s"-Angabe in `docs/Recherche/on-premise-vs-api-kalkulation.md` geradeziehen (HANDOFF 0g). Davor 2026-11-07: **Wissensbasis auf Open Knowledge Format v0.2 umgestellt (#58)** — alle 9 Concept-Files in `docs/ai/` tragen YAML-Frontmatter (`type`/`generated`/`verified`/`status`), neue reservierte Files `index.md` (progressive disclosure, `okf_version: "0.2"`) und `log.md` (Per-Run-Log); Body-Inhalte byte-identisch. Der globale `knowledge-persistence`-Skill wurde dafür umgeschrieben (opencode-helpers#127/#128, Commits `0e04b1a`/`45f2be7`): Spec-Beilage `OKF-SPEC.md`, Frontmatter-Envelope in `FILE-TEMPLATES.md`, Legacy-on-touch-Migration ohne Big-Bang, Confirmation nur für berührte Files. Davor 2026-10-30 (Defekt zu #55/#56): Die Anleitung behauptete „Ältere Konfigurationen mit
 `large-v3` funktionieren weiterhin" — falsch, der Alias ist seit 2026-10-29 weg. Absatz
 ersatzlos gelöscht, die Seite beschreibt nur die Neueinrichtung. 2026-10-30: **Startseite, Anleitungen und Token-URL neu geordnet (#57)** — Startseite
 mit vier Kachel-Gruppen und normalen Links, `/anleitung/tokens` +
