@@ -25,20 +25,45 @@ git pull --ff-only origin "${BRANCH}"
 #    Hinweis: `opencode run` endet mit Exitcode 1, sobald im Lauf Tool-Fehler
 #    auftraten (z. B. abgebrochene Websuchen), auch wenn das Ergebnis gut ist.
 #    Deshalb hier den Code auffangen und am Artefakt entscheiden.
-set +e
-opencode run --standalone --model opencode-go/deepseek-v4.1-flash#high \
-  "Aktualisiere die Angebots-Übersicht (Skill update-offers)."
-OPENCODE_RC=$?
-set -e
-echo "[offers] opencode rc=${OPENCODE_RC}"
+#
+#    SCHREIBPFLICHT (Issue #63): Ein Lauf, der nur recherchiert und dann einen
+#    Statusbericht absetzt, ist ein Fehlschlag — nicht "keine Änderung". Der
+#    Prompt sagt das ausdrücklich, und Schritt 3 prüft es am mtime der Datei.
+PROMPT="Führe den Skill update-offers vollständig aus. Schreibe website/content/angebote.md in DIESEM Lauf mit dem write-Tool fertig — der Lauf gilt nur mit geschriebener Datei als erledigt. Keine anderen Dateien anfassen, nicht committen, nicht nachfragen."
 
-# 3. Artefakt prüfen: existiert, nicht leer, richtige Überschrift.
+run_agent() {
+  set +e
+  opencode run --standalone --model opencode-go/deepseek-v4.1-flash#high "$1"
+  local rc=$?
+  set -e
+  echo "[offers] opencode rc=${rc}"
+}
+
+MTIME_BEFORE="$(stat -c %y "${TARGET}" 2>/dev/null || echo 0)"
+run_agent "${PROMPT}"
+
+# 3. Artefakt prüfen: wurde die Seite in diesem Lauf überhaupt geschrieben?
+#    mtime statt Hash: die Datumszeile `_Aktualisiert: <ISO-Datum>._` macht einen
+#    Diff nur wahrscheinlich (ein zweiter Lauf am selben Tag erzeugt dasselbe
+#    Datum). Ein Schreibvorgang ist das verlässliche Signal; `%y` liefert
+#    Nanosekunden, `%Y` nur Sekunden (zwei Schreibvorgänge in derselben Sekunde
+#    wären sonst ununterscheidbar).
+if [ "$(stat -c %y "${TARGET}" 2>/dev/null || echo 0)" = "${MTIME_BEFORE}" ]; then
+  echo "[offers] Agent hat die Seite nicht geschrieben — ein Retry"
+  run_agent "${PROMPT} Der vorige Lauf hat die Datei nicht geschrieben; schreibe sie jetzt."
+  if [ "$(stat -c %y "${TARGET}" 2>/dev/null || echo 0)" = "${MTIME_BEFORE}" ]; then
+    echo "[offers] FEHLSCHLAG: zweiter Lauf ohne Schreibvorgang — Abbruch"
+    exit 1
+  fi
+fi
+
+# 4. Artefakt prüfen: existiert, nicht leer, richtige Überschrift.
 if [ ! -s "${TARGET}" ] || ! head -1 "${TARGET}" | grep -q '^# Angebote'; then
   echo "[offers] Angebotsseite fehlt oder ist ungültig — Abbruch"
   exit 1
 fi
 
-# 4. Sicherheitsnetz: der Agent darf nur die Angebotsseite anfassen.
+# 5. Sicherheitsnetz: der Agent darf nur die Angebotsseite anfassen.
 UNEXPECTED="$(git status --porcelain | grep -v " ${TARGET}$" || true)"
 if [ -n "${UNEXPECTED}" ]; then
   echo "[offers] Warnung: unerwartete Änderungen, breche ab:"
@@ -46,9 +71,10 @@ if [ -n "${UNEXPECTED}" ]; then
   exit 1
 fi
 
-# 5. Nur bei echter Änderung committen.
+# 6. Committen — nur bei echter Inhaltsänderung. Ein Schreibvorgang ohne
+#    Änderung ist ein gültiger Lauf (Agent hat geschrieben, Inhalt identisch).
 if git diff --quiet -- "${TARGET}"; then
-  echo "[offers] keine Änderung — fertig"
+  echo "[offers] Inhalt unverändert (Agent hat geschrieben) — fertig"
   exit 0
 fi
 
