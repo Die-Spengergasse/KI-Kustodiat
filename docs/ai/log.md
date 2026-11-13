@@ -1,6 +1,8 @@
 # Persistence Log
 
 ## 2026-11-13
+* **Update**: [pitfalls/tooling-git-ops.md](pitfalls/tooling-git-ops.md) — „Agent-Job ohne Artefakt-Gate endet mit `rc=0` ohne Ergebnis": `git diff --quiet` ist kein Erfolgsnachweis, Schreibvorgang per `stat -c %y` prüfen (#63).
+* **Update**: [HANDOFF.md](HANDOFF.md) — Punkt 0g (Durchsatz-Angabe) erledigt und aus den offenen Aufgaben entfernt; [STATE.md](STATE.md) Fokus auf #63; [state/completed-2026.md](state/completed-2026.md) ergänzt.
 * **Creation**: [decisions/2026-11-13-angebotsseite-zeigt-bandbreite-und-parallelitaet.md](decisions/2026-11-13-angebotsseite-zeigt-bandbreite-und-parallelitaet.md) — Bandbreiten-Spalte und fester Parallelitäts-Block liegen im Generator (`.opencode/skills/update-offers/SKILL.md`), nicht in der wöchentlich neu erzeugten Seite (#62).
 * **Update**: [DOMAIN.md](DOMAIN.md) — Hardware-Tabelle von 2026-06-24 (Strix Halo 96 GB, M4 Pro, M3 Ultra, 4× Mac Mini) auf den Stand der Angebotsseite 2026-11-13 gezogen (PRO 495, EVO-X3, MS-S1 Max, DGX Spark, M5 Max, M5 Ultra) plus Parallelitäts-Regel; `generated`/`verified` gebumpt.
 * **Update**: [decisions/index.md](decisions/index.md), [DECISIONS.md](DECISIONS.md) (Datums-Link), [state/completed-2026.md](state/completed-2026.md) (Abschluss-Eintrag).

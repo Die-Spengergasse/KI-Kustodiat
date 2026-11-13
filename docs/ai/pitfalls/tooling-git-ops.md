@@ -3,13 +3,14 @@ type: Pitfalls
 title: "Pitfalls — Werkzeuge, Git und Betriebs-Hygiene"
 description: "CLI-Verhalten, Git-Push, SSH, sudo und Datei-Modi."
 tags: [ki-kustodiat, pitfalls, tooling-git-ops]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T21:13:47Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-13T10:30:00Z }
 verified: { by: opencode/knowledge-persistence, at: 2026-11-07T21:13:47Z }
 status: stable
 ---
 
 # Werkzeuge, Git und Betriebs-Hygiene — Pitfalls
 
+- **Agent-Job ohne Artefakt-Gate endet mit `rc=0` ohne Ergebnis (2026-11-13, #63):** Der Angebots-Job prüfte am Ende nur `git diff --quiet` und beendete sich dann mit „keine Änderung — fertig" und **`exit 0`**. Beim Lauf am 2026-11-13 hatte der Agent die Recherche abgeschlossen, danach Issue und Runner-Skript gelesen und seinen Turn mit einem Statusbericht beendet — die Datei wurde nie geschrieben, der Timer meldete trotzdem Erfolg. Ein stiller Nicht-Lauf ist von einem Lauf ohne Inhaltsänderung nicht unterscheidbar. **`git diff --quiet` ist kein Erfolgsnachweis.** Regel: headless Jobs prüfen den **Schreibvorgang** (mtime mit `stat -c %y`, also Nanosekunden — `%Y` liefert nur Sekunden und zwei Schreibvorgänge in derselben Sekunde wären ununterscheidbar), einmal automatisch retryen und dann hart `exit 1`, damit die Unit `failed` wird. Ein Schreibvorgang ohne Inhaltsänderung bleibt `exit 0`, aber mit eigener Meldung.
 - **opencode-Subcommand-Gotcha**: `opencode models <provider>` (mit Argument) liefert "Provider not found" für kataloggestützte Provider; der TUI-Picker (`opencode models` ohne Arg / `/models` in TUI) funktioniert. Nur gegen den Picker validieren.
 - **Headless `opencode run` ohne `--model` nutzt das NEUESTE Katalogmodell**: ohne konfigurierten `model`-Key (Root-Config) nimmt opencode V2 **nicht** das zuletzt im TUI gewählte Modell (`~/.local/state/opencode/model.json` gilt nur für die TUI), sondern fällt laut Doku auf das jüngste verfügbare Modell zurück ("falls back to the newest available supported model"). Der Angebots-Job lief so still auf `opencode-go/claude-haiku-5-5` (Issue #33). Folge: stiller Drift bei jedem Katalog-Update, inkl. Kostenrisiko (neuestes Modell kann ein teures Frontier-Modell sein). **Jeden headless Job explizit pinnen** (`--model provider/model#variant`); die Variant geht nur per CLI, der Root-`model`-Key kann keine halten.
 - **Docker + ufw**: `:11434` ist ein *veröffentlichter Container-Port* → ufw kann ihn NICHT filtern (Docker pflegt eigene iptables-Regeln in der DOCKER-Kette). `:11435` ist Host-Service (ollama) → ufw könnte filtern (aktuell nicht umgesetzt → Known Gap, ollama direkt ohne Auth erreichbar). Wegen Docker+ufw-Interaktion immer nur Host-Service-Ports über ufw kontrollieren.
