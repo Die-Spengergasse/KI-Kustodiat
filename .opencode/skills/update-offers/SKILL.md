@@ -38,11 +38,21 @@ anderen Seiten anfassen.
        Je Eintrag **Speicherklasse** (256 / 512 / ≥ 1024 GB) und **Bauform**
        (Desk-Side / Rack) angeben; benennen, dass ≥ 1 TB praktisch nur als
        8-GPU-Rack turnkey ist.
+     Für **jedes** Hardware-System zusätzlich die **Speicherbandbreite** recherchieren
+     (GB/s bzw. TB/s) — sie ist die Kennzahl für Parallelität. Quelle ist die
+     Herstellerspezifikationsseite (Apple Tech Specs, AMD-Produktseite, NVIDIA-Datenblatt),
+     nicht ein Händler- oder Blog-Eintrag. Bei Apple die GPU-Variante mitnennen
+     (M5 Max: 614 GB/s bei 40-Core-GPU, 460 GB/s bei 32-Core). Nicht belegbar → `k. A.`,
+     nie schätzen. Ankerwerte zur Plausibilitätsprüfung (nicht blind übernehmen, pro Lauf
+     gegen die Herstellerseite prüfen): Mac Studio M5 Ultra 1,2 TB/s, RTX PRO 6000
+     Blackwell Server Edition 1597 GB/s, H200 ~4,8 TB/s, B200/B300 ~8 TB/s.
      **Ausgeschlossen:** DIY-Bausätze (z. B. Framework Desktop im Bausatz),
      Eigenbau aus Einzel-GPUs, Gebraucht-GPU-Selbstbau, sonstige Bastellösungen.
    Für die Schul-/Datenschutz-Perspektive relevant: **EU-Anbieter mit DPA** (z. B. Cortecs, Wien).
 
-   Ziel sind **Angebote und Preise**, nicht technische Details der Anbieter.
+   Ziel sind **Angebote und Preise**, nicht technische Details der Anbieter. Ausnahme ist die
+   Hardware: **Speicherkapazität und Speicherbandbreite** sind dort entscheidungsrelevant —
+   die Bandbreite bestimmt, wie viele Sessions parallel laufen — und gehören in die Tabelle.
 
    **Anspruch an die Zahlen:** Für jeden gelisteten Anbieter soll **mindestens eine konkrete
    Zahl** stehen (Preis pro 1 Mio. Input-/Output-Token für das Flaggschiff-Modell). Dafür auch
@@ -68,8 +78,17 @@ anderen Seiten anfassen.
    - H1 `# Angebote` und eine Zeile **`_Aktualisiert: <ISO-Datum>._`**
    - je Abschnitt eine Markdown-**Tabelle**: `Anbieter | Angebot | Preis | Stand | Quelle`
      (Quelle als Link). Eine Tabelle pro Kategorie (Token-Preise, Gratis/Bildung).
-   - **Hardware in zwei Tabellen:** Kompaktklasse (wie oben) **und** „Regal-/Server-Klasse"
-     mit den Spalten `Anbieter | System | Speicher | Bauform | Preis | Stand | Quelle`.
+   - **Hardware in zwei Tabellen:** Kompaktklasse mit den Spalten
+     `Anbieter | System | Speicher | Bandbreite | Preis | Stand | Quelle` **und**
+     „Regal-/Server-Klasse" mit den Spalten
+     `Anbieter | System | Speicher | Bandbreite | Bauform | Preis | Stand | Quelle`.
+   - **Abgeleitete Zeile je Hardware-Tabelle:** direkt unter der Tabelle ein Satz, der aus
+     den eigenen Werten das System mit der **höchsten** und das mit der **niedrigsten**
+     Bandbreite nennt (mit GB/s-Zahl). Aus der Tabelle ableiten, nicht aus dem Gedächtnis.
+   - **Parallelitäts-Block:** Setze nach den Hardware-Tabellen (vor dem BBG-Block) den
+     Abschnitt „Was Parallelität begrenzt" **wortgleich und vollständig** aus dem Abschnitt
+     „Parallelitäts-Block (fest)" dieses Skills ein. Diesen Block **nicht** recherchieren,
+     nicht umformulieren, nicht kürzen — er ist datiert und wird manuell nachgezogen.
    - **Keine Alteinträge:** Erzeuge die Seite bei jedem Lauf vollständig neu und übernimm
      **keine** Einträge früherer Läufe. Entferne alles, was den aktuellen Regeln nicht mehr
      entspricht (Gebraucht-GPUs, DIY-/Bausatz-Lösungen, abgekündigte Modelle). Die Seite
@@ -86,7 +105,48 @@ anderen Seiten anfassen.
    - **Ansprache: durchgehend informell (Du)** — kein „Sie/Ihre/Ihnen".
 
 3. **Verifizieren.** Die Datei muss rendern und ihre `*.md`-Links müssen auflösbar sein
-   (Prüfung wie im Skill `update-homepage`, Abschnitt Verifizieren).
+   (Prüfung wie im Skill `update-homepage`, Abschnitt Verifizieren). Zusätzlich:
+   - Jede Zeile beider Hardware-Tabellen hat in `Bandbreite` entweder eine belegte Zahl oder
+     ausdrücklich `k. A.` — keine leere Zelle, keine Schätzung.
+   - Die abgeleitete Zeile unter jeder Hardware-Tabelle nennt ein System, das in dieser
+     Tabelle steht, und ihre Reihenfolge (höchste/niedrigste) stimmt mit den Zellenwerten
+     überein.
+   - Der Abschnitt „Was Parallelität begrenzt" ist vorhanden und wortgleich mit dem
+     „Parallelitäts-Block (fest)"; der BBG-Block folgt danach.
+   - Kein relativer Link auf Dateien außerhalb von `website/content/` (z. B.
+     `docs/Recherche/…`) — solche Pfade sind auf der Seite nicht auflösbar.
+
+## Parallelitäts-Block (fest)
+
+Dieser Block wird **wortgleich** in die Seite übernommen (nach den Hardware-Tabellen, vor dem
+BBG-Block). Er wird **nicht** vom Job recherchiert und bei Änderungen manuell nachgezogen —
+die Mechanik ist zeitlos, die Zahlen stehen in den Tabellen.
+
+```markdown
+### Was Parallelität begrenzt
+
+_Stand: 2026-11-13._
+
+Ob ein System viele gleichzeitige Chats trägt, entscheidet nicht der Speicher, sondern die
+**Speicherbandbreite**: pro generiertem Token wird das Modell einmal durch den Speicher
+gelesen. Parallele Sessions teilen sich denselben Bandbreiten-Topf — doppelt so viele
+Sessions heißt halb so viele Tok/s pro Session.
+
+- **Dichte Modelle:** Bytes pro Token = Modellgröße. Ein 70B-Modell in Q4 (~40 GB) liest
+  ~40 GB pro Token; auf 273 GB/s sind das rund 4–7 tok/s für *alle* Sessions zusammen.
+- **MoE-Modelle** (z. B. gpt-oss-120B, Qwen3-30B-A3B) lesen nur die aktiven Experten
+  (~3–5B Parameter) und laufen dadurch um ein Vielfaches schneller — mehr Parallelität bei
+  gleicher Hardware.
+- **Kapazität ist nicht Parallelität:** 192 GB erlauben ein größeres Modell, nicht mehr
+  gleichzeitige Nutzer. Bei gleicher Bandbreite sinkt die Parallelität sogar, weil pro Token
+  mehr gelesen wird.
+- **Prefill und Batching** kosten Rechenleistung: Systeme mit vLLM/TensorRT-LLM und
+  FP4/FP8-Tensorcores verkraften Lastspitzen besser als solche mit MLX/llama.cpp.
+
+Faustregel bei gleichem Modell und gleicher Quantisierung: **höchste Bandbreite = meiste
+parallele Sessions.** Kein System der Kompaktklasse trägt eine ganze Schulklasse
+(25 gleichzeitige Sessions) — dafür braucht es diskrete GPUs ab etwa 1,6 TB/s.
+```
 
 ## BBG-Block (fest)
 
@@ -114,6 +174,7 @@ Quellen: [Aktuelle Verträge](https://www.bbg.gv.at/information/aktuelle-vertrae
 
 - **Öffentlich** ist nur diese Angebots-Übersicht. **Verhandlungen, Kontakte, Preise und
   Beschaffungsstrategie** gehören **nicht** hierher, sondern ins interne Schwester-Repo.
-  Der obige BBG-Block ist die eng gefasste Ausnahme: **ausschließlich** öffentliche Fakten
-  (GZ-Nummern, Verfahrenstermine, Nachweisgrenzen) — keine Preise, keine Absichten.
+  Die beiden festen Blöcke („Was Parallelität begrenzt", „Beschaffungsweg über die BBG") sind
+  die eng gefasste Ausnahme: **ausschließlich** öffentliche Fakten (Bandbreiten-Mechanik,
+  GZ-Nummern, Verfahrenstermine, Nachweisgrenzen) — keine Preise, keine Absichten.
 - Kein Commit, kein Deploy im Skill — das erledigt `scripts/run-offers-job.sh`.
