@@ -8,7 +8,7 @@ Siehe auch: `cortecs-provider-evaluation.md` (DSGVO-Tier-Klassifikation)
 > **Vorläufiger Vermerk (2026-10-27, Arbeitshypothese — nicht entschieden):** Der
 > On-Premise-Kaufweg (Framework Desktop Strix Halo 128 GB) ist derzeit **nicht der
 > bevorzugte Weg**, bleibt aber eine offene Option. Gründe: 256 GB/s Speicherbandbreite
-> tragen keine Schulklasse (gemessen ~4 parallele Sessions bei 32 tok/s), und die
+> tragen keine Schulklasse (bandbreitenbegrenzt: ~1 Session bei 70B Q4, ~6–7 bei 8B Q4), und die
 > diskrete 96-GB-Klasse, die es täte, kostet als Kauf €10.000+ bei 3–4 Jahren Nutzwert.
 > Geprüft wird stattdessen eine **gemietete** Dedicated-Inference-Karte (RTX Pro 6000,
 > 96 GB) an Schultagen 08:00–22:00, Ferien auf null: ~€5.570/Schuljahr, kein Capex.
@@ -98,7 +98,7 @@ Siehe auch: `cortecs-provider-evaluation.md` (DSGVO-Tier-Klassifikation)
 | Qwen 3.6 32B Q4 | ~18 GB | ✓ | ✓ | ✓ |
 
 **Wichtig:** DeepSeek V4 Flash **lossless (Q8) ist auf 128 GB nicht möglich**
-(bräuchte Mac Studio M5 Max 192 GB, ~€5.500+). Mit Q3 (~110 GB) läuft es,
+(bräuchte Mac Studio M5 Ultra 256 GB, 9.499 $). Mit Q3 (~110 GB) läuft es,
 aber mit messbarem Qualitätsverlust — siehe PITFALLS.md / Quantization-Tabelle
 unten.
 
@@ -113,14 +113,27 @@ unten.
 
 → Auf 128 GB Strix Halo läuft DeepSeek V4 Flash nur als **Q3** (110 GB) —
    Qualität leicht reduziert, aber für Coding/Chat brauchbar.
-   Lossless (Q8) erst ab Mac Studio M5 Max 192 GB (~€5.500+).
+   Lossless (Q8) erst ab Mac Studio M5 Ultra 256 GB (9.499 $).
 
-### Durchsatz (Strix Halo, 70B Q4, 32 tok/s)
+### Durchsatz (Strix Halo, 256 GB/s)
 
-- Bei 32 tok/s: 1.920 tok/min → ~4 Schüler parallel bei 500-Tok-Antworten
-- Bei mehreren parallelen Schülern bricht throughput ein (256 GB/s Bandbreite
-  limitiert Batching vs. discrete GPU ~1.000 GB/s)
-- **Für Vollbetrieb einer Klasse (25 Schüler parallel) nicht geeignet**
+Faustregel: pro generiertem Token wird das Modell einmal durch den Speicher gelesen.
+Bytes pro Token ≈ Modellgröße (dense) bzw. Summe der aktiven Experten (MoE). Daraus
+folgt der Durchsatz für **alle** Sessions zusammen — parallele Sessions teilen sich
+diesen Topf.
+
+| Modell | Bytes/Token | theoretisch (256 GB/s) | real (~70 %) |
+|---|---|---|---|
+| 70B dense, Q4 | ~40 GB | ~6 tok/s | ~4–5 tok/s |
+| 8B dense, Q4 | ~5 GB | ~50 tok/s | ~35 tok/s |
+| MoE ~120B mit ~5B aktiv, Q4 (z. B. gpt-oss-120B) | ~3,5 GB | ~70 tok/s | ~50 tok/s |
+
+- **Korrektur (2026-11-13):** Die frühere Angabe „70B Q4, 32 tok/s" war falsch — 32 tok/s
+  bei 40 GB pro Token bräuchten ~1,3 TB/s. 32 tok/s passt zu einem **8B**-Modell.
+- Bei 5 tok/s pro Session trägt ein 70B-Q4-Lauf **~1 Session**, ein 8B-Q4-Lauf **~6–7**.
+- Diskrete GPUs liegen um Faktor 6–30 darüber: RTX PRO 6000 Blackwell SE 1,6 TB/s,
+  H200 4,8 TB/s, B200/B300 8 TB/s (pro GPU).
+- **Für Vollbetrieb einer Klasse (25 Schüler parallel) nicht geeignet.**
 
 ## Vergleichstabelle On-Prem vs. Cortecs (mittleres Szenario, 3 Jahre)
 
@@ -132,7 +145,7 @@ unten.
 | Ø/Jahr | ~€5.310 | ~€1.800 |
 | Modellqualität | Mittel (70B Q4, Flash Q3) | Hoch (Flash lossless, Claude) |
 | DSGVO/EU-Residency | ✓ (lokal, bestmöglich) | ✓ (Cortecs garantiert) |
-| Skalierung bei Klassen | ❌ (32 tok/s limit) | ✓ (beliebig) |
+| Skalierung bei Klassen | ❌ (bandbreitenbegrenzt, ~1 Session bei 70B) | ✓ (beliebig) |
 | Frontier-Modelle (Claude/GPT-5) | ❌ nicht verfügbar | ✓ |
 | Ausfall/Wartung | IT-Mitarbeiter belastet | Provider-SLA |
 | Upgrade auf neues Modell | Neuinvestition | sofort verfügbar |
@@ -158,7 +171,7 @@ unten.
 
 - Phase 1 (2026/27): API-lastig (Cortecs) + Dev-Rig gregor
 - Phase 2 (2027/28): Strix Halo als On-Prem-Backend; bei fallenden Preisen
-  Mac Studio M5 Max 192 GB ergänzen (für Q8-lossless DeepSeek V4 Flash)
+  Mac Studio M5 Ultra 256 GB ergänzen (für Q8-lossless DeepSeek V4 Flash)
 - Phase 3 (2028+): autark mit breiterer Hardware-Basis
 
 ## Aktualisierte Hardware-Empfehlung
@@ -171,7 +184,7 @@ Hardware-Favorit „Apple Mac Mini Pro + AMD Strix Halo":
   Llama 3.3 70B Q4 (40 GB) — letzteres als BF16 sogar lossless.
 - **Mac Mini M5 Pro (24–48 GB unified)** — verworfen für DeepSeek V4 Flash:
   zu wenig VRAM (Flash Q3 braucht 110 GB). Nur für kleine Modelle brauchbar.
-- **Mac Studio M5 Max 192 GB (~€5.500+)** wäre Alternative für Q8-lossless
+- **Mac Studio M5 Ultra 256 GB (9.499 $)** wäre Alternative für Q8-lossless
   DeepSeek V4 Flash — außerhalb 9K-Budget für erstes Setup, aber in Phase 2
   als Ergänzung vorgemerkt.
 - **DGX Spark (€4.950)** — bestätigt zu teuer für Einstieg (bereits
@@ -184,5 +197,8 @@ Hardware-Favorit „Apple Mac Mini Pro + AMD Strix Halo":
 - pricepertoken.com/pricing-page/model/deepseek-deepseek-v4-flash (API-Preise)
 - openrouter.ai/deepseek/deepseek-v4-flash (OpenRouter-Preis)
 - unsloth.ai/docs/models/deepseek-v4 (Quantisierungs-Tabelle)
+- apple.com/mac-studio/specs (M5 Max 614/460 GB/s, M5 Ultra 1,2 TB/s, Speichergrenzen 128 GB / 256–512 GB)
+- nvidia.com (RTX PRO 6000 Blackwell Server Edition 1597 GB/s, H200 4,8 TB/s, B200/B300 8 TB/s)
+- Bandbreiten-Spalte und Parallelitäts-Block der Angebotsseite: `website/content/angebote.md`
 - cortecs.ai/aboutUs (EU-souveran, ISO 27001, DPA, No-Training)
 - Siehe `cortecs-provider-evaluation.md` für vollständige Provider-Klassifikation
