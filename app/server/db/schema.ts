@@ -14,6 +14,7 @@ import {
   check,
   index,
   inet,
+  numeric,
   pgSchema,
   text,
   timestamp,
@@ -127,6 +128,43 @@ export const keyMeta = portalSchema.table(
 )
 
 /**
+ * Admin credit top-ups (the admin-UI slice of Issue #49).
+ *
+ * The gateway has no credit account: an allowance is `max_budget` minus `spend`,
+ * and `spend` is zeroed by the gateway's monthly reset job. "Topping up" can
+ * therefore only raise `max_budget` — this table records that the raise was a
+ * *one-off* grant for one budget period, so a later reconcile can revert it to
+ * the role policy. Append-only: a correction is a new row (negative grants are
+ * out of scope; the admin lowers the allowance through the gateway).
+ *
+ * `resets_at` is the gateway's `budget_reset_at` at grant time, which is what
+ * ties a grant to its period; it is `null` when the user has no budget duration.
+ */
+export const creditGrant = portalSchema.table(
+  'credit_grant',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    /** Amount added to the monthly allowance, in USD. */
+    amountUsd: numeric('amount_usd', { precision: 10, scale: 2 }).notNull(),
+    /** The gateway allowance after this grant — the audit value, not a policy. */
+    maxBudgetAfterUsd: numeric('max_budget_after_usd', { precision: 10, scale: 2 }).notNull(),
+    /** Free text from the admin; never a secret. */
+    note: text('note'),
+    grantedBy: uuid('granted_by').references(() => users.id, { onDelete: 'set null' }),
+    /** Gateway `budget_reset_at` of the period this grant belongs to. */
+    resetsAt: timestamp('resets_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index('credit_grant_user_id_idx').on(table.userId),
+    check('credit_grant_amount_check', sql`${table.amountUsd} > 0`),
+  ],
+)
+
+/**
  * Login attempts — the source of the per-IP and per-account rate limit. Kept
  * separate from `audit_log` because it is queried on every login and pruned.
  */
@@ -147,4 +185,4 @@ export const loginAttempts = portalSchema.table(
   ],
 )
 
-export const schema = { users, sessions, auditLog, loginAttempts, keyMeta }
+export const schema = { users, sessions, auditLog, loginAttempts, keyMeta, creditGrant }

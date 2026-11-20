@@ -23,6 +23,8 @@ export type AuditEvent =
   | 'key_rotated'
   | 'key_revoked'
   | 'budget_set'
+  /** Admin credit top-up (#64): amount and new allowance, never a note secret. */
+  | 'credit_granted'
 
 export interface AuditEntry {
   event: AuditEvent

@@ -28,6 +28,7 @@ export function testConfig(overrides: Partial<PortalConfig> = {}): PortalConfig 
       monthlyBudgetUsd: { student: 5, teacher: 5, staff: 5, admin: 5 },
     rpmLimit: { student: 120, teacher: 120, staff: 120, admin: 120 },
     },
+    admin: { maxCreditUsd: 50 },
     ...overrides,
   }
 }

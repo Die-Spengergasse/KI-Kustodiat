@@ -17,6 +17,7 @@ import { findBotFile } from '../src/bots'
 import { isDesignRoute } from '../src/devRoutes'
 import { isTokensPath, matchPublicRoute, normalizeRoutePath, outputFilePath } from '../src/routes'
 import { registerAuthRoutes } from './routes/auth'
+import { registerCreditRoutes } from './routes/credit'
 import { registerKeyRoutes } from './routes/keys'
 import { registerUsageRoutes } from './routes/usage'
 
@@ -48,6 +49,8 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
   // Self-service keys and the read-only usage view (Issue #48).
   await registerKeyRoutes(app)
   await registerUsageRoutes(app)
+  // Admin credit top-ups (Issue #64, slice of #49).
+  await registerCreditRoutes(app)
 
   const handlePage =
     options.mode === 'dev'

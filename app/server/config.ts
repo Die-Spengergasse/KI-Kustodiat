@@ -43,6 +43,13 @@ const DEFAULT_MONTHLY_BUDGET_USD = 5
  */
 const DEFAULT_RPM_LIMIT = 120
 
+/**
+ * Upper bound of a single admin top-up (USD). A typo guard ("20" instead of
+ * "2,00"), not a policy: the role policy belongs in #49. Deliberately generous,
+ * because a badly burned dictation month can legitimately need a few dollars.
+ */
+const DEFAULT_ADMIN_CREDIT_MAX_USD = 50
+
 export interface PortalRateLimitConfig {
   /** Window the failure counters are counted over, in seconds. */
   windowSeconds: number
@@ -82,6 +89,12 @@ export interface PortalKeysConfig {
   rpmLimit: Record<Role, number>
 }
 
+/** Admin credit top-up (the admin-UI slice of Issue #49). */
+export interface PortalAdminConfig {
+  /** Largest amount a single top-up may add to `max_budget`, in USD. */
+  maxCreditUsd: number
+}
+
 export interface PortalConfig {
   databaseUrl: string
   /** HMAC key for the session and CSRF cookies. */
@@ -99,6 +112,7 @@ export interface PortalConfig {
   ldap: PortalLdapConfig
   litellm: PortalLitellmConfig
   keys: PortalKeysConfig
+  admin: PortalAdminConfig
 }
 
 export type PortalConfigResult =
@@ -341,6 +355,13 @@ export function loadPortalConfig(): PortalConfigResult {
         ),
         rpmLimit: perRole('PORTAL_RPM_LIMIT', 'PORTAL_RPM_LIMIT_DEFAULT', DEFAULT_RPM_LIMIT, (name, fallback) =>
           intEnv(name, fallback, 1, 100_000),
+        ),
+      },
+      admin: {
+        // A zero cap would block every top-up; 1 cent is the smallest sensible floor.
+        maxCreditUsd: Math.max(
+          0.01,
+          moneyEnv('PORTAL_ADMIN_CREDIT_MAX_USD', DEFAULT_ADMIN_CREDIT_MAX_USD, 100_000),
         ),
       },
     },

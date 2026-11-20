@@ -15,6 +15,13 @@
       "when": 1793298883564,
       "tag": "0001_old_leader",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795179614932,
+      "tag": "0002_thick_colossus",
+      "breakpoints": true
     }
   ]
 }

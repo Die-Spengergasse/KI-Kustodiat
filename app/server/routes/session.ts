@@ -53,6 +53,22 @@ export async function requireSession(
   return { db, user: active.user, config }
 }
 
+/**
+ * Admin-only gate for operating surfaces (credit top-ups, Issue #64). The role
+ * comes from `portal.users.role`, which a directory login never demotes.
+ */
+export async function requireAdmin(
+  context: PortalRequestContext,
+  reply: FastifyReply,
+): Promise<boolean> {
+  if (context.user.role === 'admin') return true
+  await reply.code(403).send({
+    error: 'forbidden',
+    message: 'Nur Administrator:innen dürfen Guthaben aufladen.',
+  })
+  return false
+}
+
 /** `true` when the request carries the CSRF header matching the signed cookie. */
 export function hasCsrfToken(context: PortalRequestContext, request: FastifyRequest): boolean {
   return verifyCsrf(context.config, request.headers.cookie, headerValue(request, 'x-csrf-token'))

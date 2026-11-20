@@ -10,8 +10,9 @@ Dieser Stand enthält alle sieben öffentlichen Seiten, die Bot-Artefakte
 (LDAP-Login gegen das Schul-AD, serverseitige Sessions, CSRF, Login-Rate-Limit,
 Auto-Provisioning nach LiteLLM, Rollen aus dem Verzeichnis-DN) sowie die
 **Key-Verwaltung und Verbrauchsanzeige** aus #48 (Schlüssel erzeugen/rotieren/
-widerrufen, Monatsverbrauch pro Modell). Kontingent-Policy und Anträge folgen in
-#49.
+widerrufen, Monatsverbrauch pro Modell) und die **Admin-Aufladung** aus #64
+(Monatskontingent eines Kontos erhöhen, mit Guthaben-Protokoll). Kontingent-Policy
+mit Anträgen und Reconcile folgt in #49.
 
 ## Kommandos
 
@@ -153,13 +154,57 @@ Nach einem LiteLLM-Upgrade mit Prisma-Schemaänderung das Skript erneut anwenden
 Die Query selbst steckt hinter `server/usage/repository.ts`; ein Wechsel der
 Datenquelle berührt nur diese Datei.
 
+## Admin-Guthaben (#64, Slice von #49)
+
+| Route                              | Verhalten                                                                                                  |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `GET /api/credit/users?q=`         | Konten mit Kontingent, Verbrauch, verfügbarem Betrag und Gutschriften der laufenden Periode; nur `admin`   |
+| `POST /api/credit/users/:sam/credit` | `{amountUsd, note?}` → `max_budget += amountUsd`; **200** mit aktualisiertem Konto; ohne CSRF **403**      |
+| `/tokens/admin`                    | client-gerendert, `noindex`: Suche, Kontenliste, Aufladen mit Bestätigungsschritt                          |
+
+Das Gateway kennt kein Guthabenkonto: verfügbar ist `max_budget` minus `spend`,
+und `spend` setzt der monatliche `reset_budget_job` bei `budget_reset_at` zurück.
+Deshalb gilt:
+
+- **Aufladen ist ausschließlich `max_budget += X`** über `POST /user/update`.
+  `spend`, `budget_reset_at` und `budget_duration` bleiben unangetastet — die
+  Erhöhung entsperrt damit auch ein Konto, das an `ExceededBudget` hängt (Fall
+  `grafg`, 2026-11-20), und verschiebt den Monatswechsel nicht.
+- **Nie per SQL.** Am User hängen der Proxy-Cache und der Redis-Zähler
+  `spend:user:<id>`; nur `/user/update` invalidiert beide
+  (`docs/ai/pitfalls/litellm-gateway.md`).
+- **Einmalige Gutschrift.** Jede Erhöhung schreibt eine Zeile in
+  `portal.credit_grant` (Betrag, `max_budget_after_usd`, `resets_at` =
+  `budget_reset_at` zum Zeitpunkt, wer/wann/Notiz). Damit ist die Erhöhung als
+  Gutschrift **für diese Periode** markiert; der Reconcile aus #49 kann sie auf
+  die Rollen-Policy zurücknehmen. Bis dahin bleibt sie bestehen — der Ledger
+  macht das sichtbar statt still.
+- **Kein Reset-Knopf.** `spend: 0` ist bewusst nicht Teil der Oberfläche; es
+  würde die Gutschrift unsichtbar machen und den Verbrauch neu starten.
+- **Gate ist die DB-Rolle.** `admin` kommt aus `portal.users.role`; die
+  Navigation blendet „Guthaben" für alle anderen aus, die API antwortet
+  unabhängig davon **403**.
+- **Konto ohne Kontingent ist nicht aufladbar** (409 `budget_not_initialized`):
+  das Kontingent entsteht mit dem ersten API-Key, nicht durch eine Admin-Aktion.
+- **`/api/credit`, nicht `/api/admin`:** nginx blockt `/api/admin*` bewusst mit
+  **403**, damit die LiteLLM-Admin-API nie öffentlich wird; ein neuer Pfad unter
+  diesem Prefix wäre tot.
+- **Ledger-Ausfall rollt zurück:** schlägt der Insert fehl, setzt der Dienst
+  `max_budget` auf den alten Wert zurück (best effort) und antwortet **502**
+  `grant_not_recorded` — eine nicht verbuchte Gutschrift ist schlimmer als eine
+  fehlgeschlagene.
+
+Obergrenze pro Aufladung: `PORTAL_ADMIN_CREDIT_MAX_USD` (Default **50**, ein
+Tippfehler-Schutz, keine Policy).
+
 ### Weitere Knöpfe (Defaults in Klammern)
 
 `PORTAL_KEY_LIMIT_DEFAULT` (10) und je Rolle `PORTAL_KEY_LIMIT_STUDENT` /
 `_TEACHER` / `_STAFF` / `_ADMIN`; `PORTAL_MONTHLY_BUDGET_USD_DEFAULT` (5, vorläufig
 bis #49) und je Rolle `PORTAL_MONTHLY_BUDGET_USD_STUDENT` / `_TEACHER` / `_STAFF` /
 `_ADMIN`; `PORTAL_RPM_LIMIT_DEFAULT` (120) und je Rolle `PORTAL_RPM_LIMIT_STUDENT` /
-`_TEACHER` / `_STAFF` / `_ADMIN`.
+`_TEACHER` / `_STAFF` / `_ADMIN`; `PORTAL_ADMIN_CREDIT_MAX_USD` (50) als Obergrenze
+einer einzelnen Admin-Aufladung.
 
 ### Verifikation
 
@@ -167,10 +212,12 @@ bis #49) und je Rolle `PORTAL_MONTHLY_BUDGET_USD_STUDENT` / `_TEACHER` / `_STAFF
 PORTAL_DB_TEST=1 PORTAL_LITELLM_TEST=1 npm test   # inkl. Fixture-Schema und echtem Gateway
 ```
 
-`server/litellm/client.test.ts` und `server/keys/service.test.ts` laufen ohne
-Host-Zugriff; `server/usage/repository.test.ts` prüft die Query gegen ein
-Fixture-Schema, `server/routes/keys.integration.test.ts` den HTTP-Vertrag
-(401/403/404, Einmal-Secret, Limit) gegen die echte DB und das echte Gateway.
+`server/litellm/client.test.ts`, `server/keys/service.test.ts` und
+`server/admin/service.test.ts` laufen ohne Host-Zugriff; `server/usage/repository.test.ts`
+und `server/admin/store.test.ts` prüfen ihre Queries gegen Fixture-Schemata,
+`server/routes/keys.integration.test.ts` und `server/routes/credit.integration.test.ts`
+den HTTP-Vertrag (401/403/404/409, Einmal-Secret, Limit, Ledger + Audit) gegen die
+echte DB und das echte Gateway.
 
 ## Routen
 
@@ -348,7 +395,7 @@ app/dist -> ../current/dist   damit /tokens.html aus dem aktiven Release kommt
 
 - **Statisch zuerst:** Die öffentlichen Routen liefert nginx direkt aus
   `current/dist` (`try_files $uri $uri/index.html =404`), nur `/tokens`,
-  `/api/auth`, `/api/keys`, `/api/usage` gehen an `127.0.0.1:8080`. Ein Ausfall
+  `/api/auth`, `/api/keys`, `/api/usage`, `/api/credit` gehen an `127.0.0.1:8080`. Ein Ausfall
   des Dienstes lässt die Website stehen; `/tokens` zeigt dann die statische
   Ausfallseite (`public/tokens-fallback.html` → `dist/tokens-fallback.html`,
   per nginx `error_page 502 503 504`).

@@ -56,3 +56,4 @@ Aktive Entscheidungen als je eigenes Concept (OKF §10.1); Übersicht: [DECISION
 * [Die Wissensbasis folgt dem Open Knowledge Format (OKF) v0.2 (Issues #58, opencode-helpers#127)](2026-11-07-die-wissensbasis-folgt-dem-open-knowledge.md) - 2026-11-07
 * [OKF-Migration progressiv „on touch", Stufe 2 (Konzept-Granularität) zurückgestellt (Issues #58, opencode-helpers#127)](2026-11-07-okf-migration-progressiv-on-touch-stufe.md) - 2026-11-07
 * [Angebotsseite zeigt Speicherbandbreite und Parallelität je Hardware (Issue #62)](2026-11-13-angebotsseite-zeigt-bandbreite-und-parallelitaet.md) - 2026-11-13
+* [Admin-Aufladung: additive max_budget-Gutschrift mit Ledger, kein Spend-Reset (Issue #64)](2026-11-20-admin-aufladung-additive-gutschrift.md) - 2026-11-20

@@ -1,6 +1,10 @@
 # Persistence Log
 
 ## 2026-11-20
+* **New**: [decisions/2026-11-20-admin-aufladung-additive-gutschrift.md](decisions/2026-11-20-admin-aufladung-additive-gutschrift.md) — Admin-Aufladung ist `max_budget += X` über `/user/update`, verbucht in `portal.credit_grant`, kein Spend-Reset; API unter `/api/credit`, weil nginx `/api/admin*` blockt (#64).
+* **Update**: [pitfalls/litellm-gateway.md](pitfalls/litellm-gateway.md) — „Die Admin-GUI schreibt denselben Weg, nicht daneben": `updateUserBudget` ohne `budget_duration`, Ledger mit `resets_at`, 409/502-Verhalten, `/api/credit` statt `/api/admin` (#64).
+* **Update**: [pitfalls/whisper-stt.md](pitfalls/whisper-stt.md) — Entsperren primär über `/tokens/admin`, Curl-Runbook nur noch Notfall (#64).
+* **Update**: [index.md](index.md) — Concept-Zähler `decisions/` von 53 auf 54.
 * **Update**: [pitfalls/whisper-stt.md](pitfalls/whisper-stt.md) — „Ein erschöpftes Monatsbudget sperrt den ganzen Account, nicht nur das Diktat": belegter Fall `grafg` (5,0006 $ / 5 $ → 429 auf allen Keys bis `budget_reset_at`) plus SDK-Retry-Loop als Lastquelle (#49).
 * **Update**: [pitfalls/litellm-gateway.md](pitfalls/litellm-gateway.md) — „Budget nur über die Admin-API, nie per SQL": warmer Cross-Pod-Zähler `spend:user:<id>` in Redis, Invalidation durch `/user/update`, Reconcile-Vorbehalt aus #49.
 * **Update**: [index.md](index.md) — Concept-Zähler `decisions/` von 52 auf 53 nachgezogen (Eintrag 2026-11-13 kam nach der letzten Regenerierung).

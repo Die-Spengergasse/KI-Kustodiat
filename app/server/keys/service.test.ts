@@ -89,6 +89,10 @@ class FakeClient implements LitellmClient {
     this.monthlyBudgetUsd = input.maxBudgetUsd
     return (await this.getUser(input.userId)) as LitellmUser
   }
+
+  async updateUserBudget(input: { userId: string; maxBudgetUsd: number }): Promise<LitellmUser> {
+    return this.setUserBudget(input)
+  }
 }
 
 interface MemoryStore extends KeyMetaStore {

@@ -119,9 +119,11 @@ export function isTokensPath(input: string): boolean {
  * its labels.
  */
 export const TOKENS_PAGES = [
-  { path: '/tokens', label: 'Übersicht' },
-  { path: '/tokens/keys', label: 'API-Keys' },
-  { path: '/tokens/usage', label: 'Verbrauch' },
+  { path: '/tokens', label: 'Übersicht', adminOnly: false },
+  { path: '/tokens/keys', label: 'API-Keys', adminOnly: false },
+  { path: '/tokens/usage', label: 'Verbrauch', adminOnly: false },
+  // The nav hides it for non-admins; the API answers 403 regardless (Issue #64).
+  { path: '/tokens/admin', label: 'Guthaben', adminOnly: true },
 ] as const
 
 export type TokensPagePath = (typeof TOKENS_PAGES)[number]['path']

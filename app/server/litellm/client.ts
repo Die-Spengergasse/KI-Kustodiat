@@ -66,6 +66,11 @@ export interface LitellmClient {
   deleteKey(token: string): Promise<boolean>
   getUser(userId: string): Promise<LitellmUser | null>
   setUserBudget(input: { userId: string; maxBudgetUsd: number }): Promise<LitellmUser>
+  /**
+   * Changes the monthly allowance and leaves the period alone. Admin top-ups use
+   * this — sending `budget_duration` again would re-anchor the reset date.
+   */
+  updateUserBudget(input: { userId: string; maxBudgetUsd: number }): Promise<LitellmUser>
 }
 
 type FetchLike = (input: string, init: RequestInit) => Promise<Response>
@@ -154,6 +159,21 @@ export function createLitellmClient(
     return new LitellmError(`${what} failed with ${status}: ${text.slice(0, 200)}`, status)
   }
 
+  /**
+   * One write path for the gateway user. `/user/update` also invalidates the
+   * proxy's user cache and the cross-pod `spend:user:<id>` counter in Redis —
+   * which is exactly why a budget must never be written by SQL (PITFALLS).
+   */
+  async function updateUser(body: Record<string, unknown>): Promise<LitellmUser> {
+    const { status, payload, text } = await request('/user/update', { method: 'POST', body })
+    if (status < 200 || status >= 300 || payload === null) {
+      throw fail('LiteLLM /user/update', status, text)
+    }
+    // The endpoint wraps the user in `data`; accept both shapes.
+    const data = objectOf(payload.data)
+    return userFromPayload(stringOrNull(data.user_id) === null ? payload : data)
+  }
+
   return {
     async listKeys(userId: string): Promise<LitellmKey[]> {
       const query = new URLSearchParams({ user_id: userId, return_full_object: 'true' })
@@ -217,20 +237,16 @@ export function createLitellmClient(
     },
 
     async setUserBudget(input): Promise<LitellmUser> {
-      const { status, payload, text } = await request('/user/update', {
-        method: 'POST',
-        body: {
-          user_id: input.userId,
-          max_budget: input.maxBudgetUsd,
-          budget_duration: '1mo',
-        },
+      return updateUser({
+        user_id: input.userId,
+        max_budget: input.maxBudgetUsd,
+        budget_duration: '1mo',
       })
-      if (status < 200 || status >= 300 || payload === null) {
-        throw fail('LiteLLM /user/update', status, text)
-      }
-      // The endpoint wraps the user in `data`; accept both shapes.
-      const data = objectOf(payload.data)
-      return userFromPayload(stringOrNull(data.user_id) === null ? payload : data)
+    },
+
+    async updateUserBudget(input): Promise<LitellmUser> {
+      // No `budget_duration`: a top-up must not move `budget_reset_at`.
+      return updateUser({ user_id: input.userId, max_budget: input.maxBudgetUsd })
     },
   }
 }

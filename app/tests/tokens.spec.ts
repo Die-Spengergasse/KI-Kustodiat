@@ -37,12 +37,13 @@ test.describe('token management', () => {
 })
 
 /**
- * `/tokens/keys` and `/tokens/usage` (Issue #48) are pages of the same noindex
- * shell: without a session they must still render the login form, never a key or
- * a number, and the API must answer without leaking anything.
+ * `/tokens/keys`, `/tokens/usage` (Issue #48) and `/tokens/admin` (Issue #64)
+ * are pages of the same noindex shell: without a session they must still render
+ * the login form, never a key, a number or a credit value, and the API must
+ * answer without leaking anything.
  */
 test.describe('token management pages', () => {
-  for (const path of ['/tokens/keys', '/tokens/usage'] as const) {
+  for (const path of ['/tokens/keys', '/tokens/usage', '/tokens/admin'] as const) {
     test(`${path} serves the noindex login shell`, async ({ page }) => {
       const response = await page.goto(path)
       expect(response?.status()).toBe(200)
@@ -58,8 +59,8 @@ test.describe('token management pages', () => {
     })
   }
 
-  test('the key and usage APIs answer 401 without a session', async ({ page }) => {
-    for (const path of ['/api/keys', '/api/usage/summary']) {
+  test('the key, usage and credit APIs answer 401 without a session', async ({ page }) => {
+    for (const path of ['/api/keys', '/api/usage/summary', '/api/credit/users']) {
       const response = await page.request.get(path)
       // 401 = configured portal, 503 = deployment not configured (CI/fresh clone).
       expect([401, 503]).toContain(response.status())

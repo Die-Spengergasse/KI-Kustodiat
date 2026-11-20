@@ -10,6 +10,7 @@ import {
 } from '../lib/portalApi'
 import { loginFailureMessage, roleLabel } from '../lib/portalMessages'
 import { TOKENS_PAGES, matchTokensPage } from '../routes'
+import { AdminPage } from './tokens/AdminPage'
 import { KeysPage } from './tokens/KeysPage'
 import { UsagePage } from './tokens/UsagePage'
 
@@ -180,12 +181,17 @@ export function TokensShell({ path }: TokensShellProps) {
   }
 
   const page = matchTokensPage(path)
+  // Admin pages are hidden from the nav but keep their own URL (the API answers
+  // 403 for everyone else, so hiding is a courtesy, not the guard).
+  const navEntries = TOKENS_PAGES.filter(
+    (entry) => !entry.adminOnly || view.user.role === 'admin',
+  )
 
   return (
     <>
       <nav className="portal-nav" aria-label="Tokenverwaltung">
         <ul>
-          {TOKENS_PAGES.map((entry) => (
+          {navEntries.map((entry) => (
             <li key={entry.path}>
               <a
                 href={entry.path}
@@ -245,6 +251,12 @@ export function TokensShell({ path }: TokensShellProps) {
                   <a href="/tokens/usage">Verbrauch</a> — Tokens und Anteil am Monatskontingent,
                   aufgeschlüsselt nach Modell.
                 </li>
+                {view.user.role === 'admin' && (
+                  <li>
+                    <a href="/tokens/admin">Guthaben</a> — Monatskontingent eines Kontos erhöhen
+                    (nur für Administrator:innen).
+                  </li>
+                )}
               </ul>
             </Prose>
             {view.user.mail !== null && (
@@ -258,6 +270,9 @@ export function TokensShell({ path }: TokensShellProps) {
         <KeysPage csrfToken={view.csrfToken} onSessionExpired={() => void load()} />
       )}
       {page === '/tokens/usage' && <UsagePage onSessionExpired={() => void load()} />}
+      {page === '/tokens/admin' && (
+        <AdminPage csrfToken={view.csrfToken} onSessionExpired={() => void load()} />
+      )}
     </>
   )
 }
