@@ -11,7 +11,7 @@ status: stable
 # STATE — KI-Kustodiat
 
 ## Current Focus
-2026-11-20: **Admin-Guthaben-GUI live auf kik (#64, Slice von #49)** — `/tokens/admin`
+2026-11-20: **Admin-Guthaben-GUI live auf kik (#64 geschlossen, Slice von #49)** — `/tokens/admin`
 (nur Rolle `admin`) erhöht das Monatskontingent eines Kontos über
 `POST /user/update`, verbucht die Erhöhung als einmalige Gutschrift in
 `portal.credit_grant` (Drizzle `0002_*`) und schreibt `credit_granted` ins
