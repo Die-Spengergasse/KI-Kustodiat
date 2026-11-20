@@ -1,6 +1,7 @@
 # Persistence Log
 
 ## 2026-11-20
+* **Update**: [STATE.md](STATE.md), [HANDOFF.md](HANDOFF.md), [state/completed-2026.md](state/completed-2026.md) — Admin-Guthaben-GUI live (#64, Release `20261120T131205Z`), inkl. Befund `budget_reset_at` = naive UTC.
 * **New**: [decisions/2026-11-20-admin-aufladung-additive-gutschrift.md](decisions/2026-11-20-admin-aufladung-additive-gutschrift.md) — Admin-Aufladung ist `max_budget += X` über `/user/update`, verbucht in `portal.credit_grant`, kein Spend-Reset; API unter `/api/credit`, weil nginx `/api/admin*` blockt (#64).
 * **Update**: [pitfalls/litellm-gateway.md](pitfalls/litellm-gateway.md) — „Die Admin-GUI schreibt denselben Weg, nicht daneben": `updateUserBudget` ohne `budget_duration`, Ledger mit `resets_at`, 409/502-Verhalten, `/api/credit` statt `/api/admin` (#64).
 * **Update**: [pitfalls/whisper-stt.md](pitfalls/whisper-stt.md) — Entsperren primär über `/tokens/admin`, Curl-Runbook nur noch Notfall (#64).
