@@ -1,5 +1,10 @@
 # Persistence Log
 
+## 2026-11-20
+* **Update**: [pitfalls/whisper-stt.md](pitfalls/whisper-stt.md) — „Ein erschöpftes Monatsbudget sperrt den ganzen Account, nicht nur das Diktat": belegter Fall `grafg` (5,0006 $ / 5 $ → 429 auf allen Keys bis `budget_reset_at`) plus SDK-Retry-Loop als Lastquelle (#49).
+* **Update**: [pitfalls/litellm-gateway.md](pitfalls/litellm-gateway.md) — „Budget nur über die Admin-API, nie per SQL": warmer Cross-Pod-Zähler `spend:user:<id>` in Redis, Invalidation durch `/user/update`, Reconcile-Vorbehalt aus #49.
+* **Update**: [index.md](index.md) — Concept-Zähler `decisions/` von 52 auf 53 nachgezogen (Eintrag 2026-11-13 kam nach der letzten Regenerierung).
+
 ## 2026-11-13
 * **Update**: [pitfalls/tooling-git-ops.md](pitfalls/tooling-git-ops.md) — „Agent-Job ohne Artefakt-Gate endet mit `rc=0` ohne Ergebnis": `git diff --quiet` ist kein Erfolgsnachweis, Schreibvorgang per `stat -c %y` prüfen (#63).
 * **Update**: [HANDOFF.md](HANDOFF.md) — Punkt 0g (Durchsatz-Angabe) erledigt und aus den offenen Aufgaben entfernt; [STATE.md](STATE.md) Fokus auf #63; [state/completed-2026.md](state/completed-2026.md) ergänzt.

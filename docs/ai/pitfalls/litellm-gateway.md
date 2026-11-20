@@ -3,8 +3,8 @@ type: Pitfalls
 title: "Pitfalls — LiteLLM-Gateway und Modellkatalog"
 description: "Router, Hooks, Key-Cache, Callbacks und Modell-Registrierung."
 tags: [ki-kustodiat, pitfalls, litellm-gateway]
-generated: { by: opencode/knowledge-persistence, at: 2026-11-07T21:13:47Z }
-verified: { by: opencode/knowledge-persistence, at: 2026-11-07T21:13:47Z }
+generated: { by: opencode/knowledge-persistence, at: 2026-11-20T12:49:17Z }
+verified: { by: opencode/knowledge-persistence, at: 2026-11-20T12:49:17Z }
 status: stable
 ---
 
@@ -32,3 +32,4 @@ status: stable
 - **LiteLLM 1.101 ignoriert `timezone` beim Budget-Reset (verifiziert 2026-10-29, #48):** Das Monatsbudget resettet um `2026-11-01T00:00:00Z` = 01:00 Wiener Zeit, obwohl `timezone: Europe/Vienna` gesetzt ist. Konsequenz: die **Anzeige** (Monatsfenster) schneidet in `Europe/Vienna`, die **Durchsetzung** in UTC — bis zu eine Stunde Differenz am Monatswechsel. Nicht als Fehler „wegkonfigurieren", sondern dokumentiert lassen und beim Anzeigen berücksichtigen.
 - **LiteLLM-Key-Aliase sind global eindeutig (2026-10-29, #48):** `key_alias` ist kein per-User-Feld — ein zweiter Key mit demselben Alias scheitert mit `Key with alias … already exists`. Deshalb ist das sichtbare Label eine Portal-eigene Spalte (`portal.key_meta.label`), der Gateway-Alias dagegen eindeutig zusammengesetzt (`kik/<sam>/<random>`). Bei Rotation bleibt das Label, der Alias wird neu.
 - **`os.environ/…` in DB-Modellen wird zur Laufzeit aufgelöst — Neustart genügt nicht:** Neue Variablen in `/etc/litellm/litellm.env` erreichen den Container erst beim **Neuerzeugen** (`docker compose -f /opt/litellm/compose.yaml --project-directory /opt/litellm up -d litellm`); `docker restart` behält die beim Erzeugen gesetzte Env. Symptom: `AuthenticationError … api_key client option must be set`, obwohl die Variable in der Datei steht.
+- **Budget nur über die Admin-API, nie per SQL (verifiziert 2026-11-20, #49):** `max_budget` oder `spend` in `LiteLLM_UserTable` per `UPDATE` zu korrigieren wirkt **nicht** — davor hängen zwei Caches: das User-Objekt im Proxy und der Cross-Pod-Zähler `spend:user:<user_id>` in Redis (am 2026-11-20 auf kik nachgewiesen: `spend:user:grafg`). Der Zähler bleibt warm, die 429 bestehen weiter, obwohl die Row stimmt. `POST /user/update` invalidiert beides (`_invalidate_user_spend_counter`): `{"user_id":"…","max_budget":N}` hebt das Kontingent (Spend-Historie bleibt), `{"user_id":"…","spend":0}` setzt das Guthaben zurück, ohne `budget_reset_at` zu verschieben. Masterkey aus `/etc/litellm/litellm.env` lesen, nie auf eine Kommandozeile schreiben. **Achtung:** sobald der Reconcile-Timer aus #49 läuft, überschreibt er solche Handkorrekturen wieder mit der Policy — dauerhaft gehört der Wert in die Policy, nicht in die Row (Runbook: `KI-Kustodiat-intern:whisper/README.md`).

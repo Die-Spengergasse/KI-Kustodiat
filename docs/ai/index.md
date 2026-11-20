@@ -18,7 +18,7 @@ im knowledge-persistence-Skill des opencode-helpers-Repos).
 * [DOMAIN.md](DOMAIN.md) - Schulkontext, Preise, Benchmarks und Nutzungsmodell der Spengergasse-KI-Infrastruktur.
 
 ## Concept Directories
-* [decisions/](decisions/index.md) - Eine Datei je Entscheidung (52 Concepts)
+* [decisions/](decisions/index.md) - Eine Datei je Entscheidung (53 Concepts)
 * [pitfalls/](pitfalls/index.md) - Fallstricke nach Themen (10 Buckets)
 * [state/](state/completed-2026.md) - Archiv der abgeschlossenen Arbeiten
 * [tips/](tips/index.md) - Admin-Tipps nach Themen (6 Buckets)
