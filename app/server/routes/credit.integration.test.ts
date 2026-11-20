@@ -278,7 +278,7 @@ describe.skipIf(!enabled)('/api/credit', () => {
       amount_usd: string
       max_budget_after_usd: string
       note: string
-      resets_at: Date | null
+      resets_at: string | Date | null
     }>(
       sql`select amount_usd, max_budget_after_usd, note, resets_at
           from portal.credit_grant
@@ -289,7 +289,12 @@ describe.skipIf(!enabled)('/api/credit', () => {
       max_budget_after_usd: '7.50',
       note: 'Nachtest AP64',
     })
-    expect(grant.rows[0]?.resets_at?.toISOString()).toBe(after?.budgetResetAt ?? undefined)
+    // `db.execute` hands raw driver values back: timestamptz arrives as a string.
+    const grantResetsAt =
+      grant.rows[0]?.resets_at === null || grant.rows[0]?.resets_at === undefined
+        ? null
+        : new Date(grant.rows[0].resets_at).toISOString()
+    expect(grantResetsAt).toBe(after?.budgetResetAt ?? null)
 
     const audit = await db.execute<{ sam: string; detail: string }>(
       sql`select sam, detail from portal.audit_log

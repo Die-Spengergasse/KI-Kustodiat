@@ -162,12 +162,10 @@ export async function registerCreditRoutes(app: FastifyInstance): Promise<void> 
 
     const sam = samParam(request)
     if (sam === null) {
-      return reply
-        .code(404)
-        .send({
-          error: 'user_not_found',
-          message: 'Dieses Konto gibt es in der Tokenverwaltung nicht.',
-        })
+      return reply.code(404).send({
+        error: 'user_not_found',
+        message: 'Dieses Konto gibt es in der Tokenverwaltung nicht.',
+      })
     }
 
     const body = bodyOf(request)
