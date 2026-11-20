@@ -289,12 +289,15 @@ describe.skipIf(!enabled)('/api/credit', () => {
       max_budget_after_usd: '7.50',
       note: 'Nachtest AP64',
     })
-    // `db.execute` hands raw driver values back: timestamptz arrives as a string.
+    // `db.execute` hands raw driver values back: timestamptz arrives as a string
+    // without milliseconds. Compare instants, not their textual form.
     const grantResetsAt =
       grant.rows[0]?.resets_at === null || grant.rows[0]?.resets_at === undefined
         ? null
-        : new Date(grant.rows[0].resets_at).toISOString()
-    expect(grantResetsAt).toBe(after?.budgetResetAt ?? null)
+        : new Date(grant.rows[0].resets_at).getTime()
+    expect(grantResetsAt).toBe(
+      after?.budgetResetAt ? new Date(after.budgetResetAt).getTime() : null,
+    )
 
     const audit = await db.execute<{ sam: string; detail: string }>(
       sql`select sam, detail from portal.audit_log
