@@ -52,11 +52,12 @@ describe.skipIf(!enabled)('admin credit store (fixture schema)', () => {
       resets_at timestamp with time zone,
       created_at timestamp with time zone not null default now()
     )`)
+    // Same shape as LiteLLM's Prisma column: naive timestamps, UTC by convention.
     await pool.query(`create table "${LITELLM}".v_user (
       user_id text,
       max_budget double precision,
       spend double precision,
-      budget_reset_at timestamp with time zone
+      budget_reset_at timestamp(3) without time zone
     )`)
 
     const users = await pool.query<{ id: string }>(
@@ -70,11 +71,11 @@ describe.skipIf(!enabled)('admin credit store (fixture schema)', () => {
     if (firstId === undefined) throw new Error('fixture users missing')
     maxUserId = firstId
 
+    // Naive UTC wall-clock, exactly as LiteLLM stores it (no timezone suffix).
     await pool.query(
       `insert into "${LITELLM}".v_user (user_id, max_budget, spend, budget_reset_at)
-       values ('geo220154', 5, 5.0006, $1),
+       values ('geo220154', 5, 5.0006, '2026-12-01 00:00:00'),
               ('pranz', null, 0, null)`,
-      [CURRENT_RESET],
     )
     // Two grants: one belongs to the current gateway period, one to the previous.
     await pool.query(
@@ -102,7 +103,12 @@ describe.skipIf(!enabled)('admin credit store (fixture schema)', () => {
       spendUsd: 5.0006,
       grantedUsd: 2,
     })
-    expect(rows[0]?.resetAt).toBe('2026-12-01T00:00:00.000Z')
+    // The naive column is parsed in the host zone; the wall clock must stay 1 Dec.
+    expect(
+      new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Vienna' }).format(
+        new Date(rows[0]?.resetAt ?? ''),
+      ),
+    ).toBe('2026-12-01')
     // No gateway row → no allowance, but the account is still listed.
     expect(rows[1]).toMatchObject({ sam: 'nobudget', maxBudgetUsd: null, spendUsd: 0 })
     // Gateway row without max_budget.

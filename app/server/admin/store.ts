@@ -111,6 +111,11 @@ export function createAdminStore(pool: Pool, options: AdminStoreOptions = {}): A
   // The grant sum is tied to the *current* gateway period: `resets_at` is what
   // `budget_reset_at` was when the grant was made. `is not distinct from` makes
   // the comparison hold for users without a budget duration (both sides null).
+  //
+  // `LiteLLM_UserTable.budget_reset_at` is `timestamp(3) without time zone`
+  // holding naive UTC (like the spend logs, see PITFALLS). Comparing it to the
+  // grant's `timestamptz` would make Postgres interpret it in the server zone and
+  // shift the period by the UTC offset — hence the explicit `at time zone 'UTC'`.
   const select = `
     select
       u.id as user_id,
@@ -128,7 +133,7 @@ export function createAdminStore(pool: Pool, options: AdminStoreOptions = {}): A
       select sum(c.amount_usd) as granted_usd
       from "${portal}".credit_grant c
       where c.user_id = u.id
-        and c.resets_at is not distinct from v.budget_reset_at
+        and c.resets_at is not distinct from (v.budget_reset_at at time zone 'UTC')
     ) g on true`
 
   return {
