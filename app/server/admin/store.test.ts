@@ -103,12 +103,8 @@ describe.skipIf(!enabled)('admin credit store (fixture schema)', () => {
       spendUsd: 5.0006,
       grantedUsd: 2,
     })
-    // The naive column is parsed in the host zone; the wall clock must stay 1 Dec.
-    expect(
-      new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Vienna' }).format(
-        new Date(rows[0]?.resetAt ?? ''),
-      ),
-    ).toBe('2026-12-01')
+    // The naive column is labelled UTC, so the API value is host-independent.
+    expect(rows[0]?.resetAt).toBe('2026-12-01T00:00:00.000Z')
     // No gateway row → no allowance, but the account is still listed.
     expect(rows[1]).toMatchObject({ sam: 'nobudget', maxBudgetUsd: null, spendUsd: 0 })
     // Gateway row without max_budget.

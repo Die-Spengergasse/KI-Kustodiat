@@ -125,7 +125,9 @@ export function createAdminStore(pool: Pool, options: AdminStoreOptions = {}): A
       u.last_login_at,
       v.max_budget,
       v.spend,
-      v.budget_reset_at,
+      -- Naive UTC in the source column: label it as UTC so the API value does
+      -- not depend on the host's timezone.
+      (v.budget_reset_at at time zone 'UTC') as budget_reset_at,
       coalesce(g.granted_usd, 0) as granted_usd
     from "${portal}".users u
     left join "${litellm}".v_user v on v.user_id = u.sam
