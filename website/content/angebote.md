@@ -1,6 +1,6 @@
 # Angebote
 
-_Aktualisiert: 2026-11-16._
+_Aktualisiert: 2026-11-23._
 
 Überblick über Token-Preise, Gratis- und Bildungsangebote sowie Optionen für eigene
 Hardware. Nimm die Zahlen als Startpunkt und prüfe sie am Tag der Beschaffung beim Anbieter
@@ -15,14 +15,14 @@ Preise je 1 Mio. Token (Input / Output), Standard-Tarif, USD.
 
 | Anbieter | Angebot | Preis | Stand | Quelle |
 |---|---|---|---|---|
-| OpenAI | GPT-6 Astra (Flaggschiff); GPT-6.1 Sol; GPT-6.1 Terra; GPT-6 Luna | Astra: 10 $ / 50 $ (Cache-Input 1 $); Sol: 2 $ / 10 $ (Cache-Input 0,10 $); Terra: 1 $ / 5 $; Luna: 0,10 $ / 0,50 $; Batch je −50 % | 2026-11-16 | [Preisseite](https://platform.openai.com/docs/pricing) |
-| Anthropic | Claude Fable 5.2 (Flaggschiff); Opus 5.5; Sonnet 5.5; Haiku 5.5 | Fable 5.2: 8 $ / 40 $ (Cache-Hit 0,20 $); Opus 5.5: 4 $ / 20 $; Sonnet 5.5: 2 $ / 10 $ (Cache-Hit 0,10 $); Haiku 5.5: 0,10 $ / 0,50 $ bei Prompts ≤ 100 K Token, darüber 0,50 $ / 2,50 $ | 2026-11-16 | [Preisseite](https://platform.claude.com/docs/en/about-claude/pricing) |
-| Google | Gemini 4 Carbon (Flaggschiff); Gemini 4 Argon; Gemini 4 Hydrogen; Gemini 3.8 Flash; Gemini 3.5 Flash-Lite | Carbon und Argon: je 2 $ / 10 $ bis 30.11.2026, ab 01.12.2026 4 $ / 20 $ (Context-Cache 0,10 $ → 0,20 $); Hydrogen: 1,50 $ / 7,50 $; 3.8 Flash: 0,75 $ / 3,75 $ bis 31.12.2026, ab 01.01.2027 1,50 $ / 7,50 $; 3.5 Flash-Lite: 0,30 $ / 2,50 $ | 2026-11-16 | [Preisseite](https://ai.google.dev/gemini-api/docs/pricing) |
-| Mistral (EU/FR) | Mistral Large 4 (Flaggschiff); Mistral Small 4; Ministral 3 14B; zusätzlich gehostet: DeepSeek V4.1 Flash, GLM 5.3 / 5.3 Flash | Large 4: 0,70 $ / 2,10 $ (Cache-Input 0,07 $); Small 4: 0,15 $ / 0,60 $; Ministral 3 14B: 0,20 $ / 0,20 $; DeepSeek V4.1 Flash: 0,30 $ / 1,20 $ (Cache-Input 0,007 $); GLM 5.3: 1,40 $ / 4,40 $; GLM 5.3 Flash: 0,15 $ / 0,50 $ | 2026-11-16 | [Preisseite](https://docs.mistral.ai/inference/pricing) |
-| Groq | GPT-OSS 120B / 20B; Qwen3.8 27B; Whisper large-v3 / Turbo | 120B: 0,15 $ / 0,60 $; 20B: 0,075 $ / 0,30 $; Qwen3.8 27B: 0,80 $ / 4,00 $; Whisper: 0,111 $ / Std. (Turbo 0,04 $ / Std.) | 2026-11-16 | [Modell-/Preisliste](https://console.groq.com/docs/models) |
-| xAI | Grok 4.7 (Flaggschiff), 500 K Kontext | 2 $ / 6 $ | 2026-11-16 | [Preisseite](https://docs.x.ai/docs/models) |
-| OpenRouter (Gateway) | 600+ Modelle von 80+ Anbietern über einen Schlüssel | Durchleitung zum Anbieter-Listenpreis ohne Aufschlag; Plattformgebühr beim Guthabenkauf 5,5 % (Standard) bzw. 8 % (Business); EU-In-Region-Routing erst ab Business | 2026-11-16 | [Preisseite](https://openrouter.ai/pricing) |
-| Cortecs (EU/AT) | EU-Gateway mit Datenresidenz, 150+ Modelle von 10+ EU-Anbietern; EUR-Abrechnung, ISO 27001 | Anbieterpreis + 5 % pauschale Servicegebühr — gerechnet auf Claude Sonnet 5.5: 2,10 $ / 10,50 $ statt 2 $ / 10 $ | 2026-11-16 | [Preisseite](https://cortecs.ai/pricing) |
+| OpenAI | GPT-6.2 Astra (Flaggschiff); GPT-6.2 Sol; GPT-6.1 Terra; GPT-6 Luna | Astra: 8 $ / 40 $ (Cache-Input 0,40 $); Sol: 2 $ / 10 $ (Cache-Input 0,10 $); Terra: 1 $ / 5 $; Luna: 0,10 $ / 0,50 $; Batch je −50 % | 2026-11-23 | [Preisseite](https://platform.openai.com/docs/pricing) |
+| Anthropic | Claude Fable 5.2 (Flaggschiff); Opus 5.5; Sonnet 5.5; Haiku 5.5 | Fable 5.2: 8 $ / 40 $ (Cache-Hit 0,20 $); Opus 5.5: 4 $ / 20 $; Sonnet 5.5: 2 $ / 10 $ (Cache-Hit 0,10 $); Haiku 5.5: 0,10 $ / 0,50 $ bei Prompts ≤ 100 K Token, darüber 0,50 $ / 2,50 $ | 2026-11-23 | [Preisseite](https://platform.claude.com/docs/en/about-claude/pricing) |
+| Google | Gemini 4 Carbon (Flaggschiff); Gemini 4 Argon; Gemini 4 Neon; Gemini 4 Hydrogen; Gemini 3.8 Flash; Gemini 3.5 Flash-Lite | Carbon und Argon: je 2 $ / 10 $ bis 30.11.2026, ab 01.12.2026 4 $ / 20 $ (Context-Cache 0,10 $ → 0,20 $); Neon: 3 $ / 15 $; Hydrogen: 1,50 $ / 7,50 $; 3.8 Flash: 0,75 $ / 3,75 $ bis 31.12.2026, danach teurer; 3.5 Flash-Lite: 0,30 $ / 2,50 $ | 2026-11-23 | [Preisseite](https://ai.google.dev/gemini-api/docs/pricing) |
+| Mistral (EU/FR) | Mistral Large 4 (Flaggschiff); Mistral Small 4; Ministral 3 14B; zusätzlich gehostet: DeepSeek V4.1 Flash, GLM 5.3 / 5.3 Flash | Large 4: 0,70 $ / 2,10 $ (Cache-Input 0,07 $); Small 4: 0,15 $ / 0,60 $; Ministral 3 14B: 0,20 $ / 0,20 $; DeepSeek V4.1 Flash: 0,30 $ / 1,20 $ (Cache-Input 0,007 $); GLM 5.3: 1,40 $ / 4,40 $; GLM 5.3 Flash: 0,15 $ / 0,50 $ | 2026-11-23 | [Preisseite](https://docs.mistral.ai/inference/pricing) |
+| Groq | GPT-OSS 120B / 20B; Qwen3.8 27B; Whisper large-v3 / Turbo | 120B: 0,15 $ / 0,60 $; 20B: 0,075 $ / 0,30 $; Qwen3.8 27B: 0,80 $ / 4,00 $; Whisper: 0,111 $ / Std. (Turbo 0,04 $ / Std.) | 2026-11-23 | [Modell-/Preisliste](https://console.groq.com/docs/models) |
+| xAI | Grok 4.7 (Flaggschiff), 500 K Kontext | 2 $ / 6 $ | 2026-11-23 | [Preisseite](https://docs.x.ai/docs/models) |
+| OpenRouter (Gateway) | 600+ Modelle von 80+ Anbietern über einen Schlüssel | Durchleitung zum Anbieter-Listenpreis ohne Aufschlag; Plattformgebühr beim Guthabenkauf 5,5 % (Standard) bzw. 8 % (Business); EU-In-Region-Routing erst ab Business | 2026-11-23 | [Preisseite](https://openrouter.ai/pricing) |
+| Cortecs (EU/AT) | EU-Gateway mit Datenresidenz, 150+ Modelle von 10+ EU-Anbietern; EUR-Abrechnung, ISO 27001 | Anbieterpreis + 5 % pauschale Servicegebühr — gerechnet auf Claude Sonnet 5.5: 2,10 $ / 10,50 $ statt 2 $ / 10 $ | 2026-11-23 | [Preisseite](https://cortecs.ai/pricing) |
 
 Für die Schul- und Datenschutzperspektive sind die EU-Angebote der interessante Teil:
 Cortecs (Wien) bietet EU-Datenresidenz, GDPR-Compliance, ISO 27001, native EUR-Abrechnung
@@ -37,12 +37,12 @@ OpenRouter (international) viele Anbieter.
 
 | Anbieter | Angebot | Preis | Stand | Quelle |
 |---|---|---|---|---|
-| Google AI Studio / Gemini | Free Tier mit Rate-Limits und begrenztem Modellzugang: Gemini 4 Hydrogen ist kostenlos, Gemini 4 Carbon und Gemini 4 Argon sind es nicht. Achtung Datenschutz: Inhalte im Free Tier werden laut Anbieter zur Produktverbesserung genutzt (im Paid Tier nicht) | 0 $ (Rate-Limits) | 2026-11-16 | [Preisseite](https://ai.google.dev/gemini-api/docs/pricing) |
-| Groq | Free Plan mit RPM-/RPD-/TPM-/TPD-Limits je Modell; Tages- und Minutenkontingente reichen für Tests und kleine Gruppen | 0 $ (Rate-Limits) | 2026-11-16 | [Rate-Limits](https://console.groq.com/docs/rate-limits) |
-| OpenRouter | 25+ kostenlose Modellvarianten (`:free`) von 4 Anbietern, ohne Kreditkarte nutzbar; Free-Plan: 20 Anfragen/Minute und 50 pro Tag, ab 10 $ gekauftem Guthaben 1.000 pro Tag | 0 $; danach kostenpflichtiges Guthaben | 2026-11-16 | [Preisseite](https://openrouter.ai/pricing) |
-| GitHub Education | Copilot Student kostenlos für verifizierte Schüler:innen und Studierende; Copilot Pro zusätzlich kostenlos für verifizierte Lehrkräfte und Maintainer populärer Open-Source-Projekte | 0 $ (Copilot Student / Copilot Pro) | 2026-11-16 | [Copilot-Pläne](https://docs.github.com/en/copilot/concepts/billing/individual-plans) |
-| Microsoft Azure | Azure for Students: 100 $ Guthaben innerhalb von 12 Monaten plus 65+ dauerhaft freie Dienste (inkl. Azure OpenAI / Foundry), keine Kreditkarte nötig, jährlich erneuerbar. Die Anbieterseite nennt „full-time university students“ — für HTL-Schüler:innen ist die Berechtigung nicht belegt | 100 $ / Jahr | 2026-11-16 | [Azure for Students](https://azure.microsoft.com/en-us/free/students) |
-| Mistral (EU/FR) | Education-Plan für verifizierte Studierende an akkreditierten Hochschulen (max. 12 Monate, laut Preisseite inkl. 25,5 $ API-Guthaben/Monat, nur für Erstnutzer:innen) — für HTL-Schüler:innen nicht belegt | 14,99 $ / Monat | 2026-11-16 | [Preisseite](https://mistral.ai/pricing) |
+| Google AI Studio / Gemini | Free Tier mit Rate-Limits: Gemini 4 Hydrogen, Gemini 3.8 Flash und Gemini 3.5 Flash-Lite sind kostenlos nutzbar, Gemini 4 Carbon und Gemini 4 Argon sind es nicht. Achtung Datenschutz: Inhalte im Free Tier werden laut Anbieter zur Produktverbesserung genutzt (im Paid Tier nicht) | 0 $ (Rate-Limits) | 2026-11-23 | [Preisseite](https://ai.google.dev/gemini-api/docs/pricing) |
+| Groq | Free Plan mit RPM-/RPD-/TPM-/TPD-Limits je Modell; die Tages- und Minutenkontingente reichen für Tests und kleine Gruppen | 0 $ (Rate-Limits) | 2026-11-23 | [Rate-Limits](https://console.groq.com/docs/rate-limits) |
+| OpenRouter | 25+ kostenlose Modellvarianten (`:free`) von 4 Anbietern, ohne Kreditkarte nutzbar; Free-Plan: 50 Anfragen pro Tag, ab 10 $ gekauftem Guthaben 1.000 pro Tag | 0 $; danach kostenpflichtiges Guthaben | 2026-11-23 | [Preisseite](https://openrouter.ai/pricing) |
+| GitHub Education | Copilot Student kostenlos für verifizierte Schüler:innen und Studierende; Copilot Pro zusätzlich kostenlos für verifizierte Lehrkräfte und Maintainer populärer Open-Source-Projekte | 0 $ (Copilot Student / Copilot Pro) | 2026-11-23 | [GitHub Education](https://github.com/education/students), [Copilot-Pläne](https://docs.github.com/en/copilot/concepts/billing/individual-plans) |
+| Microsoft Azure | Azure for Students: 100 $ Guthaben innerhalb von 12 Monaten plus 65+ dauerhaft freie Dienste (inkl. Azure OpenAI / Foundry), keine Kreditkarte nötig, jährlich erneuerbar. Die Anbieterseite nennt „full-time university students“ — für HTL-Schüler:innen ist die Berechtigung nicht belegt | 100 $ / Jahr | 2026-11-23 | [Azure for Students](https://azure.microsoft.com/en-us/free/students) |
+| Mistral (EU/FR) | Education-Plan für verifizierte Studierende an akkreditierten Hochschulen (max. 12 Monate, nur für Erstnutzer:innen von Vibe/Le Chat): voller Vibe-Zugang zum reduzierten Preis | 14,99 $ / Monat | 2026-11-23 | [Preisseite](https://mistral.ai/pricing) |
 
 ## Hardware für eigene Inferenz
 
@@ -57,11 +57,11 @@ offiziellen Busbreite (256 Bit) und der Speicherdatenrate gerechnet: 256 Bit × 
 | Anbieter | System | Speicher | Bandbreite | Preis | Stand | Quelle |
 |---|---|---|---|---|---|---|
 | AMD | „Ryzen AI Halo" Developer Platform, Ryzen AI Max+ PRO 495, Linux-Edition | 192 GB Unified (LPDDR5X-8533) | 273 GB/s | 7.299 $ (laut Fachpresse, US-Handel) | 2026-11 (laut Suchergebnis) | [VideoCardz](https://videocardz.com/newz/amd-ryzen-ai-halo-with-ryzen-ai-max-pro-495-launches-at-7299-with-192gb-memory) |
-| GMKtec | EVO-X5 Pro, Ryzen AI Max+ PRO 495 | 192 GB Unified (LPDDR5X-8533) | 273 GB/s | 6.799 $ (2 TB SSD); 7.099 $ (4 TB SSD) | 2026-11-16 | [GMKtec](https://www.gmktec.com/products/gmktec-evo-x5-pro-amd-ryzen-ai-max-pro-495-ai-mini-pc) |
-| GMKtec | EVO-X3, Ryzen AI Max+ 395 | 128 GB Unified (LPDDR5X-8000) | 256 GB/s | 3.799,99 $ (2 TB SSD); 3.999,99 $ (4 TB SSD) | 2026-11-16 | [GMKtec](https://www.gmktec.com/products/gmktec-evo-x3-ai-mini-pc-amd-ryzen-ai-max-395) |
-| Minisforum | MS-S1 Max, Ryzen AI Max+ 395 | 128 GB Unified (LPDDR5X-8000) | 256 GB/s | 2.919,90 $ (128 GB, 2 TB SSD) | 2026-11-16 | [Minisforum](https://www.minisforum.com/products/ms-s1-max) |
-| NVIDIA | DGX Spark (GB10) | 64 GB oder 128 GB LPDDR5X Unified (256-Bit-Interface) | 273 GB/s | 128 GB: 6.950 $ (MSRP), Straßenpreis ab 5.999 $ laut Händlerübersicht | 2026-11-16 | [NVIDIA DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/), [Preisübersicht](https://physicalailab.io/en/nvidia-dgx-spark-price-specs-buy/) |
-| Apple | Mac Studio M5 Max | 36 / 48 / 64 / 128 GB Unified | 460 GB/s (32-Core-GPU), 614 GB/s (40-Core-GPU) | ab 2.499 $ (36 GB, 32-Core-GPU); 40-Core-GPU ab 3.099 $ | 2026-11-16 | [Apple Tech Specs](https://www.apple.com/mac-studio/specs/), [Apple Shop](https://www.apple.com/shop/buy-mac/mac-studio) |
+| GMKtec | EVO-X5 Pro, Ryzen AI Max+ PRO 495 | 192 GB Unified (LPDDR5X-8533) | 273 GB/s | 6.799 $ (192 GB + 2 TB SSD) | 2026-11-23 | [GMKtec](https://www.gmktec.com/products/gmktec-evo-x5-pro-amd-ryzen-ai-max-pro-495-ai-mini-pc) |
+| GMKtec | EVO-X3, Ryzen AI Max+ 395 | 128 GB Unified (LPDDR5X-8000) | 256 GB/s | 3.799,99 $ (128 GB + 2 TB SSD) | 2026-11-23 | [GMKtec](https://www.gmktec.com/products/gmktec-evo-x3-ai-mini-pc-amd-ryzen-ai-max-395) |
+| Minisforum | MS-S1 Max, Ryzen AI Max+ 395 | 128 GB Unified (LPDDR5X-8000) | 256 GB/s | 2.919,90 $ (128 GB + 2 TB SSD) | 2026-11-23 | [Minisforum](https://www.minisforum.com/products/ms-s1-max) |
+| NVIDIA | DGX Spark (GB10) | 64 GB oder 128 GB LPDDR5X Unified (256-Bit-Interface) | 273 GB/s | 128 GB: 6.950 $ (MSRP), Straßenpreis ab 5.999 $ laut Händlerübersicht | 2026-11-23 | [NVIDIA DGX Spark](https://www.nvidia.com/en-us/products/workstations/dgx-spark/), [Preisübersicht](https://physicalailab.io/en/nvidia-dgx-spark-price-specs-buy/) |
+| Apple | Mac Studio M5 Max | 36 / 48 / 64 / 128 GB Unified | 460 GB/s (32-Core-GPU), 614 GB/s (40-Core-GPU) | ab 2.499 $ (36 GB, 32-Core-GPU); 40-Core-GPU ab 3.099 $ | 2026-11-23 | [Apple Tech Specs](https://www.apple.com/mac-studio/specs/), [Apple Shop](https://www.apple.com/shop/buy-mac/mac-studio) |
 
 Aus diesen Werten: Die **höchste** Bandbreite hat der Mac Studio M5 Max mit **614 GB/s**
 (40-Core-GPU), die **niedrigste** der GMKtec EVO-X3 und der Minisforum MS-S1 Max mit je
@@ -81,16 +81,18 @@ belegt ist.
 
 | Anbieter | System | Speicher | Bandbreite | Bauform | Preis | Stand | Quelle |
 |---|---|---|---|---|---|---|---|
-| Apple | Mac Studio M5 Ultra | 256 GB Unified (Klasse 256 GB) | 1,2 TB/s | Desk-Side | k. A. (Konfigurationsaufpreis für 256 GB nicht öffentlich belegt) | 2026-11-16 | [Apple Tech Specs](https://www.apple.com/mac-studio/specs/), [Apple Shop](https://www.apple.com/shop/buy-mac/mac-studio) |
 | Apple | Mac Studio M5 Ultra, 36-Core-CPU / 80-Core-GPU | 512 GB Unified (Klasse 512 GB) | 1,2 TB/s | Desk-Side | 22.299 $ (6.799 $ Basis + 15.500 $ für 512 GB); mit 16 TB SSD 29.799 $ | 2026-10-28 | [Apple Tech Specs](https://www.apple.com/mac-studio/specs/), [MacRumors](https://www.macrumors.com/2026/10/28/mac-studio-m5-ultra-512gb-ram/) |
-| NVIDIA / OEM (Supermicro) | DGX Station (GB300 Grace Blackwell Ultra), als Super AI Station ARS-511GD-NB-LCC-01-G2 | 748 GB kohärent (252 GB HBM3e + 496 GB LPDDR5X; Klasse 512 GB) | 7,1 TB/s (HBM3e), 396 GB/s (LPDDR5X) | Desk-Side (Tower, optional 5U-Rack) | 93.409 $ (Händlerliste) | 2026-11-16 | [NVIDIA DGX Station](https://www.nvidia.com/en-us/products/workstations/dgx-station/), [SparkThai](https://www.sparkthai.com/de/gpu-server-film/super-ai-station-gb300) |
-| Octoserver (über UpStation) | 4U-E10G-GENOAX2, 8× RTX 5090 (passive Server Edition) | 256 GB GDDR7 (8× 32 GB; Klasse 256 GB) | 1.792 GB/s je Karte = 14,3 TB/s gesamt | Rack (4U) | 76.679,60 $ (Listenpreis, 8 GPUs); pro GPU 9.584,95 $ | 2026-11-03 | [UpStation](https://ai.upstation.io/p/UPS-GPU-5090-8), [NVIDIA RTX 5090](https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/) |
+| NVIDIA / OEM (Supermicro) | DGX Station (GB300 Grace Blackwell Ultra), als Super AI Station ARS-511GD-NB-LCC-01-G2 | 748 GB kohärent (252 GB HBM3e + 496 GB LPDDR5X; Klasse 512 GB) | 7,1 TB/s (HBM3e), 396 GB/s (LPDDR5X) | Desk-Side (Tower, optional 5U-Rack) | 93.409 $ (Händlerliste) | 2026-11-23 | [NVIDIA DGX Station](https://www.nvidia.com/en-us/products/workstations/dgx-station/), [SparkThai](https://www.sparkthai.com/de/gpu-server-film/super-ai-station-gb300) |
+| Octoserver (über UpStation) | 4U-E10G-GENOAX2, 8× RTX 5090 (passive Server Edition) | 256 GB GDDR7 (8× 32 GB; Klasse 256 GB) | 1.792 GB/s je Karte = 14,3 TB/s gesamt | Rack (4U) | 76.679,60 $ (Listenpreis, 8 GPUs); pro GPU 9.584,95 $ | 2026-11-03 | [UpStation](https://ai.upstation.io/p/UPS-GPU-5090-8), [NVIDIA RTX 5090](https://www.nvidia.com/en-us/geforce/graphics-cards/compare/) |
 | Supermicro | SYS-422GA-NRT, 8× RTX PRO 6000 Blackwell Server Edition | 768 GB GDDR7 (8× 96 GB; Klasse 512 GB) | 12,8 TB/s (8× 1.597 GB/s) | Rack (4U) | 177.430,31 $ netto (Liste 201.625,35 $); pro GPU 22.178,79 $ | 2026-11-03 | [UpStation](https://ai.upstation.io/p/UPS-GPU-RTXPRO-8), [NVIDIA RTX PRO 6000 SE](https://www.nvidia.com/en-us/data-center/rtx-pro-6000-blackwell-server-edition/) |
 | Supermicro | SYS-821GE-TNHR, 8× H200 (Hopper-Generation) | 1.128 GB HBM3e (8× 141 GB; Klasse ≥ 1024 GB) | 38,4 TB/s (8× 4,8 TB/s) | Rack (8U) | 318.117,39 $ netto (Liste 361.497,03 $); pro GPU 39.764,67 $ | 2026-11-03 | [UpStation](https://ai.upstation.io/p/UPS-GPU-H200-8), [NVIDIA H200](https://www.nvidia.com/en-us/data-center/h200/) |
 | Supermicro | SYS-822GS-NB3RT, 8× B300 (HGX B300 NVL8) | 2.304 GB HBM3e (8× 288 GB; Klasse ≥ 1024 GB) | 64 TB/s (8× 8 TB/s) | Rack (8U) | 537.196,40 $ netto (Liste 610.450,46 $); pro GPU 67.149,55 $ | 2026-11-03 | [UpStation](https://ai.upstation.io/p/UPS-GPU-B300-8), [NVIDIA GB300 NVL72](https://www.nvidia.com/en-us/data-center/gb300-nvl72/) |
 
-Aus diesen Werten: Die **höchste** Bandbreite hat der Supermicro SYS-822GS-NB3RT mit
-**64 TB/s** (8× B300), die **niedrigste** der Mac Studio M5 Ultra mit **1,2 TB/s**.
+Aus diesen Werten (jeweils die erstgenannte GPU-/Unified-Bandbreite): Die **höchste**
+Bandbreite hat der Supermicro SYS-822GS-NB3RT mit **64 TB/s** (8× B300), die **niedrigste**
+der Mac Studio M5 Ultra mit **1,2 TB/s**. Die LPDDR5X-Hälfte der DGX Station liegt mit
+396 GB/s zwar noch darunter, zählt für die Token-Generierung aber nicht, weil die
+Modellgewichte im HBM liegen.
 
 ### Was Parallelität begrenzt
 
