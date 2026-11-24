@@ -60,10 +60,15 @@ Nicht anfassen: `website/content/anleitung/`, `website/content/index.md`, `websi
 
 4. **Verifizieren** (Pflicht, bricht bei Fehler ab). Stellt sicher, dass jede
    Markdown-Datei rendert und **jeder `*.md`-Link** auf eine existierende Seite zeigt:
+   Die Routen stehen in `app/src/routes.ts` (`PUBLIC_ROUTES`) — **nicht** in
+   `website/app.js`, das ist nur noch der historische Hash-Router und kennt
+   `anleitung/*` nicht (führt zu Falschmeldungen).
+
    ```bash
    cd website && node -e '
      const fs=require("fs"),p=require("path");const m=require("./vendor/marked.umd.js");const marked=m.marked||m.parse||m;
-     const PAGES=[...fs.readFileSync("app.js","utf8").match(/var PAGES = \{([\s\S]*?)\};/)[1].matchAll(/\x27([^\x27]+)\x27:/g)].map(x=>x[1]);
+     const routes=[...fs.readFileSync("../app/src/routes.ts","utf8").matchAll(/path:\s*\x27(\/[^\x27]*)\x27/g)].map(x=>x[1]).filter(r=>!r.startsWith("/api"));
+     const PAGES=routes.map(r=>r==="/"?"index":r.replace(/^\//,""));
      let bad=0;
      for(const f of fs.readdirSync("content").filter(x=>x.endsWith(".md"))){
        const html=marked.parse(fs.readFileSync("content/"+f,"utf8"));
